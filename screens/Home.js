@@ -7,9 +7,8 @@ import { auth } from '../firebase';
 
 export default function Home() {
 	return (
-		<View style={tw`h-full flex-1 px-6 justify-center bg-gray-100`}>
+		<View style={tw`h-full flex-1 px-5 justify-center bg-gray-100`}>
 			<Text>Home</Text>
-			<Button mode='contained' onPress={() => signOut(auth)}>Выход</Button>
 		</View>
 	)
 }
