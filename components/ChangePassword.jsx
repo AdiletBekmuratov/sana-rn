@@ -1,12 +1,19 @@
 import {
-	EmailAuthProvider,
-	reauthenticateWithCredential,
-	updatePassword
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updatePassword,
 } from "firebase/auth";
 import { Formik } from "formik";
 import React, { useState } from "react";
 import { View } from "react-native";
-import { Button, Card, HelperText, Snackbar, TextInput } from "react-native-paper";
+import {
+  Button,
+  Card,
+  HelperText,
+  Snackbar,
+  TextInput,
+	Title,
+} from "react-native-paper";
 import tw from "twrnc";
 import * as Yup from "yup";
 import { auth } from "../firebase";
@@ -74,6 +81,8 @@ const ChangePassword = ({ userData }) => {
               touched,
             }) => (
               <View>
+                <Title style={tw`mb-4`}>Құпия сөз өзгерту</Title>
+
                 <TextInput
                   label="Ескі құпия сөз"
                   mode="outlined"
