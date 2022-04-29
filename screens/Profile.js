@@ -1,34 +1,39 @@
-import React from "react";
-import { View, Linking } from "react-native";
-import { Text, Card, Button, IconButton } from "react-native-paper";
-import tw from "twrnc";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { auth, db } from "../firebase";
-import { useObject } from "react-firebase-hooks/database";
+import React from "react";
+import { Linking, View } from "react-native";
+import { Button, Card, IconButton, Text } from "react-native-paper";
+import tw from "twrnc";
 import Spinner from "../components/Spinner";
-import { ref } from "firebase/database";
+import { useGetMeQuery } from "../redux/services/authorized.service";
 
-export default function Profile({navigation}) {
-  const [snapshot, loading, error] = useObject(
-    ref(db, "users/" + auth.currentUser.uid)
-  );
+export default function Profile({ navigation }) {
+  const { data, error, isLoading, isError } = useGetMeQuery();
 
-  if (loading) {
+  if (isLoading) {
     return <Spinner />;
   }
+
+  console.log(data);
 
   return (
     <View style={tw`h-full flex-1 p-5 justify-between bg-gray-100`}>
       <Card>
         <Card.Content style={tw`items-center justify-between`}>
-					<IconButton icon={'pen'} style={tw`absolute right-2 top-2`} onPress={() => navigation.navigate('ChangeProfile', {userData: snapshot.val()})} />
+          <IconButton
+            icon={"pen"}
+            style={tw`absolute right-2 top-2`}
+            onPress={() =>
+              navigation.navigate("ChangeProfile", { userData: data })
+            }
+          />
           <MaterialIcons name="account-circle" size={100} color="gray" />
           <Text style={tw`text-xl font-bold`}>
-            {snapshot.val().firstName} {snapshot.val().lastName}
+            {data.first_name} {data.last_name}
           </Text>
-          <Text style={tw`text-lg`}>{snapshot.val().email}</Text>
+          <Text style={tw`text-lg`}>{data.email}</Text>
           <Text style={tw`text-lg underline`}>
-            {snapshot.val().phoneNumber}
+            +7 ({data.phone.slice(0, 3)}) {data.phone.slice(3, 6)}-
+            {data.phone.slice(6)}
           </Text>
         </Card.Content>
       </Card>

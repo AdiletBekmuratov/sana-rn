@@ -1,4 +1,3 @@
-import { EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 import { Formik } from "formik";
 import React, { useState } from "react";
 import { View } from "react-native";
@@ -12,16 +11,11 @@ import {
 } from "react-native-paper";
 import tw from "twrnc";
 import * as Yup from "yup";
-import { auth, db } from "../firebase";
-import { ref, update } from "firebase/database";
 
 const ProfileUpdateSchema = Yup.object().shape({
-  firstName: Yup.string().required("Міндетті өріс"),
-  lastName: Yup.string().required("Міндетті өріс"),
-  phoneNumber: Yup.string()
-    .required("Міндетті өріс")
-    .min(11, "Қате телефон форматы")
-    .max(11, "Қате телефон форматы"),
+  first_name: Yup.string().required("Міндетті өріс"),
+  last_name: Yup.string().required("Міндетті өріс"),
+  phone: Yup.string().required("Міндетті өріс"),
   password: Yup.string().required("Міндетті өріс"),
 });
 
@@ -30,39 +24,15 @@ const ChangeMainInfo = ({ userData }) => {
 
   const [visible, setVisible] = useState(false);
   const [message, setMessage] = useState("");
+  const [unmaskedPhone, setUnmaskedPhone] = useState("");
 
   const onDismissSnackBar = () => setVisible(false);
 
-  const onSubmitUpdate = async (value, { resetForm }) => {
-    userData = {
-      ...userData,
-      firstName: value.firstName,
-      lastName: value.lastName,
-      phoneNumber: value.phoneNumber,
+  const onSubmitUpdate = async (values, { resetForm }) => {
+    const data = {
+      ...values,
+      phone: unmaskedPhone,
     };
-    setLoading(true);
-    const credential = EmailAuthProvider.credential(
-      userData.email,
-      value.password
-    );
-    await reauthenticateWithCredential(auth.currentUser, credential)
-      .then(async (userCredential) => {
-        await update(ref(db, "users/" + auth.currentUser.uid), userData)
-          .then((res) => {
-            setMessage("Профиль сәтті өзгертілді");
-            setVisible(true);
-          })
-          .catch((err) => {
-            setMessage("Профиль өзгерту барысында қате. Кейінірек көріңіз");
-          });
-      })
-      .catch((error) => {
-        setMessage("Құпия сөз қате терілді");
-        setVisible(true);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
   };
 
   return (
@@ -72,9 +42,9 @@ const ChangeMainInfo = ({ userData }) => {
           <Formik
             validationSchema={ProfileUpdateSchema}
             initialValues={{
-              firstName: userData.firstName,
-              lastName: userData.lastName,
-              phoneNumber: userData.phoneNumber,
+              first_name: userData.first_name,
+              last_name: userData.last_name,
+              phone: userData.phone,
               password: "",
             }}
             onSubmit={onSubmitUpdate}
@@ -86,6 +56,7 @@ const ChangeMainInfo = ({ userData }) => {
               values,
               errors,
               touched,
+              setFieldValue,
             }) => (
               <View>
                 <Title style={tw`mb-4`}>Негізгі ақпарат</Title>
@@ -93,56 +64,97 @@ const ChangeMainInfo = ({ userData }) => {
                   label="Аты"
                   mode="outlined"
                   dense={true}
-                  onBlur={handleBlur("firstName")}
-                  onChangeText={handleChange("firstName")}
-                  value={values.firstName}
+                  activeOutlineColor="#002C67"
+                  onBlur={handleBlur("first_name")}
+                  onChangeText={handleChange("first_name")}
+                  value={values.first_name}
                   left={<TextInput.Icon name={"account"} />}
-                  error={!!errors.firstName && !!touched.firstName}
+                  error={!!errors.first_name && !!touched.first_name}
                 />
-                <HelperText
-                  type="error"
-                  visible={!!errors.firstName && !!touched.firstName}
-                >
-                  {errors.firstName}
-                </HelperText>
+                {!!errors.first_name && !!touched.first_name && (
+                  <HelperText
+                    type="error"
+                    visible={!!errors.first_name && !!touched.first_name}
+                  >
+                    {errors.first_name}
+                  </HelperText>
+                )}
 
                 <TextInput
+                  style={tw`mt-2`}
                   label="Тегі"
                   mode="outlined"
+                  activeOutlineColor="#002C67"
                   dense={true}
-                  onBlur={handleBlur("lastName")}
-                  onChangeText={handleChange("lastName")}
-                  value={values.lastName}
+                  onBlur={handleBlur("last_name")}
+                  onChangeText={handleChange("last_name")}
+                  value={values.last_name}
                   left={<TextInput.Icon name={"account"} />}
-                  error={!!errors.lastName && !!touched.lastName}
+                  error={!!errors.last_name && !!touched.last_name}
                 />
-                <HelperText
-                  type="error"
-                  visible={!!errors.lastName && !!touched.lastName}
-                >
-                  {errors.lastName}
-                </HelperText>
+                {!!errors.last_name && !!touched.last_name && (
+                  <HelperText
+                    type="error"
+                    visible={!!errors.last_name && !!touched.last_name}
+                  >
+                    {errors.last_name}
+                  </HelperText>
+                )}
 
                 <TextInput
-                  label="Тегі"
+                  style={tw`mt-2`}
+                  label="Телефон"
                   mode="outlined"
+                  activeOutlineColor="#002C67"
                   dense={true}
-                  onBlur={handleBlur("phoneNumber")}
-                  onChangeText={handleChange("phoneNumber")}
-                  value={values.phoneNumber}
                   left={<TextInput.Icon name={"phone"} />}
-                  error={!!errors.phoneNumber && !!touched.phoneNumber}
+                  error={!!errors.phone && !!touched.phone}
+                  render={(props) => (
+                    <MaskInput
+                      {...props}
+                      value={values.phone}
+                      onBlur={handleBlur("phone")}
+                      onChangeText={(val, unmasked) => {
+                        setFieldValue("phone", val);
+                        setUnmaskedPhone(unmasked);
+                      }}
+                      mask={[
+                        "+",
+                        "7",
+                        " ",
+                        "(",
+                        /\d/,
+                        /\d/,
+                        /\d/,
+                        ")",
+                        " ",
+                        /\d/,
+                        /\d/,
+                        /\d/,
+                        "-",
+                        /\d/,
+                        /\d/,
+                        /\d/,
+                        /\d/,
+                      ]}
+                      prefix="+7 "
+                    />
+                  )}
                 />
-                <HelperText
-                  type="error"
-                  visible={!!errors.phoneNumber && !!touched.phoneNumber}
-                >
-                  {errors.phoneNumber}
-                </HelperText>
+                {!!errors.phone && !!touched.phone && (
+                  <HelperText
+                    type="error"
+                    visible={!!errors.phone && !!touched.phone}
+                  >
+                    {errors.phone}
+                  </HelperText>
+                )}
 
                 <TextInput
+                  style={tw`mt-2`}
                   label="Құпия сөз"
                   mode="outlined"
+                  activeOutlineColor="#002C67"
                   dense={true}
                   onBlur={handleBlur("password")}
                   secureTextEntry
@@ -151,15 +163,17 @@ const ChangeMainInfo = ({ userData }) => {
                   left={<TextInput.Icon name={"asterisk"} />}
                   error={!!errors.password && !!touched.password}
                 />
-                <HelperText
-                  style={tw`mb-4`}
-                  type="error"
-                  visible={!!errors.password && !!touched.password}
-                >
-                  {errors.password}
-                </HelperText>
+                {!!errors.password && !!touched.password && (
+                  <HelperText
+                    type="error"
+                    visible={!!errors.password && !!touched.password}
+                  >
+                    {errors.password}
+                  </HelperText>
+                )}
 
                 <Button
+                  style={tw`mt-4`}
                   loading={loading}
                   disabled={loading}
                   mode="contained"

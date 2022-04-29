@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, Image, TouchableOpacity, FlatList } from "react-native";
+import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import tw from "twrnc";
 
 const buttons = [
@@ -19,7 +19,7 @@ const buttons = [
 
 export default function Home() {
   return (
-    <View style={tw`h-full flex-1 px-5 justify-center bg-gray-100`}>
+    <View style={tw`h-full flex-1 p-5 justify-center bg-gray-100`}>
       <FlatList
         style={tw`w-full`}
         data={buttons}
@@ -37,7 +37,7 @@ export default function Home() {
               }
             )}
           >
-            <View style={{height: '100%', justifyContent: 'center'}}>
+            <View style={{ height: "100%", justifyContent: "center" }}>
               <Image style={tw`w-24 h-24`} source={item.image} />
               <Text
                 style={tw`right-0 text-lg font-semibold absolute text-white`}

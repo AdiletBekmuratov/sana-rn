@@ -2,13 +2,13 @@ import React from "react";
 import { View } from "react-native";
 import { Headline, IconButton } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { signOut } from "firebase/auth";
-import { auth } from "../firebase";
+import { useDispatch } from "react-redux";
 import tw from "twrnc";
 
 const Header = ({ title, rightButton, navigation, routeName }) => {
+  const dispatch = useDispatch();
   const logout = async () => {
-    await signOut(auth);
+    dispatch(await logout());
   };
 
   return (

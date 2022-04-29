@@ -1,8 +1,3 @@
-import {
-  EmailAuthProvider,
-  reauthenticateWithCredential,
-  updatePassword,
-} from "firebase/auth";
 import { Formik } from "formik";
 import React, { useState } from "react";
 import { View } from "react-native";
@@ -12,11 +7,10 @@ import {
   HelperText,
   Snackbar,
   TextInput,
-	Title,
+  Title,
 } from "react-native-paper";
 import tw from "twrnc";
 import * as Yup from "yup";
-import { auth } from "../firebase";
 
 const LoginSchema = Yup.object().shape({
   oldPass: Yup.string().required("Міндетті өріс"),
@@ -36,32 +30,7 @@ const ChangePassword = ({ userData }) => {
 
   const onDismissSnackBar = () => setVisible(false);
 
-  const onLogin = async (value, { resetForm }) => {
-    setLoadingPassword(true);
-    const credential = EmailAuthProvider.credential(
-      userData.email,
-      value.oldPass
-    );
-    await reauthenticateWithCredential(auth.currentUser, credential)
-      .then(async (userCredential) => {
-        await updatePassword(auth.currentUser, value.newPass)
-          .then(() => {
-            setMessage("Құпия сөз сәтті өзгертілді");
-            setVisible(true);
-          })
-          .catch((error) => {
-            setMessage("Құпия сөз өзгерту барысында қате. Кейінірек көріңіз");
-          });
-      })
-      .catch((error) => {
-        setMessage("Құпия сөз қате терілді");
-        setVisible(true);
-      })
-      .finally(() => {
-        setLoadingPassword(false);
-        resetForm();
-      });
-  };
+  const onLogin = async (values, { resetForm }) => {};
 
   return (
     <>
@@ -86,6 +55,7 @@ const ChangePassword = ({ userData }) => {
                 <TextInput
                   label="Ескі құпия сөз"
                   mode="outlined"
+                  activeOutlineColor="#002C67"
                   dense={true}
                   onBlur={handleBlur("oldPass")}
                   secureTextEntry
@@ -94,16 +64,20 @@ const ChangePassword = ({ userData }) => {
                   left={<TextInput.Icon name={"asterisk"} />}
                   error={!!errors.oldPass && !!touched.oldPass}
                 />
-                <HelperText
-                  type="error"
-                  visible={!!errors.oldPass && !!touched.oldPass}
-                >
-                  {errors.oldPass}
-                </HelperText>
+                {!!errors.oldPass && !!touched.oldPass && (
+                  <HelperText
+                    type="error"
+                    visible={!!errors.oldPass && !!touched.oldPass}
+                  >
+                    {errors.oldPass}
+                  </HelperText>
+                )}
 
                 <TextInput
+                  style={tw`mt-2`}
                   label="Жаңа құпия сөз"
                   mode="outlined"
+                  activeOutlineColor="#002C67"
                   dense={true}
                   secureTextEntry
                   onBlur={handleBlur("newPass")}
@@ -112,15 +86,17 @@ const ChangePassword = ({ userData }) => {
                   left={<TextInput.Icon name={"lock"} />}
                   error={!!errors.newPass && !!touched.newPass}
                 />
-                <HelperText
-                  style={tw`mb-4`}
-                  type="error"
-                  visible={!!errors.newPass && !!touched.newPass}
-                >
-                  {errors.newPass}
-                </HelperText>
+                {!!errors.newPass && !!touched.newPass && (
+                  <HelperText
+                    type="error"
+                    visible={!!errors.newPass && !!touched.newPass}
+                  >
+                    {errors.newPass}
+                  </HelperText>
+                )}
 
                 <Button
+                  style={tw`mt-4`}
                   loading={loadingPassword}
                   disabled={loadingPassword}
                   mode="contained"

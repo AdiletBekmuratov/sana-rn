@@ -1,7 +1,5 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { ref, set } from "firebase/database";
 import { Formik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import {
   Button,
@@ -12,21 +10,20 @@ import {
   TextInput,
 } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useDispatch, useSelector } from "react-redux";
 import tw from "twrnc";
 import * as Yup from "yup";
 import Spinner from "../components/Spinner";
-import { auth, db } from "../firebase";
+import MaskInput from "react-native-mask-input";
+import { register } from "../redux/slices/auth";
 
 const RegisterSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Қате e-mail форматы")
-    .required("Міндетті өріс"),
-  firstName: Yup.string().required("Міндетті өріс"),
-  lastName: Yup.string().required("Міндетті өріс"),
-  phoneNumber: Yup.string()
-    .required("Міндетті өріс")
-    .min(11, "Қате телефон форматы")
-    .max(11, "Қате телефон форматы"),
+  email: Yup.string().email("Қате e-mail форматы").required("Міндетті өріс"),
+  first_name: Yup.string().required("Міндетті өріс"),
+  last_name: Yup.string().required("Міндетті өріс"),
+  phone: Yup.string().required("Міндетті өріс"),
+  // .min(10, "Қате телефон форматы")
+  // .max(11, "Қате телефон форматы"),
   password: Yup.string()
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
@@ -39,49 +36,39 @@ const RegisterSchema = Yup.object().shape({
 });
 
 const Register = ({ navigation }) => {
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
-  const [error, setError] = useState("");
+  const [unmaskedPhone, setUnmaskedPhone] = useState("");
+
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+
+  useEffect(() => {
+    if (!!message) {
+      setVisible(true);
+    }
+  }, [message]);
 
   const onDismissSnackBar = () => setVisible(false);
 
-  const handleRegister = async (value) => {
-    setLoading(true);
-    await createUserWithEmailAndPassword(auth, value.email, value.password)
-      .then(async (userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        await set(ref(db, "users/" + user.uid), {
-          email: value.email.trim(),
-          fistName: value.firstName.trim(),
-          lastName: value.lastName.trim(),
-          phoneNumber: value.phoneNumber.trim(),
-          isAdmin: false,
-          dayCounter: new Date().valueOf(),
-          dayCounterStarted: true,
-          expirationDate: new Date().valueOf() + 259200000,
-          points: {
-            mistake: 0,
-            taught: 0,
-            challenge: 0,
-          },
-        });
-      })
-      .catch((error) => {
-        setError(error.code);
-        setVisible(true);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+  const handleRegister = (formValues, { resetForm }) => {
+    delete formValues.confirmPassword;
+    const data = {
+      ...formValues,
+      phone: unmaskedPhone,
+    };
+    console.log(data);
+    dispatch(register(data));
+    resetForm();
   };
 
-  if (loading) {
+  if (isLoading) {
     return <Spinner />;
   }
 
   return (
-    <SafeAreaView style={tw`h-full flex-1 px-5 justify-center bg-gray-100`}>
+    <SafeAreaView style={tw`h-full flex-1 p-5 justify-center bg-gray-100`}>
       <View style={tw`flex-1 justify-center`}>
         <Headline style={tw`font-bold mb-4 text-center uppercase`}>
           Регистрация
@@ -89,10 +76,11 @@ const Register = ({ navigation }) => {
         <Formik
           validationSchema={RegisterSchema}
           initialValues={{
+            test_types: [1],
             email: "",
-            firstName: "",
-            lastName: "",
-            phoneNumber: "",
+            first_name: "",
+            last_name: "",
+            phone: "",
             password: "",
             confirmPassword: "",
           }}
@@ -105,11 +93,13 @@ const Register = ({ navigation }) => {
             values,
             errors,
             touched,
+            setFieldValue,
           }) => (
             <View>
               <TextInput
                 label="Email"
                 mode="outlined"
+                activeOutlineColor="#002C67"
                 keyboardType="email-address"
                 dense={true}
                 onBlur={handleBlur("email")}
@@ -118,68 +108,112 @@ const Register = ({ navigation }) => {
                 left={<TextInput.Icon name={"email"} />}
                 error={!!errors.email && !!touched.email}
               />
-              <HelperText
-                type="error"
-                visible={!!errors.email && !!touched.email}
-              >
-                {errors.email}
-              </HelperText>
+              {!!errors.email && !!touched.email && (
+                <HelperText
+                  type="error"
+                  visible={!!errors.email && !!touched.email}
+                >
+                  {errors.email}
+                </HelperText>
+              )}
 
               <TextInput
+                style={tw`mt-2`}
                 label="Аты"
                 mode="outlined"
+                activeOutlineColor="#002C67"
                 dense={true}
-                onBlur={handleBlur("firstName")}
-                onChangeText={handleChange("firstName")}
-                value={values.firstName}
+                onBlur={handleBlur("first_name")}
+                onChangeText={handleChange("first_name")}
+                value={values.first_name}
                 left={<TextInput.Icon name={"account"} />}
-                error={!!errors.firstName && !!touched.firstName}
+                error={!!errors.first_name && !!touched.first_name}
               />
-              <HelperText
-                type="error"
-                visible={!!errors.firstName && !!touched.firstName}
-              >
-                {errors.firstName}
-              </HelperText>
+              {!!errors.first_name && !!touched.first_name && (
+                <HelperText
+                  type="error"
+                  visible={!!errors.first_name && !!touched.first_name}
+                >
+                  {errors.first_name}
+                </HelperText>
+              )}
 
               <TextInput
+                style={tw`mt-2`}
                 label="Тегі"
                 mode="outlined"
+                activeOutlineColor="#002C67"
                 dense={true}
-                onBlur={handleBlur("lastName")}
-                onChangeText={handleChange("lastName")}
-                value={values.lastName}
+                onBlur={handleBlur("last_name")}
+                onChangeText={handleChange("last_name")}
+                value={values.last_name}
                 left={<TextInput.Icon name={"account"} />}
-                error={!!errors.lastName && !!touched.lastName}
+                error={!!errors.last_name && !!touched.last_name}
               />
-              <HelperText
-                type="error"
-                visible={!!errors.lastName && !!touched.lastName}
-              >
-                {errors.lastName}
-              </HelperText>
+              {!!errors.last_name && !!touched.last_name && (
+                <HelperText
+                  type="error"
+                  visible={!!errors.last_name && !!touched.last_name}
+                >
+                  {errors.last_name}
+                </HelperText>
+              )}
 
               <TextInput
+                style={tw`mt-2`}
                 label="Ұялы телефон"
                 mode="outlined"
+                activeOutlineColor="#002C67"
                 dense={true}
                 keyboardType="phone-pad"
-                onBlur={handleBlur("phoneNumber")}
-                onChangeText={handleChange("phoneNumber")}
-                value={values.phoneNumber}
                 left={<TextInput.Icon name={"phone"} />}
-                error={!!errors.phoneNumber && !!touched.phoneNumber}
+                error={!!errors.phone && !!touched.phone}
+                render={(props) => (
+                  <MaskInput
+                    {...props}
+                    value={values.phone}
+                    onBlur={handleBlur("phone")}
+                    onChangeText={(val, unmasked) => {
+                      setFieldValue("phone", val);
+                      setUnmaskedPhone(unmasked);
+                    }}
+                    mask={[
+                      "+",
+                      "7",
+                      " ",
+                      "(",
+                      /\d/,
+                      /\d/,
+                      /\d/,
+                      ")",
+                      " ",
+                      /\d/,
+                      /\d/,
+                      /\d/,
+                      "-",
+                      /\d/,
+                      /\d/,
+                      /\d/,
+                      /\d/,
+                    ]}
+                    prefix="+7 "
+                  />
+                )}
               />
-              <HelperText
-                type="error"
-                visible={!!errors.phoneNumber && !!touched.phoneNumber}
-              >
-                {errors.phoneNumber}
-              </HelperText>
+              {!!errors.phone && !!touched.phone && (
+                <HelperText
+                  type="error"
+                  visible={!!errors.phone && !!touched.phone}
+                >
+                  {errors.phone}
+                </HelperText>
+              )}
 
               <TextInput
+                style={tw`mt-2`}
                 label="Құпия сөз"
                 mode="outlined"
+                activeOutlineColor="#002C67"
                 dense={true}
                 secureTextEntry
                 onBlur={handleBlur("password")}
@@ -188,16 +222,20 @@ const Register = ({ navigation }) => {
                 left={<TextInput.Icon name={"lock"} />}
                 error={!!errors.password && !!touched.password}
               />
-              <HelperText
-                type="error"
-                visible={!!errors.password && !!touched.password}
-              >
-                {errors.password}
-              </HelperText>
+              {!!errors.password && !!touched.password && (
+                <HelperText
+                  type="error"
+                  visible={!!errors.password && !!touched.password}
+                >
+                  {errors.password}
+                </HelperText>
+              )}
 
               <TextInput
+                style={tw`mt-2`}
                 label="Құпия сөзді растау"
                 mode="outlined"
+                activeOutlineColor="#002C67"
                 dense={true}
                 secureTextEntry
                 onBlur={handleBlur("confirmPassword")}
@@ -206,15 +244,23 @@ const Register = ({ navigation }) => {
                 left={<TextInput.Icon name={"lock"} />}
                 error={!!errors.confirmPassword && !!touched.confirmPassword}
               />
-              <HelperText
-                style={tw`mb-4`}
-                type="error"
-                visible={!!errors.confirmPassword && !!touched.confirmPassword}
-              >
-                {errors.confirmPassword}
-              </HelperText>
+              {!!errors.confirmPassword && !!touched.confirmPassword && (
+                <HelperText
+                  type="error"
+                  visible={
+                    !!errors.confirmPassword && !!touched.confirmPassword
+                  }
+                >
+                  {errors.confirmPassword}
+                </HelperText>
+              )}
 
-              <Button mode="contained" onPress={handleSubmit}>
+              <Button
+                style={tw`mt-4`}
+                mode="contained"
+                color="#002C67"
+                onPress={handleSubmit}
+              >
                 Начать
               </Button>
             </View>
@@ -233,7 +279,7 @@ const Register = ({ navigation }) => {
           visible={visible}
           onDismiss={onDismissSnackBar}
         >
-          {error}
+          {message}
         </Snackbar>
       </View>
     </SafeAreaView>
