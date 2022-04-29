@@ -16,7 +16,7 @@ export default function Profile({ navigation }) {
   console.log(data);
 
   return (
-    <View style={tw`h-full flex-1 p-5 justify-between bg-gray-100`}>
+    <View style={tw`h-full flex-1 px-5 pb-5 justify-between bg-gray-100`}>
       <Card>
         <Card.Content style={tw`items-center justify-between`}>
           <IconButton

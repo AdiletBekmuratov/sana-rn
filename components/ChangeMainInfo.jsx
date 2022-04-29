@@ -1,6 +1,7 @@
 import { Formik } from "formik";
 import React, { useState } from "react";
 import { View } from "react-native";
+import MaskInput from "react-native-mask-input";
 import {
   Button,
   Card,
@@ -44,7 +45,7 @@ const ChangeMainInfo = ({ userData }) => {
             initialValues={{
               first_name: userData.first_name,
               last_name: userData.last_name,
-              phone: userData.phone,
+              phone: "7" + userData.phone,
               password: "",
             }}
             onSubmit={onSubmitUpdate}
@@ -107,6 +108,7 @@ const ChangeMainInfo = ({ userData }) => {
                   mode="outlined"
                   activeOutlineColor="#002C67"
                   dense={true}
+                  value={values.phone}
                   left={<TextInput.Icon name={"phone"} />}
                   error={!!errors.phone && !!touched.phone}
                   render={(props) => (

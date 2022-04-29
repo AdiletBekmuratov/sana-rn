@@ -7,19 +7,31 @@ const buttons = [
     id: "1",
     title: "Теория",
     image: require("../assets/Theory.png"),
-    screen: "MapScreen",
+    screen: "TheoryScreen",
   },
   {
     id: "2",
-    title: "Order food",
-    image: require("../assets/Theory.png"),
+    title: "Практика",
+    image: require("../assets/Practice.png"),
+    screen: "EatsScreen",
+  },
+  {
+    id: "3",
+    title: "Рандом",
+    image: require("../assets/Random.png"),
+    screen: "MapScreen",
+  },
+  {
+    id: "4",
+    title: "Челлендж",
+    image: require("../assets/Challenge.png"),
     screen: "EatsScreen",
   },
 ];
 
-export default function Home() {
+export default function Home({ navigation }) {
   return (
-    <View style={tw`h-full flex-1 p-5 justify-center bg-gray-100`}>
+    <View style={tw`h-full flex-1 px-5 justify-center bg-gray-100`}>
       <FlatList
         style={tw`w-full`}
         data={buttons}
@@ -27,23 +39,18 @@ export default function Home() {
         numColumns={2}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() => console.log("ruh")}
-            style={tw.style(
-              "p-5",
-              "bg-[#002C67] m-4 justify-center items-center",
-              {
-                flex: 0.5,
-                height: 260,
-              }
-            )}
+            onPress={() => navigation.navigate(item.screen)}
+            style={tw.style("p-4", "bg-[#002C67] m-2", "rounded", {
+              flex: 0.5,
+              height: 260,
+            })}
           >
-            <View style={{ height: "100%", justifyContent: "center" }}>
-              <Image style={tw`w-24 h-24`} source={item.image} />
-              <Text
-                style={tw`right-0 text-lg font-semibold absolute text-white`}
-              >
-                {item.title}
-              </Text>
+            <View>
+              <Text style={tw`text-lg font-bold text-white`}>{item.title}</Text>
+              <Image
+                style={{ resizeMode: "cover", width: 140, height: 200 }}
+                source={item.image}
+              />
             </View>
           </TouchableOpacity>
         )}

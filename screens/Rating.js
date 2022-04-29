@@ -14,7 +14,7 @@ export default function Rating() {
   }
 
   return (
-    <View style={tw`h-full flex-1 p-5 justify-start bg-gray-100`}>
+    <View style={tw`h-full flex-1 px-5 pb-5 justify-start bg-gray-100`}>
       {!loading && (
         <FlatList
           style={tw`w-full`}

@@ -2,11 +2,10 @@ import MaterialCommunity from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { getHeaderTitle } from "@react-navigation/elements";
-import AuthVerify from "../components/AuthVerify";
 import Header from "../components/Header";
-import Home from "../screens/Home";
 import Rating from "../screens/Rating";
 import ProfileStack from "./ProfileStack";
+import MainStack from "./MainStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -32,6 +31,7 @@ export default function BottomBar() {
         name="HomeTab"
         options={{
           title: "Басты бет",
+          headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
             let iconName = focused ? "home" : "home-outline";
 
@@ -42,7 +42,7 @@ export default function BottomBar() {
           tabBarActiveTintColor: "#002C67",
           tabBarInactiveTintColor: "gray",
         }}
-        component={Home}
+        component={MainStack}
       />
       <Tab.Screen
         name="RatingTab"

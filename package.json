@@ -31,7 +31,8 @@
     "react-native-web": "0.17.1",
     "react-redux": "^8.0.1",
     "twrnc": "^3.0.2",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "expo-linear-gradient": "~11.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
