@@ -12,8 +12,6 @@ const TheoryScreen = ({ navigation }) => {
     return <Spinner />;
   }
 
-  console.log(data);
-
   return (
     <View style={tw`h-full flex-1 px-5 pb-5 justify-center bg-gray-100`}>
       <FlatList

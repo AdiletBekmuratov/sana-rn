@@ -37,7 +37,6 @@ const Login = ({ navigation }) => {
   }, [message]);
 
   const handleSubmit = (formValues, { resetForm }) => {
-    console.log(formValues);
     dispatch(login(formValues));
     resetForm();
   };

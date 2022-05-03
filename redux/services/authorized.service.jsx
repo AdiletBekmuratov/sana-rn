@@ -8,6 +8,14 @@ export const authorizedApi = baseApi.injectEndpoints({
       }),
       providesTags: ["UserInfo"],
     }),
+    updateMe: builder.mutation({
+      query: (body) => ({
+        url: "/user/update/",
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["UserInfo"],
+    }),
     getTheoryLessons: builder.query({
       query: () => ({
         url: "/lessons/theory/",
@@ -19,8 +27,13 @@ export const authorizedApi = baseApi.injectEndpoints({
       }),
     }),
     getTheoryQuestionsByTopicId: builder.query({
-      query: (topicId, page) => ({
-        url: `/question/theory/?test_type=1&lesson=${topicId}&page=${page}&page_size=50`,
+      query: ({ topicId, page }) => ({
+        url: `/question/theory/?test_type=1&lesson=${topicId}&page=${page}&page_size=25`,
+      }),
+    }),
+    getTheoryAnswerByQuestionId: builder.query({
+      query: (questionId) => ({
+        url: `/answer/theory/?question=${questionId}`,
       }),
     }),
   }),
@@ -32,4 +45,6 @@ export const {
   useGetTheoryLessonsQuery,
   useGetTopicsByLessonIdQuery,
   useLazyGetTheoryQuestionsByTopicIdQuery,
+  useUpdateMeMutation,
+  useLazyGetTheoryAnswerByQuestionIdQuery,
 } = authorizedApi;

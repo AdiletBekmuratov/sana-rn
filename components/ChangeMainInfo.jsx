@@ -1,17 +1,13 @@
+import axios from "axios";
 import { Formik } from "formik";
 import React, { useState } from "react";
 import { View } from "react-native";
 import MaskInput from "react-native-mask-input";
-import {
-  Button,
-  Card,
-  HelperText,
-  Snackbar,
-  TextInput,
-  Title,
-} from "react-native-paper";
+import { Button, Card, HelperText, TextInput, Title } from "react-native-paper";
 import tw from "twrnc";
 import * as Yup from "yup";
+import { API_URL } from "../redux/http";
+import { useUpdateMeMutation } from "../redux/services/authorized.service";
 
 const ProfileUpdateSchema = Yup.object().shape({
   first_name: Yup.string().required("Міндетті өріс"),
@@ -20,20 +16,45 @@ const ProfileUpdateSchema = Yup.object().shape({
   password: Yup.string().required("Міндетті өріс"),
 });
 
-const ChangeMainInfo = ({ userData }) => {
-  const [loading, setLoading] = useState(false);
+const ChangeMainInfo = ({ userData, setVisible, setMessage }) => {
+  const [updateMe, { isLoading, isSuccess, isError, error }] =
+    useUpdateMeMutation();
 
-  const [visible, setVisible] = useState(false);
-  const [message, setMessage] = useState("");
-  const [unmaskedPhone, setUnmaskedPhone] = useState("");
-
-  const onDismissSnackBar = () => setVisible(false);
+  const [unmaskedPhone, setUnmaskedPhone] = useState(userData.phone);
 
   const onSubmitUpdate = async (values, { resetForm }) => {
-    const data = {
-      ...values,
-      phone: unmaskedPhone,
+    const loginData = {
+      username: userData.email,
+      password: values.password,
     };
+
+    try {
+      const response = await axios.post(API_URL + "/user/login/", loginData);
+
+      if (response.data) {
+        const updateData = {
+          first_name: values.first_name,
+          last_name: values.last_name,
+          phone: unmaskedPhone,
+          email: userData.email,
+        };
+        try {
+          const response2 = await updateMe(updateData);
+          if (response2?.data) {
+            setMessage("Данные обновлены!");
+            setVisible(true);
+          }
+        } catch (error) {
+          console.log("Update", { error });
+          setMessage(error);
+          setVisible(true);
+        }
+      }
+    } catch (error) {
+      console.log("ReLogin", { error });
+      setMessage(error.response.status === 401 ? "Пароль қате" : error.message);
+      setVisible(true);
+    }
   };
 
   return (
@@ -46,6 +67,7 @@ const ChangeMainInfo = ({ userData }) => {
               first_name: userData.first_name,
               last_name: userData.last_name,
               phone: "7" + userData.phone,
+              email: userData.email,
               password: "",
             }}
             onSubmit={onSubmitUpdate}
@@ -176,8 +198,8 @@ const ChangeMainInfo = ({ userData }) => {
 
                 <Button
                   style={tw`mt-4`}
-                  loading={loading}
-                  disabled={loading}
+                  loading={isLoading}
+                  disabled={isLoading}
                   mode="contained"
                   onPress={handleSubmit}
                   color="#002C67"
@@ -189,15 +211,6 @@ const ChangeMainInfo = ({ userData }) => {
           </Formik>
         </Card.Content>
       </Card>
-      <View style={tw`w-full`}>
-        <Snackbar
-          duration={3000}
-          visible={visible}
-          onDismiss={onDismissSnackBar}
-        >
-          {message}
-        </Snackbar>
-      </View>
     </>
   );
 };
