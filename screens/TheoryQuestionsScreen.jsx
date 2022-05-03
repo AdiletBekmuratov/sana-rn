@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, TouchableOpacity, View } from "react-native";
+import { FlatList, View } from "react-native";
 import { Button, Card, IconButton, Text } from "react-native-paper";
 import tw from "twrnc";
 import Spinner from "../components/Spinner";
+import i18n from "../i18n";
 import {
   useLazyGetTheoryAnswerByQuestionIdQuery,
   useLazyGetTheoryQuestionsByTopicIdQuery,
@@ -66,7 +67,7 @@ const TheoryQuestionsScreen = ({ route, navigation }) => {
               color="#002C67"
               onPress={getData}
             >
-              Тағы көрсету
+              {i18n.t("show_more")}
             </Button>
           </View>
         )}

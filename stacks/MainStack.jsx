@@ -7,6 +7,7 @@ import { getHeaderTitle } from "@react-navigation/elements";
 import TheoryScreen from "../screens/TheoryScreen";
 import GradeScreen from "../screens/GradeScreen";
 import TheoryQuestionsScreen from "../screens/TheoryQuestionsScreen";
+import i18n from "../i18n";
 
 const Stack = createNativeStackNavigator();
 
@@ -30,28 +31,28 @@ const MainStack = () => {
     >
       <Stack.Screen
         options={{
-          title: "Басты бет",
+          title: i18n.t("MainStack.main_page"),
         }}
         name="HomeScreen"
         component={Home}
       />
       <Stack.Screen
         options={{
-          title: "Теория",
+          title: i18n.t("MainStack.theory"),
         }}
         name="TheoryScreen"
         component={TheoryScreen}
       />
       <Stack.Screen
         options={{
-          title: "Класс",
+          title: i18n.t("MainStack.grade"),
         }}
         name="GradeScreen"
         component={GradeScreen}
       />
       <Stack.Screen
         options={{
-          title: "Вопросы",
+          title: i18n.t("MainStack.questions"),
         }}
         name="TheoryQuestionsScreen"
         component={TheoryQuestionsScreen}

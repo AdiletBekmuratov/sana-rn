@@ -1,0 +1,44 @@
+{
+  "LoginScreen": {
+    "login": "Вход",
+    "noAccount": "Еще нет аккаунта? Зарегистрироваться",
+    "enter": "Войти"
+  },
+  "RegisterScreen": {
+    "register": "Регистрация",
+    "hasAccount": "Уже есть аккаунт? Войти",
+    "enter": "Начать"
+  },
+  "BottomBar": {
+    "main_page": "Главная",
+    "rating": "Рейтинг",
+    "profile": "Профиль"
+  },
+  "MainStack": {
+    "main_page": "Главная",
+    "theory": "Теория",
+    "grade": "Класс",
+    "questions": "Вопросы"
+  },
+  "ProfileStack": {
+    "profile": "Профиль",
+    "profile_edit": "Редактирование профиля"
+  },
+  "ChangeMainInfo": {
+    "title": "Основная информация"
+  },
+  "first_name": "Имя",
+  "last_name": "Фамилия",
+  "phone": "Телефон",
+  "password": "Пароль",
+  "update": "Изменить",
+  "confirm_password": "Подтвердить пароль",
+  "Successes": {
+    "updated": "Данные обновлены!"
+  },
+  "Errors": {
+    "wrong_password": "Неверный пароль",
+    "required": "Міндетті өріс",
+    "email_wrong_format": "Қате e-mail форматы"
+  }
+}

@@ -8,12 +8,13 @@ import tw from "twrnc";
 import * as Yup from "yup";
 import { API_URL } from "../redux/http";
 import { useUpdateMeMutation } from "../redux/services/authorized.service";
+import i18n from "../i18n";
 
 const ProfileUpdateSchema = Yup.object().shape({
-  first_name: Yup.string().required("Міндетті өріс"),
-  last_name: Yup.string().required("Міндетті өріс"),
-  phone: Yup.string().required("Міндетті өріс"),
-  password: Yup.string().required("Міндетті өріс"),
+  first_name: Yup.string().required(i18n.t("Errors.required")),
+  last_name: Yup.string().required(i18n.t("Errors.required")),
+  phone: Yup.string().required(i18n.t("Errors.required")),
+  password: Yup.string().required(i18n.t("Errors.required")),
 });
 
 const ChangeMainInfo = ({ userData, setVisible, setMessage }) => {
@@ -41,7 +42,7 @@ const ChangeMainInfo = ({ userData, setVisible, setMessage }) => {
         try {
           const response2 = await updateMe(updateData);
           if (response2?.data) {
-            setMessage("Данные обновлены!");
+            setMessage(i18n.t("Successes.updated"));
             setVisible(true);
           }
         } catch (error) {
@@ -52,7 +53,11 @@ const ChangeMainInfo = ({ userData, setVisible, setMessage }) => {
       }
     } catch (error) {
       console.log("ReLogin", { error });
-      setMessage(error.response.status === 401 ? "Пароль қате" : error.message);
+      setMessage(
+        error.response.status === 401
+          ? i18n.t("Errors.wrong_password")
+          : error.message
+      );
       setVisible(true);
     }
   };
@@ -82,9 +87,9 @@ const ChangeMainInfo = ({ userData, setVisible, setMessage }) => {
               setFieldValue,
             }) => (
               <View>
-                <Title style={tw`mb-4`}>Негізгі ақпарат</Title>
+                <Title style={tw`mb-4`}>{i18n.t("ChangeMainInfo.title")}</Title>
                 <TextInput
-                  label="Аты"
+                  label={i18n.t("first_name")}
                   mode="outlined"
                   dense={true}
                   activeOutlineColor="#002C67"
@@ -105,7 +110,7 @@ const ChangeMainInfo = ({ userData, setVisible, setMessage }) => {
 
                 <TextInput
                   style={tw`mt-2`}
-                  label="Тегі"
+                  label={i18n.t("last_name")}
                   mode="outlined"
                   activeOutlineColor="#002C67"
                   dense={true}
@@ -126,7 +131,7 @@ const ChangeMainInfo = ({ userData, setVisible, setMessage }) => {
 
                 <TextInput
                   style={tw`mt-2`}
-                  label="Телефон"
+                  label={i18n.t("phone")}
                   mode="outlined"
                   activeOutlineColor="#002C67"
                   dense={true}
@@ -176,7 +181,7 @@ const ChangeMainInfo = ({ userData, setVisible, setMessage }) => {
 
                 <TextInput
                   style={tw`mt-2`}
-                  label="Құпия сөз"
+                  label={i18n.t("confirm_password")}
                   mode="outlined"
                   activeOutlineColor="#002C67"
                   dense={true}
@@ -204,7 +209,7 @@ const ChangeMainInfo = ({ userData, setVisible, setMessage }) => {
                   onPress={handleSubmit}
                   color="#002C67"
                 >
-                  Өзгерту
+                  {i18n.t("update")}
                 </Button>
               </View>
             )}

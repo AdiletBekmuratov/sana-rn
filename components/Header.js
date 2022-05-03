@@ -4,11 +4,12 @@ import { Headline, IconButton } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import tw from "twrnc";
+import { logout } from "../redux/slices/auth";
 
 const Header = ({ title, rightButton, navigation, routeName }) => {
   const dispatch = useDispatch();
-  const logout = async () => {
-    dispatch(await logout());
+  const logOut = async () => {
+    dispatch(logout());
   };
 
   return (
@@ -25,7 +26,7 @@ const Header = ({ title, rightButton, navigation, routeName }) => {
           />
         )}
         {routeName === "Profile" && (
-          <IconButton icon="logout" style={tw`bg-white`} onPress={logout} />
+          <IconButton icon="logout" style={tw`bg-white`} onPress={logOut} />
         )}
       </View>
     </SafeAreaView>

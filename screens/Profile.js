@@ -4,6 +4,7 @@ import { Linking, View } from "react-native";
 import { Button, Card, IconButton, Text } from "react-native-paper";
 import tw from "twrnc";
 import Spinner from "../components/Spinner";
+import i18n from "../i18n";
 import { useGetMeQuery } from "../redux/services/authorized.service";
 
 export default function Profile({ navigation }) {
@@ -45,7 +46,7 @@ export default function Profile({ navigation }) {
           )
         }
       >
-        Барлық сұрақтар бойынша
+        {i18n.t("ProfileScreen.whatsapp")}
       </Button>
     </View>
   );

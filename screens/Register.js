@@ -16,23 +16,24 @@ import * as Yup from "yup";
 import Spinner from "../components/Spinner";
 import MaskInput from "react-native-mask-input";
 import { register } from "../redux/slices/auth";
+import i18n from "../i18n";
 
 const RegisterSchema = Yup.object().shape({
-  email: Yup.string().email("Қате e-mail форматы").required("Міндетті өріс"),
-  first_name: Yup.string().required("Міндетті өріс"),
-  last_name: Yup.string().required("Міндетті өріс"),
-  phone: Yup.string().required("Міндетті өріс"),
-  // .min(10, "Қате телефон форматы")
-  // .max(11, "Қате телефон форматы"),
+  email: Yup.string()
+    .email(i18n.t("Errors.email_wrong_format"))
+    .required(i18n.t("Errors.required")),
+  first_name: Yup.string().required(i18n.t("Errors.required")),
+  last_name: Yup.string().required(i18n.t("Errors.required")),
+  phone: Yup.string().required(i18n.t("Errors.required")),
   password: Yup.string()
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-      "Құпия сөз кемінде 8 таңбадан, бір үлкен әріптен, бір кіші әріптен, бір саннан және бір ерекше регистрден тұруы керек(!@#$%^&*)"
+      i18n.t("Errors.wrong_password_format")
     )
-    .required("Міндетті өріс"),
+    .required(i18n.t("Errors.required")),
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password"), null], "Құпия сөздер сәйкес келмейді")
-    .required("Міндетті өріс"),
+    .oneOf([Yup.ref("password"), null], i18n.t("Errors.passwords_do_not_match"))
+    .required(i18n.t("Errors.required")),
 });
 
 const Register = ({ navigation }) => {
@@ -58,7 +59,6 @@ const Register = ({ navigation }) => {
       ...formValues,
       phone: unmaskedPhone,
     };
-    console.log(data);
     dispatch(register(data));
     resetForm();
   };
@@ -71,7 +71,7 @@ const Register = ({ navigation }) => {
     <SafeAreaView style={tw`h-full flex-1 p-5 justify-center bg-gray-100`}>
       <View style={tw`flex-1 justify-center`}>
         <Headline style={tw`font-bold mb-4 text-center uppercase`}>
-          Регистрация
+          {i18n.t("RegisterScreen.register")}
         </Headline>
         <Formik
           validationSchema={RegisterSchema}
@@ -119,7 +119,7 @@ const Register = ({ navigation }) => {
 
               <TextInput
                 style={tw`mt-2`}
-                label="Аты"
+                label={i18n.t("first_name")}
                 mode="outlined"
                 activeOutlineColor="#002C67"
                 dense={true}
@@ -140,7 +140,7 @@ const Register = ({ navigation }) => {
 
               <TextInput
                 style={tw`mt-2`}
-                label="Тегі"
+                label={i18n.t("last_name")}
                 mode="outlined"
                 activeOutlineColor="#002C67"
                 dense={true}
@@ -161,7 +161,7 @@ const Register = ({ navigation }) => {
 
               <TextInput
                 style={tw`mt-2`}
-                label="Ұялы телефон"
+                label={i18n.t("phone")}
                 mode="outlined"
                 activeOutlineColor="#002C67"
                 dense={true}
@@ -211,7 +211,7 @@ const Register = ({ navigation }) => {
 
               <TextInput
                 style={tw`mt-2`}
-                label="Құпия сөз"
+                label={i18n.t("password")}
                 mode="outlined"
                 activeOutlineColor="#002C67"
                 dense={true}
@@ -233,7 +233,7 @@ const Register = ({ navigation }) => {
 
               <TextInput
                 style={tw`mt-2`}
-                label="Құпия сөзді растау"
+                label={i18n.t("confirm_password")}
                 mode="outlined"
                 activeOutlineColor="#002C67"
                 dense={true}
@@ -261,7 +261,7 @@ const Register = ({ navigation }) => {
                 color="#002C67"
                 onPress={handleSubmit}
               >
-                Начать
+                {i18n.t("RegisterScreen.enter")}
               </Button>
             </View>
           )}
@@ -270,7 +270,7 @@ const Register = ({ navigation }) => {
           style={tw`mt-6 text-center`}
           onPress={() => navigation.replace("Login")}
         >
-          Уже есть аккаунт? Войти
+          {i18n.t("RegisterScreen.hasAccount")}
         </Text>
       </View>
       <View style={tw`w-full`}>

@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import ChangeProfile from "../screens/ChangeProfile";
 import Profile from "../screens/Profile";
 import { getHeaderTitle } from "@react-navigation/elements";
+import i18n from "../i18n";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,14 +28,14 @@ const ProfileStack = () => {
     >
       <Stack.Screen
         options={{
-          title: "Профиль",
+          title: i18n.t("ProfileStack.profile"),
         }}
         name="Profile"
         component={Profile}
       />
       <Stack.Screen
         options={{
-          title: "Профиль өзгерту",
+          title: i18n.t("ProfileStack.profile_edit"),
         }}
         name="ChangeProfile"
         component={ChangeProfile}

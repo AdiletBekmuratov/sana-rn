@@ -1,0 +1,50 @@
+{
+  "LoginScreen": {
+    "login": "Вход",
+    "noAccount": "Еще нет аккаунта? Зарегистрироваться",
+    "enter": "Войти"
+  },
+  "RegisterScreen": {
+    "register": "Регистрация",
+    "hasAccount": "Уже есть аккаунт? Войти",
+    "enter": "Начать"
+  },
+  "BottomBar": {
+    "main_page": "Главная",
+    "rating": "Рейтинг",
+    "profile": "Профиль"
+  },
+  "MainStack": {
+    "main_page": "Главная",
+    "theory": "Теория",
+    "grade": "Класс",
+    "questions": "Вопросы"
+  },
+  "ProfileStack": {
+    "profile": "Профиль",
+    "profile_edit": "Редактирование профиля"
+  },
+  "ChangeMainInfo": {
+    "title": "Основная информация"
+  },
+  "ProfileScreen": {
+    "whatsapp": "По всем вопросам"
+  },
+  "first_name": "Имя",
+  "last_name": "Фамилия",
+  "phone": "Телефон",
+  "password": "Пароль",
+  "update": "Изменить",
+  "confirm_password": "Подтвердить пароль",
+  "show_more": "Показать больше",
+  "Successes": {
+    "updated": "Данные обновлены!"
+  },
+  "Errors": {
+    "wrong_password": "Неверный пароль",
+    "passwords_do_not_match": "Пароли не совпадают",
+    "wrong_password_format": "Пароль должен содержать минимум 8 символов, один верхний регистр, один нижний регистр, одну цифру и один символ специального регистра (!@#$%^&*)",
+    "required": "Обязательное поле",
+    "email_wrong_format": "Неправильный формат e-mail"
+  }
+}

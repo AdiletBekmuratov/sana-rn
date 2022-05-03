@@ -21,11 +21,11 @@ const ChangeProfile = ({ route, navigation }) => {
           userData={userData}
         />
         <View style={tw`py-2`}></View>
-        <ChangePassword
+        {/* <ChangePassword
           setVisible={setVisible}
           setMessage={setMessage}
           userData={userData}
-        />
+        /> */}
       </ScrollView>
       <View style={tw`w-full`}>
         <Snackbar

@@ -6,6 +6,7 @@ import Header from "../components/Header";
 import Rating from "../screens/Rating";
 import ProfileStack from "./ProfileStack";
 import MainStack from "./MainStack";
+import i18n from "../i18n";
 
 const Tab = createBottomTabNavigator();
 
@@ -30,7 +31,7 @@ export default function BottomBar() {
       <Tab.Screen
         name="HomeTab"
         options={{
-          title: "Басты бет",
+          title: i18n.t("BottomBar.main_page"),
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
             let iconName = focused ? "home" : "home-outline";
@@ -47,7 +48,7 @@ export default function BottomBar() {
       <Tab.Screen
         name="RatingTab"
         options={{
-          title: "Рейтинг",
+          title: i18n.t("BottomBar.rating"),
           tabBarIcon: ({ focused, color, size }) => {
             let iconName = focused ? "trophy" : "trophy-outline";
 
@@ -63,7 +64,7 @@ export default function BottomBar() {
       <Tab.Screen
         name="ProfileTab"
         options={{
-          title: "Профиль",
+          title: i18n.t("BottomBar.profile"),
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
             let iconName = focused ? "person" : "person-outline";

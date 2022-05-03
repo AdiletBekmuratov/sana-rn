@@ -14,10 +14,13 @@ import tw from "twrnc";
 import * as Yup from "yup";
 import Spinner from "../components/Spinner";
 import { login } from "../redux/slices/auth.js";
+import i18n from "../i18n";
 
 const LoginSchema = Yup.object().shape({
-  username: Yup.string().email("Қате e-mail форматы").required("Міндетті өріс"),
-  password: Yup.string().required("Міндетті өріс"),
+  username: Yup.string()
+    .email(i18n.t("Errors.email_wrong_format"))
+    .required(i18n.t("Errors.required")),
+  password: Yup.string().required(i18n.t("Errors.required")),
 });
 
 const Login = ({ navigation }) => {
@@ -49,7 +52,7 @@ const Login = ({ navigation }) => {
     <View style={tw`h-full flex-1 p-5 justify-end bg-gray-100`}>
       <View style={tw`flex-1 justify-center`}>
         <Headline style={tw`font-bold mb-4 text-center uppercase`}>
-          Вход
+          {i18n.t("LoginScreen.login")}
         </Headline>
         <Formik
           validationSchema={LoginSchema}
@@ -88,7 +91,7 @@ const Login = ({ navigation }) => {
 
               <TextInput
                 style={tw`mt-2`}
-                label="Пароль"
+                label={i18n.t("password")}
                 mode="outlined"
                 activeOutlineColor="#002C67"
                 dense={true}
@@ -114,7 +117,7 @@ const Login = ({ navigation }) => {
                 color="#002C67"
                 onPress={handleSubmit}
               >
-                Войти
+                {i18n.t("LoginScreen.enter")}
               </Button>
             </View>
           )}
@@ -123,7 +126,7 @@ const Login = ({ navigation }) => {
           style={tw`mt-6 text-center`}
           onPress={() => navigation.replace("Register")}
         >
-          Еще нет аккаунта? Зарегистрироваться
+          {i18n.t("LoginScreen.noAccount")}
         </Text>
       </View>
 
