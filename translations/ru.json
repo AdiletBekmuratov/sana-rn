@@ -18,7 +18,8 @@
     "main_page": "Главная",
     "theory": "Теория",
     "grade": "Класс",
-    "questions": "Вопросы"
+    "questions": "Вопросы",
+		"practice": "Практика"
   },
   "ProfileStack": {
     "profile": "Профиль",

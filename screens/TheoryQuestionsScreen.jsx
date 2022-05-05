@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FlatList, View } from "react-native";
-import { Button, Card, IconButton, Text } from "react-native-paper";
+import { Button, Card, IconButton, Snackbar, Text } from "react-native-paper";
 import tw from "twrnc";
 import Spinner from "../components/Spinner";
 import i18n from "../i18n";
@@ -17,6 +17,11 @@ const TheoryQuestionsScreen = ({ route, navigation }) => {
   const [dataSource, setDataSource] = useState([]);
   const [showEye, setShowEye] = useState([]);
   const [answers, setAnwers] = useState([]);
+
+  const [visible, setVisible] = useState(false);
+  const [message, setMessage] = useState("");
+  const onDismissSnackBar = () => setVisible(false);
+
   const [getQuestions, { data, error, isLoading, isError }] =
     useLazyGetTheoryQuestionsByTopicIdQuery({ topicId, page });
 
@@ -35,7 +40,7 @@ const TheoryQuestionsScreen = ({ route, navigation }) => {
   const showAnswer = async (questionId, index) => {
     try {
       const response = await getAnswerByQId(questionId).unwrap();
-      console.log({ response });
+      console.log("RESPONSE", { response });
       const save = {
         id: questionId,
         answer: response.answer,
@@ -43,7 +48,9 @@ const TheoryQuestionsScreen = ({ route, navigation }) => {
       setAnwers([...answers, save]);
       setShowEye([...showEye, index]);
     } catch (error) {
-      console.log(error);
+      console.log("ERROR", { error });
+      setMessage(error.data.message);
+      setVisible(true);
     }
   };
 
@@ -93,7 +100,9 @@ const TheoryQuestionsScreen = ({ route, navigation }) => {
                   {index + 1}) {item.question}
                 </Text>
                 {answers.find((x) => x?.id === item.id) && (
-                  <Text>{answers.find((x) => x?.id === item.id).answer}</Text>
+                  <Text>
+                    Ответ: {answers.find((x) => x?.id === item.id).answer}
+                  </Text>
                 )}
               </Card.Content>
             </Card>
@@ -110,6 +119,15 @@ const TheoryQuestionsScreen = ({ route, navigation }) => {
           </View>
         )}
       />
+      <View style={tw`w-full`}>
+        <Snackbar
+          duration={3000}
+          visible={visible}
+          onDismiss={onDismissSnackBar}
+        >
+          {message}
+        </Snackbar>
+      </View>
     </View>
   );
 };

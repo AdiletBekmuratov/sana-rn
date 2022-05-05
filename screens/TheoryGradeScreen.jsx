@@ -5,7 +5,7 @@ import tw from "twrnc";
 import Spinner from "../components/Spinner";
 import { useGetTopicsByLessonIdQuery } from "../redux/services/authorized.service";
 
-const GradeScreen = ({ route, navigation }) => {
+const TheoryGradeScreen = ({ route, navigation }) => {
   const { lessonId } = route.params;
   const { data, error, isLoading, isError } =
     useGetTopicsByLessonIdQuery(lessonId);
@@ -42,4 +42,4 @@ const GradeScreen = ({ route, navigation }) => {
   );
 };
 
-export default GradeScreen;
+export default TheoryGradeScreen;

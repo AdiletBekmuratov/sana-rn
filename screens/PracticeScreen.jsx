@@ -5,7 +5,7 @@ import tw from "twrnc";
 import Spinner from "../components/Spinner";
 import { useGetTheoryLessonsQuery } from "../redux/services/authorized.service";
 
-const TheoryScreen = ({ navigation }) => {
+const PracticeScreen = ({ navigation }) => {
   const { data, error, isLoading, isError } = useGetTheoryLessonsQuery();
 
   if (isLoading) {
@@ -39,4 +39,4 @@ const TheoryScreen = ({ navigation }) => {
   );
 };
 
-export default TheoryScreen;
+export default PracticeScreen;

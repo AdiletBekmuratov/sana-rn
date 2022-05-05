@@ -1,13 +1,13 @@
+import { getHeaderTitle } from "@react-navigation/elements";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import Header from "../components/Header";
-import ChangeProfile from "../screens/ChangeProfile";
-import Home from "../screens/Home";
-import { getHeaderTitle } from "@react-navigation/elements";
-import TheoryScreen from "../screens/TheoryScreen";
-import GradeScreen from "../screens/GradeScreen";
-import TheoryQuestionsScreen from "../screens/TheoryQuestionsScreen";
 import i18n from "../i18n";
+import Home from "../screens/Home";
+import PracticeScreen from "../screens/PracticeScreen";
+import TheoryGradeScreen from "../screens/TheoryGradeScreen";
+import TheoryQuestionsScreen from "../screens/TheoryQuestionsScreen";
+import TheoryScreen from "../screens/TheoryScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -47,8 +47,8 @@ const MainStack = () => {
         options={{
           title: i18n.t("MainStack.grade"),
         }}
-        name="GradeScreen"
-        component={GradeScreen}
+        name="TheoryGradeScreen"
+        component={TheoryGradeScreen}
       />
       <Stack.Screen
         options={{
@@ -56,6 +56,13 @@ const MainStack = () => {
         }}
         name="TheoryQuestionsScreen"
         component={TheoryQuestionsScreen}
+      />
+      <Stack.Screen
+        options={{
+          title: i18n.t("MainStack.practice"),
+        }}
+        name="PracticeScreen"
+        component={PracticeScreen}
       />
     </Stack.Navigator>
   );
