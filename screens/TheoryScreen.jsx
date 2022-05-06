@@ -24,8 +24,8 @@ const TheoryScreen = ({ navigation }) => {
             disabled={!item.available}
           >
             <Card
-              style={tw`${index !== 0 && "mt-4"} ${
-                !item.available && "opacity-50"
+              style={tw`${index !== 0 ? "mt-4" : ""} ${
+                !item.available ? "opacity-50" : ""
               }`}
             >
               <Card.Content>

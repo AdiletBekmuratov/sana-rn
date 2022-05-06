@@ -3,12 +3,14 @@ import { FlatList, TouchableOpacity, View } from "react-native";
 import { Card, Text } from "react-native-paper";
 import tw from "twrnc";
 import Spinner from "../components/Spinner";
-import { useGetTopicsByLessonIdQuery } from "../redux/services/authorized.service";
+import { useGetPracticeTopicsByLessonIdQuery } from "../redux/services/authorized.service";
 
-const TheoryGradeScreen = ({ route, navigation }) => {
+const PracticeGradeScreen = ({ route, navigation }) => {
   const { lessonId } = route.params;
   const { data, error, isLoading, isError } =
-    useGetTopicsByLessonIdQuery(lessonId);
+    useGetPracticeTopicsByLessonIdQuery(lessonId);
+
+  console.log("Practice Topics", data);
 
   if (isLoading) {
     return <Spinner />;
@@ -42,4 +44,4 @@ const TheoryGradeScreen = ({ route, navigation }) => {
   );
 };
 
-export default TheoryGradeScreen;
+export default PracticeGradeScreen;

@@ -4,6 +4,7 @@ import React from "react";
 import Header from "../components/Header";
 import i18n from "../i18n";
 import Home from "../screens/Home";
+import PracticeGradeScreen from "../screens/PracticeGradeScreen";
 import PracticeScreen from "../screens/PracticeScreen";
 import TheoryGradeScreen from "../screens/TheoryGradeScreen";
 import TheoryQuestionsScreen from "../screens/TheoryQuestionsScreen";
@@ -63,6 +64,13 @@ const MainStack = () => {
         }}
         name="PracticeScreen"
         component={PracticeScreen}
+      />
+      <Stack.Screen
+        options={{
+          title: i18n.t("MainStack.grade"),
+        }}
+        name="PracticeGradeScreen"
+        component={PracticeGradeScreen}
       />
     </Stack.Navigator>
   );

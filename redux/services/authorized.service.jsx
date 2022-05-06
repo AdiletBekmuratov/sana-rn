@@ -2,6 +2,20 @@ import { baseApi } from "./baseApi";
 
 export const authorizedApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    getQuestionQuantity: builder.query({
+      query: () => ({
+        url: "/user/question-quantity/",
+      }),
+      providesTags: ["QuestionQuantity"],
+    }),
+    updateQuestionQuantity: builder.mutation({
+      query: (body) => ({
+        url: "/user/question-quantity/",
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["QuestionQuantity"],
+    }),
     getMe: builder.query({
       query: () => ({
         url: "/user/me/",
@@ -36,15 +50,32 @@ export const authorizedApi = baseApi.injectEndpoints({
         url: `/answer/theory/?question=${questionId}`,
       }),
     }),
+    getPracticeLessons: builder.query({
+      query: () => ({
+        url: "/lessons/practice/",
+      }),
+    }),
+    getPracticeTopicsByLessonId: builder.query({
+      query: (lessonId) => ({
+        url: `/topic/theory/?lesson=${lessonId}&test_types=1`,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
 
 export const {
   useGetMeQuery,
+  useUpdateMeMutation,
+
+  useGetQuestionQuantityQuery,
+  useUpdateQuestionQuantityMutation,
+
   useGetTheoryLessonsQuery,
   useGetTopicsByLessonIdQuery,
   useLazyGetTheoryQuestionsByTopicIdQuery,
-  useUpdateMeMutation,
   useLazyGetTheoryAnswerByQuestionIdQuery,
+
+  useGetPracticeLessonsQuery,
+  useGetPracticeTopicsByLessonIdQuery,
 } = authorizedApi;

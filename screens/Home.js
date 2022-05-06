@@ -13,7 +13,7 @@ const buttons = [
     id: "2",
     title: "Практика",
     image: require("../assets/Practice.png"),
-    screen: "EatsScreen",
+    screen: "PracticeScreen",
   },
   {
     id: "3",
