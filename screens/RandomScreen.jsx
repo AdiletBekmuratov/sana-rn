@@ -3,10 +3,10 @@ import { FlatList, TouchableOpacity, View } from "react-native";
 import { Card, Text } from "react-native-paper";
 import tw from "twrnc";
 import Spinner from "../components/Spinner";
-import { useGetPracticeLessonsQuery } from "../redux/services/authorized.service";
+import { useGetRandomLessonsQuery } from "../redux/services/authorized.service";
 
-const PracticeScreen = ({ navigation }) => {
-  const { data, error, isLoading, isError } = useGetPracticeLessonsQuery();
+const RandomScreen = ({ navigation }) => {
+  const { data, error, isLoading, isError } = useGetRandomLessonsQuery();
 
   console.log(data);
 
@@ -21,15 +21,12 @@ const PracticeScreen = ({ navigation }) => {
         renderItem={({ item, index }) => (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("PracticeGradeScreen", { lessonId: item.id })
+              navigation.navigate("", { lessonId: item.id })
             }
           >
             <Card style={tw`${index !== 0 ? "mt-4" : ""}`}>
-              <Card.Content style={tw`flex flex-row justify-between items-center`}>
+              <Card.Content>
                 <Text style={tw`text-lg font-bold`}>{item.name}</Text>
-                <Text style={tw`text-lg font-bold ml-2`}>
-                  {item.my_answer_question}/{item.sum_of_question}
-                </Text>
               </Card.Content>
             </Card>
           </TouchableOpacity>
@@ -39,4 +36,4 @@ const PracticeScreen = ({ navigation }) => {
   );
 };
 
-export default PracticeScreen;
+export default RandomScreen;

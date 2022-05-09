@@ -19,7 +19,9 @@
     "theory": "Теория",
     "grade": "Класс",
     "questions": "Вопросы",
-		"practice": "Практика"
+    "practice": "Практика",
+    "random": "Рандом",
+    "challenge": "Челлендж"
   },
   "ProfileStack": {
     "profile": "Профиль",

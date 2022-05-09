@@ -42,7 +42,7 @@ export const authorizedApi = baseApi.injectEndpoints({
     }),
     getTheoryQuestionsByTopicId: builder.query({
       query: ({ topicId, page }) => ({
-        url: `/question/theory/?test_type=1&lesson=${topicId}&page=${page}&page_size=25`,
+        url: `/question/theory/?test_type=1&topic=${topicId}&page=${page}&page_size=25`,
       }),
     }),
     getTheoryAnswerByQuestionId: builder.query({
@@ -58,6 +58,16 @@ export const authorizedApi = baseApi.injectEndpoints({
     getPracticeTopicsByLessonId: builder.query({
       query: (lessonId) => ({
         url: `/topic/theory/?lesson=${lessonId}&test_types=1`,
+      }),
+    }),
+    getPracticeQuestionsByTopicId: builder.query({
+      query: (topicId) => ({
+        url: `/question/practice/?topic=${topicId}`,
+      }),
+    }),
+    getRandomLessons: builder.query({
+      query: () => ({
+        url: "/lessons/random/",
       }),
     }),
   }),
@@ -78,4 +88,8 @@ export const {
 
   useGetPracticeLessonsQuery,
   useGetPracticeTopicsByLessonIdQuery,
+  useGetPracticeQuestionsByTopicIdQuery,
+	useLazyGetPracticeQuestionsByTopicIdQuery,
+
+  useGetRandomLessonsQuery,
 } = authorizedApi;

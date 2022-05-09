@@ -5,7 +5,9 @@ import Header from "../components/Header";
 import i18n from "../i18n";
 import Home from "../screens/Home";
 import PracticeGradeScreen from "../screens/PracticeGradeScreen";
+import PracticeQuestionsScreen from "../screens/PracticeQuestionsScreen";
 import PracticeScreen from "../screens/PracticeScreen";
+import RandomScreen from "../screens/RandomScreen";
 import TheoryGradeScreen from "../screens/TheoryGradeScreen";
 import TheoryQuestionsScreen from "../screens/TheoryQuestionsScreen";
 import TheoryScreen from "../screens/TheoryScreen";
@@ -71,6 +73,20 @@ const MainStack = () => {
         }}
         name="PracticeGradeScreen"
         component={PracticeGradeScreen}
+      />
+      <Stack.Screen
+        options={{
+          title: i18n.t("MainStack.questions"),
+        }}
+        name="PracticeQuestionsScreen"
+        component={PracticeQuestionsScreen}
+      />
+      <Stack.Screen
+        options={{
+          title: i18n.t("MainStack.random"),
+        }}
+        name="RandomScreen"
+        component={RandomScreen}
       />
     </Stack.Navigator>
   );

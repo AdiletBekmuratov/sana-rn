@@ -1,31 +1,32 @@
 import React from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import tw from "twrnc";
+import i18n from "../i18n";
 
 const buttons = [
   {
     id: "1",
-    title: "Теория",
+    title: i18n.t("MainStack.theory"),
     image: require("../assets/Theory.png"),
     screen: "TheoryScreen",
   },
   {
     id: "2",
-    title: "Практика",
+    title: i18n.t("MainStack.practice"),
     image: require("../assets/Practice.png"),
     screen: "PracticeScreen",
   },
   {
     id: "3",
-    title: "Рандом",
+    title: i18n.t("MainStack.random"),
     image: require("../assets/Random.png"),
-    screen: "MapScreen",
+    screen: "RandomScreen",
   },
   {
     id: "4",
-    title: "Челлендж",
+    title: i18n.t("MainStack.challenge"),
     image: require("../assets/Challenge.png"),
-    screen: "EatsScreen",
+    screen: "СhallengeScreen",
   },
 ];
 

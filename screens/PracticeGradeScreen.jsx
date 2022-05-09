@@ -24,7 +24,9 @@ const PracticeGradeScreen = ({ route, navigation }) => {
         renderItem={({ item, index }) => (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("TheoryQuestionsScreen", { topicId: item.id })
+              navigation.navigate("PracticeQuestionsScreen", {
+                topicId: item.id,
+              })
             }
             disabled={!item.is_active}
           >

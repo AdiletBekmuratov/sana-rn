@@ -27,13 +27,15 @@
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
     "react-native-mask-input": "^1.2.0",
+    "react-native-mathjax-html-to-svg": "^1.0.7",
     "react-native-paper": "^4.12.1",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",
     "react-native-web": "0.17.1",
     "react-redux": "^8.0.1",
     "twrnc": "^3.3.0",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "react-native-svg": "12.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.17.10"

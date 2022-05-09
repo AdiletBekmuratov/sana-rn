@@ -49,7 +49,9 @@ const TheoryQuestionsScreen = ({ route, navigation }) => {
       setShowEye([...showEye, index]);
     } catch (error) {
       console.log("ERROR", { error });
-      setMessage(error.data.message);
+      setMessage(
+        error.data.message.charAt(0).toUpperCase() + error.data.message.slice(1)
+      );
       setVisible(true);
     }
   };
@@ -91,7 +93,7 @@ const TheoryQuestionsScreen = ({ route, navigation }) => {
         renderItem={({ item, index }) => (
           <View
             style={tw`flex-row justify-between items-center ${
-              index !== 0 && "mt-4"
+              index !== 0 ? "mt-4" : ""
             }`}
           >
             <Card style={tw`${showEye.includes(index) ? "w-full" : "w-[90%]"}`}>
