@@ -3,10 +3,12 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import Header from "../components/Header";
 import i18n from "../i18n";
+import EndScreen from "../screens/EndScreen";
 import Home from "../screens/Home";
 import PracticeGradeScreen from "../screens/PracticeGradeScreen";
 import PracticeQuestionsScreen from "../screens/PracticeQuestionsScreen";
 import PracticeScreen from "../screens/PracticeScreen";
+import RandomQuestionsScreen from "../screens/RandomQuestionsScreen";
 import RandomScreen from "../screens/RandomScreen";
 import TheoryGradeScreen from "../screens/TheoryGradeScreen";
 import TheoryQuestionsScreen from "../screens/TheoryQuestionsScreen";
@@ -87,6 +89,20 @@ const MainStack = () => {
         }}
         name="RandomScreen"
         component={RandomScreen}
+      />
+      <Stack.Screen
+        options={{
+          title: i18n.t("MainStack.questions"),
+        }}
+        name="RandomQuestionsScreen"
+        component={RandomQuestionsScreen}
+      />
+      <Stack.Screen
+        options={{
+          title: "Результаты",
+        }}
+        name="EndScreen"
+        component={EndScreen}
       />
     </Stack.Navigator>
   );

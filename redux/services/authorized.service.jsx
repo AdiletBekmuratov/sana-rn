@@ -65,9 +65,26 @@ export const authorizedApi = baseApi.injectEndpoints({
         url: `/question/practice/?topic=${topicId}`,
       }),
     }),
+    sendAnswer: builder.mutation({
+      query: (body) => ({
+        url: `/answer/pass_answer/`,
+        method: "POST",
+        body,
+      }),
+    }),
+    finishTest: builder.query({
+      query: (testId) => ({
+        url: `/finish/${testId}/`,
+      }),
+    }),
     getRandomLessons: builder.query({
       query: () => ({
         url: "/lessons/random/",
+      }),
+    }),
+    getRandomQuestionsByLessonId: builder.query({
+      query: (lessonId) => ({
+        url: `/question/random/?lesson=${lessonId}`,
       }),
     }),
   }),
@@ -89,7 +106,11 @@ export const {
   useGetPracticeLessonsQuery,
   useGetPracticeTopicsByLessonIdQuery,
   useGetPracticeQuestionsByTopicIdQuery,
-	useLazyGetPracticeQuestionsByTopicIdQuery,
+  useLazyGetPracticeQuestionsByTopicIdQuery,
 
   useGetRandomLessonsQuery,
+  useLazyGetRandomQuestionsByLessonIdQuery,
+
+  useSendAnswerMutation,
+  useFinishTestQuery,
 } = authorizedApi;

@@ -5,31 +5,31 @@ import tw from "twrnc";
 import Spinner from "../components/Spinner";
 import i18n from "../i18n";
 import {
-	useLazyGetPracticeQuestionsByTopicIdQuery,
+	useLazyGetRandomQuestionsByLessonIdQuery,
 	useSendAnswerMutation
 } from "../redux/services/authorized.service";
 
-const PracticeQuestionsScreen = ({ route, navigation }) => {
-  const { topicId } = route.params;
+const RandomQuestionsScreen = ({ route, navigation }) => {
+  const { lessonId } = route.params;
   const [questions, setQuestions] = useState([]);
   const [testId, setTestId] = useState();
   const [currentQ, setCurrentQ] = useState(0);
   const [pressedBtns, setPressedBtns] = useState([]);
   const [getQuestions, { data, error, isLoading, isError }] =
-    useLazyGetPracticeQuestionsByTopicIdQuery(topicId);
+    useLazyGetRandomQuestionsByLessonIdQuery(lessonId);
   const [sendAnswer] = useSendAnswerMutation();
 
   useEffect(async () => {
-    if (topicId) {
+    if (lessonId) {
       try {
-        const response = await getQuestions(topicId).unwrap();
+        const response = await getQuestions(lessonId).unwrap();
         setTestId(response.test);
         setQuestions(response.questions);
       } catch (error) {
-        console.log("ERR PRAC QUESTIONS", error);
+        console.log("ERR RAND QUESTIONS", error);
       }
     }
-  }, [topicId]);
+  }, [lessonId]);
 
   const handleSubmit = async () => {
     try {
@@ -119,4 +119,4 @@ const PracticeQuestionsScreen = ({ route, navigation }) => {
   );
 };
 
-export default PracticeQuestionsScreen;
+export default RandomQuestionsScreen;

@@ -33,6 +33,16 @@
   "ProfileScreen": {
     "whatsapp": "По всем вопросам"
   },
+  "QuestionsScreen": {
+    "title": "Вопрос №",
+    "submit": "Отправить",
+    "finish": "Завершить"
+  },
+  "EndScreen": {
+    "earned": "Вы собрали",
+    "from": "из",
+    "goHome": "Домой"
+  },
   "first_name": "Имя",
   "last_name": "Фамилия",
   "phone": "Телефон",

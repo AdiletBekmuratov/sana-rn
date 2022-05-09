@@ -8,8 +8,6 @@ import { useGetRandomLessonsQuery } from "../redux/services/authorized.service";
 const RandomScreen = ({ navigation }) => {
   const { data, error, isLoading, isError } = useGetRandomLessonsQuery();
 
-  console.log(data);
-
   if (isLoading) {
     return <Spinner />;
   }
@@ -21,7 +19,9 @@ const RandomScreen = ({ navigation }) => {
         renderItem={({ item, index }) => (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("", { lessonId: item.id })
+              navigation.navigate("RandomQuestionsScreen", {
+                lessonId: item.id,
+              })
             }
           >
             <Card style={tw`${index !== 0 ? "mt-4" : ""}`}>
