@@ -9,24 +9,28 @@ const buttons = [
     title: i18n.t("MainStack.theory"),
     image: require("../assets/Theory.png"),
     screen: "TheoryScreen",
+    disabled: false,
   },
   {
     id: "2",
     title: i18n.t("MainStack.practice"),
     image: require("../assets/Practice.png"),
     screen: "PracticeScreen",
+    disabled: false,
   },
   {
     id: "3",
     title: i18n.t("MainStack.random"),
     image: require("../assets/Random.png"),
     screen: "RandomScreen",
+    disabled: false,
   },
   {
     id: "4",
     title: i18n.t("MainStack.challenge"),
     image: require("../assets/Challenge.png"),
     screen: "СhallengeScreen",
+    disabled: true,
   },
 ];
 

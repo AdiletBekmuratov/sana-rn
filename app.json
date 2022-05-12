@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "sana-mob",
-    "slug": "sana-mob",
+    "name": "Sana",
+    "slug": "sana",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "updates": {

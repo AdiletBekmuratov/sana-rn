@@ -112,8 +112,8 @@ const RandomQuestionsScreen = ({ route, navigation }) => {
         disabled={pressedBtns.length <= 0}
       >
         {questions.length - 1 > currentQ
-          ? i18n.t("QuestionsScreen.Отправить")
-          : i18n.t("QuestionsScreen.Завершить")}
+          ? i18n.t("QuestionsScreen.submit")
+          : i18n.t("QuestionsScreen.finish")}
       </Button>
     </View>
   );
