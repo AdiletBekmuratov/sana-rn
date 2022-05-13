@@ -5,8 +5,8 @@ import tw from "twrnc";
 import Spinner from "../components/Spinner";
 import i18n from "../i18n";
 import {
-	useLazyGetPracticeQuestionsByTopicIdQuery,
-	useSendAnswerMutation
+  useLazyGetPracticeQuestionsByTopicIdQuery,
+  useSendAnswerMutation,
 } from "../redux/services/authorized.service";
 
 const PracticeQuestionsScreen = ({ route, navigation }) => {
@@ -55,7 +55,11 @@ const PracticeQuestionsScreen = ({ route, navigation }) => {
     if (pressedBtns.includes(id)) {
       setPressedBtns(pressedBtns.filter((x) => x !== id));
     } else {
-      setPressedBtns([...pressedBtns, id]);
+      if (questions[currentQ].multichoice) {
+        setPressedBtns([...pressedBtns, id]);
+      } else {
+        setPressedBtns([id]);
+      }
     }
   };
 

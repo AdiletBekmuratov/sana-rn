@@ -87,6 +87,34 @@ export const authorizedApi = baseApi.injectEndpoints({
         url: `/question/random/?lesson=${lessonId}`,
       }),
     }),
+
+    getAllRating: builder.query({
+      query: (lessonId) => ({
+        url: `/user/all-rating/?lesson=${lessonId}`,
+      }),
+    }),
+
+    getFriendsRating: builder.query({
+      query: (lessonId) => ({
+        url: `/user/my-friends-rating/?lesson=${lessonId}`,
+      }),
+      providesTags: ["FriendsRating"],
+    }),
+
+    addFriendToRating: builder.mutation({
+      query: (body) => ({
+        url: "​/user​/add-friend​/",
+        method: "POST",
+        body,
+      }),
+      providesTags: ["FriendsRating"],
+    }),
+
+    getAllLessons: builder.query({
+      query: () => ({
+        url: `/lessons/all/?test_type=1`,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -113,4 +141,10 @@ export const {
 
   useSendAnswerMutation,
   useFinishTestQuery,
+
+  useAddFriendToRatingMutation,
+  useGetAllRatingQuery,
+  useGetFriendsRatingQuery,
+
+	useGetAllLessonsQuery
 } = authorizedApi;
