@@ -22,6 +22,7 @@ const ChangeMainInfo = ({ userData, setVisible, setMessage }) => {
     useUpdateMeMutation();
 
   const [unmaskedPhone, setUnmaskedPhone] = useState(userData.phone);
+  const [passwordVisible, setPasswordVisible] = useState(true);
 
   const onSubmitUpdate = async (values, { resetForm }) => {
     const loginData = {
@@ -92,7 +93,6 @@ const ChangeMainInfo = ({ userData, setVisible, setMessage }) => {
                   label={i18n.t("first_name")}
                   mode="outlined"
                   dense={true}
-                  activeOutlineColor="#002C67"
                   onBlur={handleBlur("first_name")}
                   onChangeText={handleChange("first_name")}
                   value={values.first_name}
@@ -112,7 +112,6 @@ const ChangeMainInfo = ({ userData, setVisible, setMessage }) => {
                   style={tw`mt-2`}
                   label={i18n.t("last_name")}
                   mode="outlined"
-                  activeOutlineColor="#002C67"
                   dense={true}
                   onBlur={handleBlur("last_name")}
                   onChangeText={handleChange("last_name")}
@@ -133,7 +132,6 @@ const ChangeMainInfo = ({ userData, setVisible, setMessage }) => {
                   style={tw`mt-2`}
                   label={i18n.t("phone")}
                   mode="outlined"
-                  activeOutlineColor="#002C67"
                   dense={true}
                   value={values.phone}
                   left={<TextInput.Icon name={"phone"} />}
@@ -183,13 +181,18 @@ const ChangeMainInfo = ({ userData, setVisible, setMessage }) => {
                   style={tw`mt-2`}
                   label={i18n.t("confirm_password")}
                   mode="outlined"
-                  activeOutlineColor="#002C67"
                   dense={true}
                   onBlur={handleBlur("password")}
-                  secureTextEntry
+                  secureTextEntry={passwordVisible}
                   onChangeText={handleChange("password")}
                   value={values.password}
                   left={<TextInput.Icon name={"asterisk"} />}
+                  right={
+                    <TextInput.Icon
+                      name={passwordVisible ? "eye" : "eye-off"}
+                      onPress={() => setPasswordVisible(!passwordVisible)}
+                    />
+                  }
                   error={!!errors.password && !!touched.password}
                 />
                 {!!errors.password && !!touched.password && (
@@ -207,7 +210,6 @@ const ChangeMainInfo = ({ userData, setVisible, setMessage }) => {
                   disabled={isLoading}
                   mode="contained"
                   onPress={handleSubmit}
-                  color="#002C67"
                 >
                   {i18n.t("update")}
                 </Button>

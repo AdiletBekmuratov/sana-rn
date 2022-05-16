@@ -55,7 +55,6 @@ const ChangePassword = ({ userData }) => {
                 <TextInput
                   label="Ескі құпия сөз"
                   mode="outlined"
-                  activeOutlineColor="#002C67"
                   dense={true}
                   onBlur={handleBlur("oldPass")}
                   secureTextEntry
@@ -77,7 +76,6 @@ const ChangePassword = ({ userData }) => {
                   style={tw`mt-2`}
                   label="Жаңа құпия сөз"
                   mode="outlined"
-                  activeOutlineColor="#002C67"
                   dense={true}
                   secureTextEntry
                   onBlur={handleBlur("newPass")}

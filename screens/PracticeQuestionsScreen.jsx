@@ -111,7 +111,7 @@ const PracticeQuestionsScreen = ({ route, navigation }) => {
       <Button
         style={tw`mt-4`}
         mode="contained"
-        color="#002C67"
+        
         onPress={() => handleSubmit()}
         disabled={pressedBtns.length <= 0}
       >

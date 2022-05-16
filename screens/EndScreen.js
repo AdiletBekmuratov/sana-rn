@@ -36,12 +36,7 @@ export default function EndScreen({ route, navigation }) {
         {i18n.t("EndScreen.from")} {size}
       </Headline>
 
-      <Button
-        style={tw`mt-4`}
-        mode="contained"
-        color="#002C67"
-        onPress={() => goHome()}
-      >
+      <Button style={tw`mt-4`} mode="contained" onPress={() => goHome()}>
         {i18n.t("EndScreen.goHome")}
       </Button>
     </View>

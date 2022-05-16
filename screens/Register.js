@@ -26,10 +26,7 @@ const RegisterSchema = Yup.object().shape({
   last_name: Yup.string().required(i18n.t("Errors.required")),
   phone: Yup.string().required(i18n.t("Errors.required")),
   password: Yup.string()
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-      i18n.t("Errors.wrong_password_format")
-    )
+    .min(6, i18n.t("Errors.wrong_password_format"))
     .required(i18n.t("Errors.required")),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password"), null], i18n.t("Errors.passwords_do_not_match"))
@@ -40,6 +37,8 @@ const Register = ({ navigation }) => {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const [unmaskedPhone, setUnmaskedPhone] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(true);
+  const [passwordConfirmVisible, setPasswordConfirmVisible] = useState(true);
 
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
@@ -58,6 +57,7 @@ const Register = ({ navigation }) => {
     const data = {
       ...formValues,
       phone: unmaskedPhone,
+      email: formValues.email.toLowerCase(),
     };
     dispatch(register(data));
     resetForm();
@@ -99,7 +99,6 @@ const Register = ({ navigation }) => {
               <TextInput
                 label="Email"
                 mode="outlined"
-                activeOutlineColor="#002C67"
                 keyboardType="email-address"
                 dense={true}
                 onBlur={handleBlur("email")}
@@ -121,7 +120,6 @@ const Register = ({ navigation }) => {
                 style={tw`mt-2`}
                 label={i18n.t("first_name")}
                 mode="outlined"
-                activeOutlineColor="#002C67"
                 dense={true}
                 onBlur={handleBlur("first_name")}
                 onChangeText={handleChange("first_name")}
@@ -142,7 +140,6 @@ const Register = ({ navigation }) => {
                 style={tw`mt-2`}
                 label={i18n.t("last_name")}
                 mode="outlined"
-                activeOutlineColor="#002C67"
                 dense={true}
                 onBlur={handleBlur("last_name")}
                 onChangeText={handleChange("last_name")}
@@ -163,7 +160,6 @@ const Register = ({ navigation }) => {
                 style={tw`mt-2`}
                 label={i18n.t("phone")}
                 mode="outlined"
-                activeOutlineColor="#002C67"
                 dense={true}
                 keyboardType="phone-pad"
                 left={<TextInput.Icon name={"phone"} />}
@@ -196,7 +192,6 @@ const Register = ({ navigation }) => {
                       /\d/,
                       /\d/,
                     ]}
-                    prefix="+7 "
                   />
                 )}
               />
@@ -213,13 +208,18 @@ const Register = ({ navigation }) => {
                 style={tw`mt-2`}
                 label={i18n.t("password")}
                 mode="outlined"
-                activeOutlineColor="#002C67"
                 dense={true}
-                secureTextEntry
+                secureTextEntry={passwordVisible}
                 onBlur={handleBlur("password")}
                 onChangeText={handleChange("password")}
                 value={values.password}
                 left={<TextInput.Icon name={"lock"} />}
+                right={
+                  <TextInput.Icon
+                    name={passwordVisible ? "eye" : "eye-off"}
+                    onPress={() => setPasswordVisible(!passwordVisible)}
+                  />
+                }
                 error={!!errors.password && !!touched.password}
               />
               {!!errors.password && !!touched.password && (
@@ -235,13 +235,20 @@ const Register = ({ navigation }) => {
                 style={tw`mt-2`}
                 label={i18n.t("confirm_password")}
                 mode="outlined"
-                activeOutlineColor="#002C67"
                 dense={true}
-                secureTextEntry
+                secureTextEntry={passwordConfirmVisible}
                 onBlur={handleBlur("confirmPassword")}
                 onChangeText={handleChange("confirmPassword")}
                 value={values.confirmPassword}
                 left={<TextInput.Icon name={"lock"} />}
+                right={
+                  <TextInput.Icon
+                    name={passwordConfirmVisible ? "eye" : "eye-off"}
+                    onPress={() =>
+                      setPasswordConfirmVisible(!passwordConfirmVisible)
+                    }
+                  />
+                }
                 error={!!errors.confirmPassword && !!touched.confirmPassword}
               />
               {!!errors.confirmPassword && !!touched.confirmPassword && (
@@ -255,12 +262,7 @@ const Register = ({ navigation }) => {
                 </HelperText>
               )}
 
-              <Button
-                style={tw`mt-4`}
-                mode="contained"
-                color="#002C67"
-                onPress={handleSubmit}
-              >
+              <Button style={tw`mt-4`} mode="contained" onPress={handleSubmit}>
                 {i18n.t("RegisterScreen.enter")}
               </Button>
             </View>

@@ -13,7 +13,7 @@ const Header = ({ title, rightButton, navigation, routeName }) => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ backgroundColor: "#f3f4f6" }}>
       <View
         style={tw`flex-row justify-between items-center h-[80px] p-6 bg-gray-100`}
       >

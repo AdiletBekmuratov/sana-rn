@@ -89,7 +89,6 @@ export default function Profile({ navigation }) {
 
         <Button
           style={tw`w-full`}
-          color="#002C67"
           mode="contained"
           icon={"whatsapp"}
           onPress={() =>

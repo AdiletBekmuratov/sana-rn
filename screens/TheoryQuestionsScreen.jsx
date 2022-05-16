@@ -70,12 +70,7 @@ const TheoryQuestionsScreen = ({ route, navigation }) => {
       <>
         {totalPage >= page && (
           <View style={tw`w-full justify-center items-center pt-4`}>
-            <Button
-              mode="outlined"
-              loading={loading}
-              color="#002C67"
-              onPress={getData}
-            >
+            <Button mode="outlined" loading={loading} onPress={getData}>
               {i18n.t("show_more")}
             </Button>
           </View>
@@ -96,7 +91,7 @@ const TheoryQuestionsScreen = ({ route, navigation }) => {
               index !== 0 ? "mt-4" : ""
             }`}
           >
-            <Card style={tw`${showEye.includes(index) ? "w-full" : "w-[90%]"}`}>
+            <Card style={tw`${showEye.includes(index) ? "w-full" : "w-[88%]"}`}>
               <Card.Content>
                 <Text style={tw`text-lg font-semibold`}>
                   {index + 1}) {item.question}
@@ -114,7 +109,7 @@ const TheoryQuestionsScreen = ({ route, navigation }) => {
                 disabled={showEye.includes(index)}
                 icon="eye"
                 style={tw`${
-                  showEye.includes(index) ? "hidden" : "w-[10%]"
+                  showEye.includes(index) ? "hidden" : "w-[12%]"
                 } bg-white `}
               />
             )}
