@@ -66,7 +66,6 @@ const TheoryQuestionsScreen = ({ route, navigation }) => {
 
   const renderFooter = () => {
     return (
-      //Footer View with Load More button
       <>
         {totalPage >= page && (
           <View style={tw`w-full justify-center items-center pt-4`}>

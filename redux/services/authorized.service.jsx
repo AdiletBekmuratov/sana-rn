@@ -88,19 +88,22 @@ export const authorizedApi = baseApi.injectEndpoints({
       }),
     }),
 
-    getAllRating: builder.query({
-      query: (lessonId) => ({
-        url: `/user/all-rating/?lesson=${lessonId}`,
+    getMyRating: builder.query({
+      query: () => ({
+        url: `/user/my-rating/`,
       }),
     }),
-
+    getAllRating: builder.query({
+      query: ({ lessonId, page }) => ({
+        url: `/user/all-rating/?lesson=${lessonId}&page=${page}&page_size=15`,
+      }),
+    }),
     getFriendsRating: builder.query({
       query: (lessonId) => ({
         url: `/user/my-friends-rating/?lesson=${lessonId}`,
       }),
       providesTags: ["FriendsRating"],
     }),
-
     addFriendToRating: builder.mutation({
       query: (body) => ({
         url: "​/user​/add-friend​/",
@@ -144,7 +147,9 @@ export const {
 
   useAddFriendToRatingMutation,
   useGetAllRatingQuery,
+  useLazyGetAllRatingQuery,
+	useGetMyRatingQuery,
   useGetFriendsRatingQuery,
 
-	useGetAllLessonsQuery
+  useGetAllLessonsQuery,
 } = authorizedApi;

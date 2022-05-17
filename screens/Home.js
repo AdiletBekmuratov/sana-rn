@@ -45,10 +45,17 @@ export default function Home({ navigation }) {
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => navigation.navigate(item.screen)}
-            style={tw.style("p-4", "bg-[#002C67] m-2", "rounded", {
-              flex: 0.5,
-              height: 260,
-            })}
+            style={tw.style(
+              "p-4",
+              "bg-[#002C67] m-2",
+              "rounded",
+              `${item.disabled ? "opacity-50" : ""}`,
+              {
+                flex: 0.5,
+                height: 260,
+              }
+            )}
+            disabled={item.disabled}
           >
             <View>
               <Text style={tw`text-lg font-bold text-white`}>{item.title}</Text>

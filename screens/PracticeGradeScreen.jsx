@@ -23,6 +23,7 @@ const PracticeGradeScreen = ({ route, navigation }) => {
         keyExtractor={(item, index) => item.id + index.toString()}
         renderItem={({ item, index }) => (
           <TouchableOpacity
+            style={tw`${index !== 0 ? "mt-4" : ""}`}
             onPress={() =>
               navigation.navigate("PracticeQuestionsScreen", {
                 topicId: item.id,
@@ -30,13 +31,14 @@ const PracticeGradeScreen = ({ route, navigation }) => {
             }
             disabled={!item.is_active}
           >
-            <Card
-              style={tw`${index !== 0 ? "mt-4" : ""} ${
-                !item.is_active ? "opacity-50" : ""
-              }`}
-            >
-              <Card.Content>
+            <Card style={tw`${!item.is_active ? "opacity-50" : ""}`}>
+              <Card.Content
+                style={tw`flex flex-row justify-between items-center`}
+              >
                 <Text style={tw`text-lg font-bold`}>{item.name}</Text>
+                <Text style={tw`text-lg font-bold ml-2`}>
+                  {item.my_answer_question}/{item.sum_of_question}
+                </Text>
               </Card.Content>
             </Card>
           </TouchableOpacity>

@@ -15,14 +15,15 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "app.kz.qsana"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "kz.addisonbk.sana"
+      "package": "com.myapp.predictor"
     },
     "web": {
       "favicon": "./assets/favicon.png"
