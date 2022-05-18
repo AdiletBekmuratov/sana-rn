@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import AuthVerify from "../components/AuthVerify";
 import React, { useEffect } from "react";
-import { KeyboardAvoidingView, Platform, useColorScheme } from "react-native";
+import { KeyboardAvoidingView, Platform } from "react-native";
 import { Provider as PaperProvider, DefaultTheme } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,7 +21,6 @@ const theme = {
 
 export default function NavContainer() {
   const dispatch = useDispatch();
-  const colorScheme = useColorScheme();
 
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth

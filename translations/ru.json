@@ -43,6 +43,11 @@
     "from": "из",
     "goHome": "Домой"
   },
+  "Rating": {
+    "chooseLesson": "Выбрать предмет",
+    "allLessons": "Все предметы",
+		"onlyFriends": "Только друзья"
+  },
   "first_name": "Имя",
   "last_name": "Фамилия",
   "phone": "Телефон",
@@ -50,6 +55,7 @@
   "update": "Изменить",
   "confirm_password": "Подтвердить пароль",
   "show_more": "Показать больше",
+  "close": "Закрыть",
   "Successes": {
     "updated": "Данные обновлены!"
   },

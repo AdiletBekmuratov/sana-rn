@@ -17,7 +17,7 @@ const PracticeGradeScreen = ({ route, navigation }) => {
   }
 
   return (
-    <View style={tw`h-full flex-1 px-5 pb-5 justify-center bg-gray-100`}>
+    <View style={tw`h-full flex flex-1 px-5 pb-5 justify-start bg-gray-100`}>
       <FlatList
         data={data}
         keyExtractor={(item, index) => item.id + index.toString()}
@@ -36,14 +36,25 @@ const PracticeGradeScreen = ({ route, navigation }) => {
                 style={tw`flex flex-row justify-between items-center`}
               >
                 <Text style={tw`text-lg font-bold`}>{item.name}</Text>
-                <Text style={tw`text-lg font-bold ml-2`}>
-                  {item.my_answer_question}/{item.sum_of_question}
-                </Text>
               </Card.Content>
             </Card>
           </TouchableOpacity>
         )}
       />
+      <TouchableOpacity style={tw`mt-4`} onPress={() => {}}>
+        <Card>
+          <Card.Content style={tw`flex flex-row justify-between items-center`}>
+            <Text style={tw`text-lg font-bold`}>Повторить изученные</Text>
+          </Card.Content>
+        </Card>
+      </TouchableOpacity>
+      <TouchableOpacity style={tw`mt-4`} onPress={() => {}}>
+        <Card>
+          <Card.Content style={tw`flex flex-row justify-between items-center`}>
+            <Text style={tw`text-lg font-bold`}>Повторить неправильные</Text>
+          </Card.Content>
+        </Card>
+      </TouchableOpacity>
     </View>
   );
 };
