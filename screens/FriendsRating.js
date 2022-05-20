@@ -7,15 +7,19 @@ import i18n from "../i18n";
 import {
   useGetFriendsRatingQuery,
   useGetMyRatingQuery,
+  useRemoveFriendFromRatingMutation,
 } from "../redux/services/authorized.service";
 
 export default function FriendsRating() {
   const { data = [], isLoading } = useGetFriendsRatingQuery();
 
   const { data: myRating, isLoading: myRateLoading } = useGetMyRatingQuery();
+  const [removeFriend] = useRemoveFriendFromRatingMutation();
 
   const removeFriendHandler = async (id) => {
     console.log(id);
+    const response = await removeFriend(id);
+    console.log({ response });
   };
 
   if (isLoading || myRateLoading) {
@@ -61,7 +65,9 @@ export default function FriendsRating() {
               {myRating?.my_place}
               {")"} {myRating.first_name} {myRating.last_name}
             </Text>
-            <Text>{i18n.t("Rating.mastered")}: {myRating.mastered_quantity}</Text>
+            <Text>
+              {i18n.t("Rating.mastered")}: {myRating.mastered_quantity}
+            </Text>
           </View>
         </Card.Content>
       </Card>

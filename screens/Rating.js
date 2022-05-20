@@ -21,6 +21,7 @@ import {
 
 export default function Rating() {
   const [page, setPage] = useState(1);
+  const [nextPage, setNextPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [totalPage, setTotalPage] = useState(0);
   const [dataSource, setDataSource] = useState([]);
@@ -53,13 +54,20 @@ export default function Rating() {
 
   useEffect(() => {
     if (globalRating) {
+      console.log("rerender");
       setTotalPage(globalRating?.total_pages);
-      setPage(globalRating?.current_page + 1);
-      if (globalRating?.current_page == 1) {
-        setDataSource(globalRating.data);
-      } else {
-        setDataSource([...dataSource, ...globalRating?.data]);
-      }
+      setDataSource(globalRating?.data);
+      // if (globalRating?.current_page == 1) {
+      //   setDataSource(globalRating?.data);
+      // } else if (globalRating?.current_page == page) {
+      //   const newData = dataSource.slice(0, (page - 1) * 2);
+      //   setDataSource([...newData, ...globalRating?.data]);
+      // } else {
+      //   setDataSource([...dataSource, ...globalRating?.data]);
+      // }
+
+      // setNextPage(globalRating?.current_page + 1);
+      // setPage(globalRating?.current_page);
     }
   }, [globalRating]);
 
@@ -68,7 +76,7 @@ export default function Rating() {
   }, [lesson]);
 
   useEffect(async () => {
-    await getData(page);
+    await getData(1);
   }, []);
 
   const addFriendHandler = async (id) => {
@@ -78,12 +86,12 @@ export default function Rating() {
   const renderFooter = () => {
     return (
       <>
-        {totalPage >= page && (
+        {totalPage >= nextPage && (
           <View style={tw`w-full justify-center items-center pt-4`}>
             <Button
               mode="outlined"
               loading={loading}
-              onPress={() => getData(page)}
+              onPress={() => getData(nextPage)}
             >
               {i18n.t("show_more")}
             </Button>
@@ -140,7 +148,7 @@ export default function Rating() {
         style={tw`w-full`}
         data={dataSource}
         keyExtractor={(item, index) => item.id}
-        ListFooterComponent={renderFooter}
+        // ListFooterComponent={renderFooter}
         renderItem={({ item, index }) => (
           <Card style={tw`mt-2`}>
             <Card.Content>
@@ -154,17 +162,24 @@ export default function Rating() {
                     {i18n.t("Rating.mastered")}: {item.mastered_quantity}
                   </Text>
                   <View>
-                    {!item.is_friend ? (
-                      <IconButton
-                        icon="account-plus"
-                        style={tw`ml-2 bg-gray-200`}
-                        onPress={() => addFriendHandler(item.id)}
-                      />
+                    {item.id !== myRating.id ? (
+                      !item.is_friend ? (
+                        <IconButton
+                          icon="account-plus"
+                          style={tw`ml-2 bg-gray-200`}
+                          onPress={() => addFriendHandler(item.id)}
+                        />
+                      ) : (
+                        <IconButton
+                          icon="account-minus"
+                          style={tw`ml-2 bg-gray-200`}
+                          onPress={() => {}}
+                        />
+                      )
                     ) : (
                       <IconButton
-                        icon="account-minus"
+                        icon="emoticon"
                         style={tw`ml-2 bg-gray-200`}
-                        onPress={() => {}}
                       />
                     )}
                   </View>

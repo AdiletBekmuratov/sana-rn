@@ -51,6 +51,7 @@ const PracticeGradeScreen = ({ route, navigation }) => {
       />
       <TouchableOpacity
         style={tw`mt-4`}
+        disabled={masteredWrongQ?.mastered_quantity <= 0}
         onPress={() => {
           navigation.navigate("MasteredWrongQuestionsScreen", {
             lessonId: lessonId,
@@ -58,7 +59,11 @@ const PracticeGradeScreen = ({ route, navigation }) => {
           });
         }}
       >
-        <Card>
+        <Card
+          style={tw`${
+            masteredWrongQ?.mastered_quantity <= 0 ? "opacity-50" : ""
+          }`}
+        >
           <Card.Content style={tw`flex flex-row justify-between items-center`}>
             <Text style={tw`text-lg font-bold`}>
               {i18n.t("MainStack.redoMastered")}
@@ -71,6 +76,7 @@ const PracticeGradeScreen = ({ route, navigation }) => {
       </TouchableOpacity>
       <TouchableOpacity
         style={tw`mt-4`}
+        disabled={masteredWrongQ?.wrong_quantity <= 0}
         onPress={() => {
           navigation.navigate("MasteredWrongQuestionsScreen", {
             lessonId: lessonId,
@@ -78,7 +84,9 @@ const PracticeGradeScreen = ({ route, navigation }) => {
           });
         }}
       >
-        <Card>
+        <Card
+          style={tw`${masteredWrongQ?.wrong_quantity <= 0 ? "opacity-50" : ""}`}
+        >
           <Card.Content style={tw`flex flex-row justify-between items-center`}>
             <Text style={tw`text-lg font-bold`}>
               {i18n.t("MainStack.redoWrong")}

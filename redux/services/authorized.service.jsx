@@ -95,7 +95,7 @@ export const authorizedApi = baseApi.injectEndpoints({
     }),
     getAllRating: builder.query({
       query: ({ lessonId, page }) => ({
-        url: `/user/all-rating/?lesson=${lessonId}&page=${page}&page_size=2`,
+        url: `/user/all-rating/?lesson=${lessonId}&page=${page}&page_size=100`,
       }),
       providesTags: ["FriendsRating"],
     }),
@@ -110,6 +110,13 @@ export const authorizedApi = baseApi.injectEndpoints({
         url: "/user/add-friend/",
         method: "POST",
         body,
+      }),
+      invalidatesTags: ["FriendsRating"],
+    }),
+    removeFriendFromRating: builder.mutation({
+      query: (id) => ({
+        url: `/user/remove-friend/${id}/`,
+        method: "DELETE",
       }),
       invalidatesTags: ["FriendsRating"],
     }),
@@ -163,6 +170,7 @@ export const {
   useLazyGetAllRatingQuery,
   useGetMyRatingQuery,
   useGetFriendsRatingQuery,
+  useRemoveFriendFromRatingMutation,
   useLazyGetFriendsRatingQuery,
 
   useGetAllLessonsQuery,
