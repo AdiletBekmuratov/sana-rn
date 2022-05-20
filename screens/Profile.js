@@ -56,7 +56,7 @@ export default function Profile({ navigation }) {
             }
           />
           <MaterialIcons name="account-circle" size={100} color="gray" />
-          <Text style={tw`text-xl font-bold`}>
+          <Text style={tw`text-xl font-bold text-center`}>
             {data.first_name} {data.last_name}
           </Text>
           <Text style={tw`text-lg`}>{data.email}</Text>

@@ -3,16 +3,24 @@ import { FlatList, TouchableOpacity, View } from "react-native";
 import { Card, Text } from "react-native-paper";
 import tw from "twrnc";
 import Spinner from "../components/Spinner";
-import { useGetPracticeTopicsByLessonIdQuery } from "../redux/services/authorized.service";
+import i18n from "../i18n";
+import {
+  useGetPracticeTopicsByLessonIdQuery,
+  useGetQuantityMasteredQuery,
+} from "../redux/services/authorized.service";
 
 const PracticeGradeScreen = ({ route, navigation }) => {
   const { lessonId } = route.params;
   const { data, error, isLoading, isError } =
     useGetPracticeTopicsByLessonIdQuery(lessonId);
 
-  console.log("Practice Topics", data);
+  const {
+    data: masteredWrongQ,
+    isLoading: isLoadingMasteredWrongQ,
+    error: errorMasteredWrongQ,
+  } = useGetQuantityMasteredQuery(lessonId);
 
-  if (isLoading) {
+  if (isLoading || isLoadingMasteredWrongQ) {
     return <Spinner />;
   }
 
@@ -41,17 +49,43 @@ const PracticeGradeScreen = ({ route, navigation }) => {
           </TouchableOpacity>
         )}
       />
-      <TouchableOpacity style={tw`mt-4`} onPress={() => {}}>
+      <TouchableOpacity
+        style={tw`mt-4`}
+        onPress={() => {
+          navigation.navigate("MasteredWrongQuestionsScreen", {
+            lessonId: lessonId,
+            mastered: true,
+          });
+        }}
+      >
         <Card>
           <Card.Content style={tw`flex flex-row justify-between items-center`}>
-            <Text style={tw`text-lg font-bold`}>Повторить изученные</Text>
+            <Text style={tw`text-lg font-bold`}>
+              {i18n.t("MainStack.redoMastered")}
+            </Text>
+            <Text style={tw`text-lg font-bold ml-2`}>
+              {masteredWrongQ?.mastered_quantity}
+            </Text>
           </Card.Content>
         </Card>
       </TouchableOpacity>
-      <TouchableOpacity style={tw`mt-4`} onPress={() => {}}>
+      <TouchableOpacity
+        style={tw`mt-4`}
+        onPress={() => {
+          navigation.navigate("MasteredWrongQuestionsScreen", {
+            lessonId: lessonId,
+            mastered: false,
+          });
+        }}
+      >
         <Card>
           <Card.Content style={tw`flex flex-row justify-between items-center`}>
-            <Text style={tw`text-lg font-bold`}>Повторить неправильные</Text>
+            <Text style={tw`text-lg font-bold`}>
+              {i18n.t("MainStack.redoWrong")}
+            </Text>
+            <Text style={tw`text-lg font-bold ml-2`}>
+              {masteredWrongQ?.wrong_quantity}
+            </Text>
           </Card.Content>
         </Card>
       </TouchableOpacity>

@@ -3,10 +3,8 @@ import { FlatList, View } from "react-native";
 import {
   Button,
   Card,
-  Checkbox,
   Dialog,
   IconButton,
-  Paragraph,
   Portal,
   RadioButton,
   Text,
@@ -15,10 +13,10 @@ import tw from "twrnc";
 import Spinner from "../components/Spinner";
 import i18n from "../i18n";
 import {
+  useAddFriendToRatingMutation,
   useGetAllLessonsQuery,
   useGetMyRatingQuery,
   useLazyGetAllRatingQuery,
-  useLazyGetFriendsRatingQuery,
 } from "../redux/services/authorized.service";
 
 export default function Rating() {
@@ -27,18 +25,15 @@ export default function Rating() {
   const [totalPage, setTotalPage] = useState(0);
   const [dataSource, setDataSource] = useState([]);
 
-  const [
-    getGlobalRating,
-    { data: globalRating = [], isLoading, error, isError },
-  ] = useLazyGetAllRatingQuery();
-
-  const [getFriendsRating] = useLazyGetFriendsRatingQuery();
+  const [getGlobalRating, { data: globalRating, isLoading, error, isError }] =
+    useLazyGetAllRatingQuery();
 
   const { data: myRating, isLoading: myRateLoading } = useGetMyRatingQuery();
   const { data: allLessons = [], isLoading: lessonsLoading } =
     useGetAllLessonsQuery();
 
-  const [friendOnly, setFriendOnly] = useState(false);
+  const [addFriend] = useAddFriendToRatingMutation();
+
   const [visible, setVisible] = useState(false);
   const [lesson, setLesson] = useState("");
 
@@ -48,43 +43,42 @@ export default function Rating() {
 
   const getData = async (val_page) => {
     setLoading(true);
-    const respData = await getGlobalRating({
+    await getGlobalRating({
       lessonId: lesson,
       page: val_page,
     }).unwrap();
 
-    setTotalPage(respData.total_pages);
-    setPage(val_page + 1);
-    setDataSource([...dataSource, ...respData.data]);
     setLoading(false);
   };
 
-  useEffect(async () => {
-    if (friendOnly) {
-      setLoading(true);
-      const respData = await getFriendsRating().unwrap();
-      setPage(1);
-      setDataSource(respData);
-      setLoading(false);
-    } else {
-      await getData(1);
+  useEffect(() => {
+    if (globalRating) {
+      setTotalPage(globalRating?.total_pages);
+      setPage(globalRating?.current_page + 1);
+      if (globalRating?.current_page == 1) {
+        setDataSource(globalRating.data);
+      } else {
+        setDataSource([...dataSource, ...globalRating?.data]);
+      }
     }
-  }, [friendOnly]);
+  }, [globalRating]);
 
   useEffect(() => {
-    if (lesson !== "" && lesson !== null) {
-      getData(1);
-    }
+    getData(1);
   }, [lesson]);
 
   useEffect(async () => {
     await getData(page);
   }, []);
 
+  const addFriendHandler = async (id) => {
+    const response = await addFriend({ friend: id }).unwrap();
+  };
+
   const renderFooter = () => {
     return (
       <>
-        {totalPage >= page && !friendOnly && (
+        {totalPage >= page && (
           <View style={tw`w-full justify-center items-center pt-4`}>
             <Button
               mode="outlined"
@@ -104,13 +98,8 @@ export default function Rating() {
   }
 
   return (
-    <View style={tw`h-full flex-1 px-5 pb-5 justify-between bg-gray-100`}>
-      <View style={tw`flex flex-row justify-between items-center`}>
-        <Checkbox.Item
-          label={i18n.t("Rating.onlyFriends")}
-          status={friendOnly ? "checked" : "unchecked"}
-          onPress={() => setFriendOnly(!friendOnly)}
-        />
+    <View style={tw`h-full flex-1 px-5 pb-5 pt-2 justify-between bg-gray-100`}>
+      <View style={tw`flex flex-row justify-end items-center`}>
         <IconButton icon="filter" style={tw`bg-white`} onPress={showDialog} />
       </View>
       <Portal>
@@ -155,12 +144,31 @@ export default function Rating() {
         renderItem={({ item, index }) => (
           <Card style={tw`mt-2`}>
             <Card.Content>
-              <View style={tw`flex flex-row justify-between`}>
-                <Text>
+              <View style={tw`flex flex-row justify-between items-center`}>
+                <Text style={tw`w-1/2`}>
                   {index + 1}
                   {")"} {item.first_name} {item.last_name}
                 </Text>
-                <Text>{item.mastered_quantity}</Text>
+                <View style={tw`flex flex-row justify-end items-center w-1/2`}>
+                  <Text>
+                    {i18n.t("Rating.mastered")}: {item.mastered_quantity}
+                  </Text>
+                  <View>
+                    {!item.is_friend ? (
+                      <IconButton
+                        icon="account-plus"
+                        style={tw`ml-2 bg-gray-200`}
+                        onPress={() => addFriendHandler(item.id)}
+                      />
+                    ) : (
+                      <IconButton
+                        icon="account-minus"
+                        style={tw`ml-2 bg-gray-200`}
+                        onPress={() => {}}
+                      />
+                    )}
+                  </View>
+                </View>
               </View>
             </Card.Content>
           </Card>
@@ -169,12 +177,14 @@ export default function Rating() {
 
       <Card style={tw`mt-2`}>
         <Card.Content>
-          <View style={tw`flex flex-row justify-between`}>
-            <Text>
+          <View style={tw`flex flex-row justify-between items-center`}>
+            <Text style={tw`w-1/2`}>
               {myRating?.my_place}
               {")"} {myRating.first_name} {myRating.last_name}
             </Text>
-            <Text>{myRating.mastered_quantity}</Text>
+            <Text>
+              {i18n.t("Rating.mastered")}: {myRating.mastered_quantity}
+            </Text>
           </View>
         </Card.Content>
       </Card>

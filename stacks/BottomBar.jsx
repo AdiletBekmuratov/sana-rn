@@ -3,10 +3,10 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { getHeaderTitle } from "@react-navigation/elements";
 import Header from "../components/Header";
-import Rating from "../screens/Rating";
-import ProfileStack from "./ProfileStack";
-import MainStack from "./MainStack";
 import i18n from "../i18n";
+import MainStack from "./MainStack";
+import ProfileStack from "./ProfileStack";
+import TopBarRatingStack from "./TopBarRatingStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -59,7 +59,7 @@ export default function BottomBar() {
           tabBarActiveTintColor: "#002C67",
           tabBarInactiveTintColor: "gray",
         }}
-        component={Rating}
+        component={TopBarRatingStack}
       />
       <Tab.Screen
         name="ProfileTab"

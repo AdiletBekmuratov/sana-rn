@@ -95,8 +95,9 @@ export const authorizedApi = baseApi.injectEndpoints({
     }),
     getAllRating: builder.query({
       query: ({ lessonId, page }) => ({
-        url: `/user/all-rating/?lesson=${lessonId}&page=${page}&page_size=15`,
+        url: `/user/all-rating/?lesson=${lessonId}&page=${page}&page_size=2`,
       }),
+      providesTags: ["FriendsRating"],
     }),
     getFriendsRating: builder.query({
       query: () => ({
@@ -106,16 +107,28 @@ export const authorizedApi = baseApi.injectEndpoints({
     }),
     addFriendToRating: builder.mutation({
       query: (body) => ({
-        url: "​/user​/add-friend​/",
+        url: "/user/add-friend/",
         method: "POST",
         body,
       }),
-      providesTags: ["FriendsRating"],
+      invalidatesTags: ["FriendsRating"],
     }),
 
     getAllLessons: builder.query({
       query: () => ({
         url: `/lessons/all/?test_type=1`,
+      }),
+    }),
+
+    getQuantityMastered: builder.query({
+      query: (lesson) => ({
+        url: `/question/quantity-mastered/?lesson=${lesson}`,
+      }),
+    }),
+
+    getMasteredOrWrongQuestions: builder.query({
+      query: ({ lesson, url }) => ({
+        url: `/question/${url}/?lesson=${lesson}`,
       }),
     }),
   }),
@@ -153,4 +166,7 @@ export const {
   useLazyGetFriendsRatingQuery,
 
   useGetAllLessonsQuery,
+
+  useGetQuantityMasteredQuery,
+  useLazyGetMasteredOrWrongQuestionsQuery,
 } = authorizedApi;

@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import i18n from "../i18n";
 import EndScreen from "../screens/EndScreen";
 import Home from "../screens/Home";
+import MasteredWrongQuestionsScreen from "../screens/MasteredWrongQuestionsScreen";
 import PracticeGradeScreen from "../screens/PracticeGradeScreen";
 import PracticeQuestionsScreen from "../screens/PracticeQuestionsScreen";
 import PracticeScreen from "../screens/PracticeScreen";
@@ -99,10 +100,17 @@ const MainStack = () => {
       />
       <Stack.Screen
         options={{
-          title: "Результаты",
+          title: i18n.t("MainStack.results"),
         }}
         name="EndScreen"
         component={EndScreen}
+      />
+      <Stack.Screen
+        options={{
+          title: i18n.t("MainStack.questions"),
+        }}
+        name="MasteredWrongQuestionsScreen"
+        component={MasteredWrongQuestionsScreen}
       />
     </Stack.Navigator>
   );

@@ -60,6 +60,7 @@ export const addUser = createAsyncThunk("auth/addUser", async () => {
   const jsonValue = await AsyncStorage.getItem("user");
   const user = jsonValue != null ? JSON.parse(jsonValue) : null;
   const decodedJwt = jwt_decode(user.refresh);
+  console.log(decodedJwt.exp * 1000 < Date.now());
   if (decodedJwt.exp * 1000 < Date.now()) {
     await AsyncStorage.removeItem("user");
     return null;
@@ -82,7 +83,7 @@ export const authSlice = createSlice({
     builder
       .addCase(addUser.fulfilled, (state, action) => {
         state.user = action.payload;
-				state.isLoading = false;
+        state.isLoading = false;
       })
       .addCase(addUser.pending, (state, action) => {
         state.isLoading = true;

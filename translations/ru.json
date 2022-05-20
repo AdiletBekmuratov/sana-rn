@@ -21,7 +21,10 @@
     "questions": "Вопросы",
     "practice": "Практика",
     "random": "Рандом",
-    "challenge": "Челлендж"
+    "challenge": "Челлендж",
+    "redoMastered": "Повторить изученные",
+    "redoWrong": "Повторить неправильные",
+    "results": "Результаты"
   },
   "ProfileStack": {
     "profile": "Профиль",
@@ -46,7 +49,10 @@
   "Rating": {
     "chooseLesson": "Выбрать предмет",
     "allLessons": "Все предметы",
-		"onlyFriends": "Только друзья"
+    "onlyFriends": "Только друзья",
+    "mastered": "Изученные",
+    "globalRating": "Общий рейтинг",
+    "friendsRating": "Друзья"
   },
   "first_name": "Имя",
   "last_name": "Фамилия",
