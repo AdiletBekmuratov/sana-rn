@@ -16,6 +16,15 @@
     "production": {}
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "appleId": "bekn998@gmail.com",
+        "ascAppId": "1624502626",
+        "appleTeamId": "U6BK2U3HHK",
+        "ascApiKeyPath": "D:/Projects/Sana/sana-mob/keys/AuthKey_YL55CMAHFW.p8",
+        "ascApiKeyIssuerId": "ac3ef280-e3d6-497d-9316-d06c89e5e0fb",
+        "ascApiKeyId": "YL55CMAHFW"
+      }
+    }
   }
 }

@@ -17,6 +17,7 @@ import {
   useGetAllLessonsQuery,
   useGetMyRatingQuery,
   useLazyGetAllRatingQuery,
+  useRemoveFriendFromRatingMutation,
 } from "../redux/services/authorized.service";
 
 export default function Rating() {
@@ -37,6 +38,7 @@ export default function Rating() {
 
   const [visible, setVisible] = useState(false);
   const [lesson, setLesson] = useState("");
+  const [removeFriend] = useRemoveFriendFromRatingMutation();
 
   const showDialog = () => setVisible(true);
 
@@ -81,6 +83,12 @@ export default function Rating() {
 
   const addFriendHandler = async (id) => {
     const response = await addFriend({ friend: id }).unwrap();
+  };
+
+  const removeFriendHandler = async (id) => {
+    console.log(id);
+    const response = await removeFriend(id);
+    console.log({ response });
   };
 
   const renderFooter = () => {
@@ -173,7 +181,7 @@ export default function Rating() {
                         <IconButton
                           icon="account-minus"
                           style={tw`ml-2 bg-gray-200`}
-                          onPress={() => {}}
+                          onPress={() => removeFriendHandler(item.id)}
                         />
                       )
                     ) : (

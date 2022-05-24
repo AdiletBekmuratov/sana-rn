@@ -59,11 +59,13 @@ export const tokenUpdate = createAsyncThunk(
 export const addUser = createAsyncThunk("auth/addUser", async () => {
   const jsonValue = await AsyncStorage.getItem("user");
   const user = jsonValue != null ? JSON.parse(jsonValue) : null;
-  const decodedJwt = jwt_decode(user.refresh);
-  console.log(decodedJwt.exp * 1000 < Date.now());
-  if (decodedJwt.exp * 1000 < Date.now()) {
-    await AsyncStorage.removeItem("user");
-    return null;
+  if (user) {
+    const decodedJwt = jwt_decode(user.refresh);
+    console.log(decodedJwt.exp * 1000 < Date.now());
+    if (decodedJwt.exp * 1000 < Date.now()) {
+      await AsyncStorage.removeItem("user");
+      return null;
+    }
   }
   return user;
 });
