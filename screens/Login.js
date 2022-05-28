@@ -15,6 +15,7 @@ import * as Yup from "yup";
 import Spinner from "../components/Spinner";
 import { login } from "../redux/slices/auth.js";
 import i18n from "../i18n";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string()
@@ -54,7 +55,7 @@ const Login = ({ navigation }) => {
   }
 
   return (
-    <View style={tw`h-full flex-1 p-5 justify-end bg-gray-100`}>
+    <SafeAreaView style={tw`h-full flex-1 p-5 justify-end bg-gray-100`}>
       <View style={tw`flex-1 justify-center`}>
         <Headline style={tw`font-bold mb-4 text-center uppercase`}>
           {i18n.t("LoginScreen.login")}
@@ -156,7 +157,7 @@ const Login = ({ navigation }) => {
           {message}
         </Snackbar>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

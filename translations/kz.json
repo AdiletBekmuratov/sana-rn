@@ -1,44 +1,82 @@
 {
   "LoginScreen": {
-    "login": "Вход",
-    "noAccount": "Еще нет аккаунта? Зарегистрироваться",
-    "enter": "Войти"
+    "login": "Кіру",
+    "noAccount": "Әлі аккаунтыңыз жоқ па? Тіркелу",
+    "enter": "Кіру"
   },
   "RegisterScreen": {
-    "register": "Регистрация",
-    "hasAccount": "Уже есть аккаунт? Войти",
-    "enter": "Начать"
+    "register": "Тіркеу",
+    "hasAccount": "Аккаунтыңыз бар ма? Кіру",
+    "enter": "Бастау"
   },
   "BottomBar": {
-    "main_page": "Главная",
+    "main_page": "Басты бет",
     "rating": "Рейтинг",
     "profile": "Профиль"
   },
   "MainStack": {
-    "main_page": "Главная",
+    "main_page": "Басты бет",
     "theory": "Теория",
-    "grade": "Класс",
-    "questions": "Вопросы"
+    "grade": "Сынып",
+    "questions": "Сұрақтар",
+    "practice": "Практика",
+    "random": "Рандом",
+    "challenge": "Челлендж",
+    "redoMastered": "Меңгергенді қайталау",
+    "redoWrong": "Қатемен жұмыс",
+    "results": "Нәтижелер"
   },
   "ProfileStack": {
     "profile": "Профиль",
-    "profile_edit": "Редактирование профиля"
+    "profile_edit": "Профильді өңдеу"
   },
   "ChangeMainInfo": {
-    "title": "Основная информация"
+    "title": "Негізгі ақпарат"
   },
-  "first_name": "Имя",
-  "last_name": "Фамилия",
+  "ChangePassword": {
+    "change_password": "Құпиясөз өзгерту",
+    "old_password": "Ескі құпиясөз",
+    "new_password": "Жаңа құпиясөз"
+  },
+  "ProfileScreen": {
+    "whatsapp": "Барлық мәселелер бойынша",
+    "number_of_questions": "Сұрақ саны:"
+  },
+  "QuestionsScreen": {
+    "title": "Сұрақ №",
+    "submit": "Жіберу",
+    "finish": "Аяқтау",
+    "next": "Келесі"
+  },
+  "EndScreen": {
+    "earned": "Сіз жинадыңыз",
+    "from": "/",
+    "goHome": "Үйге"
+  },
+  "Rating": {
+    "chooseLesson": "Пән таңдау",
+    "allLessons": "Барлық пән",
+    "onlyFriends": "Тек достар",
+    "mastered": "Меңгерген",
+    "globalRating": "Жалпы рейтинг",
+    "friendsRating": "Достар"
+  },
+  "first_name": "Аты",
+  "last_name": "Тегі",
   "phone": "Телефон",
-  "password": "Пароль",
-  "update": "Изменить",
-  "confirm_password": "Подтвердить пароль",
+  "password": "Құпиясөз",
+  "update": "Өзгерту",
+  "confirm_password": "Құпиясөзді растау",
+  "show_more": "Көбірек көрсету",
+  "close": "Жабу",
   "Successes": {
-    "updated": "Данные обновлены!"
+    "updated": "Деректер жаңартылды!"
   },
   "Errors": {
-    "wrong_password": "Неверный пароль",
-    "required": "Міндетті өріс",
+    "wrong_password": "Құпиясөз дұрыс емес",
+    "passwords_do_not_match": "Құпиясөздер сәйкес келмейді",
+    "wrong_password_format": "Құпиясөз кем дегенде 6 таңбадан тұруы керек",
+    "required": "Міндетті жол",
     "email_wrong_format": "Қате e-mail форматы"
   }
 }

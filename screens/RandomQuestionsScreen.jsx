@@ -19,6 +19,9 @@ const RandomQuestionsScreen = ({ route, navigation }) => {
     useLazyGetRandomQuestionsByLessonIdQuery(lessonId);
   const [sendAnswer] = useSendAnswerMutation();
 
+  const [correct, setCorrect] = useState();
+  const [disabled, setDisabled] = useState(false);
+
   useEffect(async () => {
     if (lessonId) {
       try {
@@ -37,17 +40,25 @@ const RandomQuestionsScreen = ({ route, navigation }) => {
         answers: pressedBtns,
         question: questions[currentQ].id,
         test: testId,
+        question_type: "random",
       };
-      const res = await sendAnswer(body).unwrap();
+      const res = await sendAnswer(body);
 
-      if (questions.length - 1 === currentQ) {
-        navigation.replace("EndScreen", { testId, size: questions.length });
-      } else {
-        setCurrentQ((prev) => prev + 1);
-        setPressedBtns([]);
-      }
+      setDisabled(true);
+      setCorrect(res?.data?.correct);
     } catch (error) {
       console.log("PASS_ANSWER error", error);
+    }
+  };
+
+  const handleNext = () => {
+    setDisabled(false);
+
+    if (questions.length - 1 === currentQ) {
+      navigation.replace("EndScreen", { testId, size: questions.length });
+    } else {
+      setCurrentQ((prev) => prev + 1);
+      setPressedBtns([]);
     }
   };
 
@@ -85,6 +96,7 @@ const RandomQuestionsScreen = ({ route, navigation }) => {
             }}
           >
             <TouchableOpacity
+              disabled={disabled}
               onPress={() => handleOptionClick(item.id)}
               style={tw.style(
                 "p-4",
@@ -92,7 +104,13 @@ const RandomQuestionsScreen = ({ route, navigation }) => {
                 "justify-center",
                 "items-center",
                 "m-2",
-                pressedBtns.includes(item.id) ? "bg-[#002C67]" : "bg-[#9ab4d4]",
+                pressedBtns.includes(item.id)
+                  ? disabled
+                    ? correct
+                      ? "bg-green-400"
+                      : "bg-red-400"
+                    : "bg-[#002C67]"
+                  : "bg-[#9ab4d4]",
                 {
                   minHeight: 150,
                   flex: 1,
@@ -108,17 +126,27 @@ const RandomQuestionsScreen = ({ route, navigation }) => {
           </View>
         )}
       />
-      <Button
-        style={tw`mt-4`}
-        mode="contained"
-        
-        onPress={() => handleSubmit()}
-        disabled={pressedBtns.length <= 0}
-      >
-        {questions.length - 1 > currentQ
-          ? i18n.t("QuestionsScreen.submit")
-          : i18n.t("QuestionsScreen.finish")}
-      </Button>
+      {!disabled ? (
+        <Button
+          style={tw`mt-4`}
+          mode="contained"
+          onPress={() => handleSubmit()}
+          disabled={pressedBtns.length <= 0 || disabled}
+        >
+          {i18n.t("QuestionsScreen.submit")}
+        </Button>
+      ) : (
+        <Button
+          style={tw`mt-4`}
+          mode="contained"
+          onPress={() => handleNext()}
+          disabled={pressedBtns.length <= 0}
+        >
+          {questions.length - 1 > currentQ
+            ? i18n.t("QuestionsScreen.next")
+            : i18n.t("QuestionsScreen.finish")}
+        </Button>
+      )}
     </View>
   );
 };

@@ -67,7 +67,7 @@ export default function Profile({ navigation }) {
         </Card.Content>
       </Card>
       <View style={tw`flex justify-center items-center`}>
-        <Text>Кол-во вопросов: {sliderOneValue}</Text>
+        <Text>{i18n.t("ProfileScreen.number_of_questions")} {sliderOneValue}</Text>
         <View style={tw`flex flex-row justify-center items-center`}>
           <Text>10</Text>
           <View style={tw`mx-5`}>

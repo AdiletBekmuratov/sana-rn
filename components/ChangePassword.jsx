@@ -11,35 +11,59 @@ import {
 } from "react-native-paper";
 import tw from "twrnc";
 import * as Yup from "yup";
+import i18n from "../i18n";
+import { useUpdateMyPasswordMutation } from "../redux/services/authorized.service";
 
-const LoginSchema = Yup.object().shape({
-  oldPass: Yup.string().required("Міндетті өріс"),
-  newPass: Yup.string()
-    .required("Міндетті өріс")
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-      "Құпия сөз кемінде 8 таңбадан, бір үлкен әріптен, бір кіші әріптен, бір саннан және бір ерекше регистрден тұруы керек(!@#$%^&*)"
-    ),
+const ChangePassSchema = Yup.object().shape({
+  old_password: Yup.string().required(i18n.t("Errors.required")),
+  password: Yup.string()
+    .min(6, i18n.t("Errors.wrong_password_format"))
+    .required(i18n.t("Errors.required")),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password"), null], i18n.t("Errors.passwords_do_not_match"))
+    .required(i18n.t("Errors.required")),
 });
 
-const ChangePassword = ({ userData }) => {
-  const [loadingPassword, setLoadingPassword] = useState(false);
+const ChangePassword = ({ userData, setVisible, setMessage }) => {
+  const [passwordOldVisible, setPasswordOldVisible] = useState(true);
+  const [passwordVisible, setPasswordVisible] = useState(true);
+  const [passwordConfirmVisible, setPasswordConfirmVisible] = useState(true);
 
-  const [visible, setVisible] = useState(false);
-  const [message, setMessage] = useState("");
+  const [updatePassword, { isLoading, isSuccess, isError, error }] =
+    useUpdateMyPasswordMutation();
 
-  const onDismissSnackBar = () => setVisible(false);
+  const handleSubmitUpdate = async (values, { resetForm }) => {
+    const payload = {
+      old_password: values.old_password,
+      password: values.password,
+    };
 
-  const onLogin = async (values, { resetForm }) => {};
+    try {
+      const response = await updatePassword(payload);
+      console.log({ response });
+      if (response?.data) {
+        setMessage(i18n.t("Successes.updated"));
+        setVisible(true);
+      }
+    } catch (error) {
+      console.log("Update", { error });
+      setMessage(error);
+      setVisible(true);
+    }
+  };
 
   return (
     <>
       <Card>
         <Card.Content>
           <Formik
-            validationSchema={LoginSchema}
-            initialValues={{ oldPass: "", newPass: "" }}
-            onSubmit={onLogin}
+            validationSchema={ChangePassSchema}
+            initialValues={{
+              old_password: "",
+              password: "",
+              confirmPassword: "",
+            }}
+            onSubmit={handleSubmitUpdate}
           >
             {({
               handleChange,
@@ -50,53 +74,98 @@ const ChangePassword = ({ userData }) => {
               touched,
             }) => (
               <View>
-                <Title style={tw`mb-4`}>Құпия сөз өзгерту</Title>
+                <Title style={tw`mb-4`}>
+                  {i18n.t("ChangePassword.change_password")}
+                </Title>
 
                 <TextInput
-                  label="Ескі құпия сөз"
+                  label={i18n.t("ChangePassword.old_password")}
                   mode="outlined"
                   dense={true}
-                  onBlur={handleBlur("oldPass")}
-                  secureTextEntry
-                  onChangeText={handleChange("oldPass")}
-                  value={values.oldPass}
+                  onBlur={handleBlur("old_password")}
+                  secureTextEntry={passwordOldVisible}
+                  onChangeText={handleChange("old_password")}
+                  value={values.old_password}
+                  right={
+                    <TextInput.Icon
+                      name={passwordOldVisible ? "eye" : "eye-off"}
+                      onPress={() => setPasswordOldVisible(!passwordOldVisible)}
+                    />
+                  }
                   left={<TextInput.Icon name={"asterisk"} />}
-                  error={!!errors.oldPass && !!touched.oldPass}
+                  error={!!errors.old_password && !!touched.old_password}
                 />
-                {!!errors.oldPass && !!touched.oldPass && (
+                {!!errors.old_password && !!touched.old_password && (
                   <HelperText
                     type="error"
-                    visible={!!errors.oldPass && !!touched.oldPass}
+                    visible={!!errors.old_password && !!touched.old_password}
                   >
-                    {errors.oldPass}
+                    {errors.old_password}
                   </HelperText>
                 )}
 
                 <TextInput
                   style={tw`mt-2`}
-                  label="Жаңа құпия сөз"
+                  label={i18n.t("ChangePassword.new_password")}
                   mode="outlined"
                   dense={true}
-                  secureTextEntry
-                  onBlur={handleBlur("newPass")}
-                  onChangeText={handleChange("newPass")}
-                  value={values.newPass}
+                  secureTextEntry={passwordVisible}
+                  onBlur={handleBlur("password")}
+                  onChangeText={handleChange("password")}
+                  value={values.password}
                   left={<TextInput.Icon name={"lock"} />}
-                  error={!!errors.newPass && !!touched.newPass}
+                  right={
+                    <TextInput.Icon
+                      name={passwordVisible ? "eye" : "eye-off"}
+                      onPress={() => setPasswordVisible(!passwordVisible)}
+                    />
+                  }
+                  error={!!errors.password && !!touched.password}
                 />
-                {!!errors.newPass && !!touched.newPass && (
+                {!!errors.password && !!touched.password && (
                   <HelperText
                     type="error"
-                    visible={!!errors.newPass && !!touched.newPass}
+                    visible={!!errors.password && !!touched.password}
                   >
-                    {errors.newPass}
+                    {errors.password}
+                  </HelperText>
+                )}
+
+                <TextInput
+                  style={tw`mt-2`}
+                  label={i18n.t("confirm_password")}
+                  mode="outlined"
+                  dense={true}
+                  secureTextEntry={passwordConfirmVisible}
+                  onBlur={handleBlur("confirmPassword")}
+                  onChangeText={handleChange("confirmPassword")}
+                  value={values.confirmPassword}
+                  left={<TextInput.Icon name={"lock"} />}
+                  right={
+                    <TextInput.Icon
+                      name={passwordConfirmVisible ? "eye" : "eye-off"}
+                      onPress={() =>
+                        setPasswordConfirmVisible(!passwordConfirmVisible)
+                      }
+                    />
+                  }
+                  error={!!errors.confirmPassword && !!touched.confirmPassword}
+                />
+                {!!errors.confirmPassword && !!touched.confirmPassword && (
+                  <HelperText
+                    type="error"
+                    visible={
+                      !!errors.confirmPassword && !!touched.confirmPassword
+                    }
+                  >
+                    {errors.confirmPassword}
                   </HelperText>
                 )}
 
                 <Button
                   style={tw`mt-4`}
-                  loading={loadingPassword}
-                  disabled={loadingPassword}
+                  loading={isLoading}
+                  disabled={isLoading}
                   mode="contained"
                   onPress={handleSubmit}
                   color="#002C67"
@@ -108,15 +177,6 @@ const ChangePassword = ({ userData }) => {
           </Formik>
         </Card.Content>
       </Card>
-      <View style={tw`w-full`}>
-        <Snackbar
-          duration={3000}
-          visible={visible}
-          onDismiss={onDismissSnackBar}
-        >
-          {message}
-        </Snackbar>
-      </View>
     </>
   );
 };

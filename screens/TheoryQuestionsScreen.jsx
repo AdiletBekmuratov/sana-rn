@@ -56,6 +56,13 @@ const TheoryQuestionsScreen = ({ route, navigation }) => {
     }
   };
 
+  const hideAnswer = async (questionId, index) => {
+    let newArrAnswers = answers.filter((x) => x.id !== questionId);
+    let newArrShowEye = showEye.filter((x) => x !== index);
+    setAnwers(newArrAnswers);
+    setShowEye(newArrShowEye);
+  };
+
   useEffect(async () => {
     await getData();
   }, []);
@@ -90,7 +97,7 @@ const TheoryQuestionsScreen = ({ route, navigation }) => {
               index !== 0 ? "mt-4" : ""
             }`}
           >
-            <Card style={tw`${showEye.includes(index) ? "w-full" : "w-[88%]"}`}>
+            <Card style={tw`${"w-[88%]"}`}>
               <Card.Content>
                 <Text style={tw`text-lg font-semibold`}>
                   {index + 1}) {item.question}
@@ -102,14 +109,17 @@ const TheoryQuestionsScreen = ({ route, navigation }) => {
                 )}
               </Card.Content>
             </Card>
-            {!showEye.includes(index) && (
+            {!showEye.includes(index) ? (
               <IconButton
                 onPress={() => showAnswer(item.id, index)}
-                disabled={showEye.includes(index)}
                 icon="eye"
-                style={tw`${
-                  showEye.includes(index) ? "hidden" : "w-[12%]"
-                } bg-white `}
+                style={tw`w-12 h-12 rounded-full bg-white`}
+              />
+            ) : (
+              <IconButton
+                onPress={() => hideAnswer(item.id, index)}
+                icon="eye-off"
+                style={tw`w-12 h-12 rounded-full bg-white`}
               />
             )}
           </View>

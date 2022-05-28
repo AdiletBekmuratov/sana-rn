@@ -33,8 +33,14 @@
   "ChangeMainInfo": {
     "title": "Основная информация"
   },
+  "ChangePassword": {
+    "change_password": "Құпиясөз өзгерту",
+    "old_password": "Ескі құпиясөз",
+    "new_password": "Жаңа құпиясөз"
+  },
   "ProfileScreen": {
-    "whatsapp": "По всем вопросам"
+    "whatsapp": "По всем вопросам",
+    "number_of_questions": "Кол-во вопросов:"
   },
   "QuestionsScreen": {
     "title": "Вопрос №",

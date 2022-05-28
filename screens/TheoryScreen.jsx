@@ -8,6 +8,8 @@ import { useGetTheoryLessonsQuery } from "../redux/services/authorized.service";
 const TheoryScreen = ({ navigation }) => {
   const { data, error, isLoading, isError } = useGetTheoryLessonsQuery();
 
+	console.log(data);
+
   if (isLoading) {
     return <Spinner />;
   }

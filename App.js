@@ -7,7 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
   useEffect(async () => {
-    i18n.locale = (await AsyncStorage.getItem("locale")) ?? "ru";
+    i18n.locale = (await AsyncStorage.getItem("locale")) ?? "kz";
   }, []);
 
   return (

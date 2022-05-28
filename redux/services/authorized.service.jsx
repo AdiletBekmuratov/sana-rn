@@ -16,6 +16,7 @@ export const authorizedApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["QuestionQuantity"],
     }),
+
     getMe: builder.query({
       query: () => ({
         url: "/user/me/",
@@ -30,6 +31,14 @@ export const authorizedApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["UserInfo"],
     }),
+    updateMyPassword: builder.mutation({
+      query: (body) => ({
+        url: "/user/change-password/",
+        method: "PATCH",
+        body,
+      }),
+    }),
+
     getTheoryLessons: builder.query({
       query: () => ({
         url: "/lessons/theory/",
@@ -145,6 +154,7 @@ export const authorizedApi = baseApi.injectEndpoints({
 export const {
   useGetMeQuery,
   useUpdateMeMutation,
+  useUpdateMyPasswordMutation,
 
   useGetQuestionQuantityQuery,
   useUpdateQuestionQuantityMutation,
