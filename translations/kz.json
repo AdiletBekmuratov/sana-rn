@@ -2,7 +2,14 @@
   "LoginScreen": {
     "login": "Кіру",
     "noAccount": "Әлі аккаунтыңыз жоқ па? Тіркелу",
-    "enter": "Кіру"
+    "enter": "Кіру",
+    "forgotPassword": "Құпия сөзіңізді ұмыттыңыз ба?"
+  },
+  "ForgotPasswordDialog": {
+    "codeSent": "Сіздің почтаңызға код жіберілді!",
+    "enterNewPassword": "Жаңа құпия сөз еңгізіңіз. Құпия сөз ұзындығы кемінде 6 символ болуы керек.",
+    "passwordChangeSuccess": "Құпия сөз сәтті өзгертілді!",
+		"resetPasswordTitle": "Құпия сөзді қалпына келтіру"
   },
   "RegisterScreen": {
     "register": "Тіркеу",
@@ -35,8 +42,8 @@
   },
   "ChangePassword": {
     "change_password": "Құпиясөз өзгерту",
-    "old_password": "Ескі құпиясөз",
-    "new_password": "Жаңа құпиясөз"
+    "old_password": "Ескі құпия сөз",
+    "new_password": "Жаңа құпия сөз"
   },
   "ProfileScreen": {
     "whatsapp": "Барлық мәселелер бойынша",
@@ -64,18 +71,21 @@
   "first_name": "Аты",
   "last_name": "Тегі",
   "phone": "Телефон",
-  "password": "Құпиясөз",
+  "password": "Құпия сөз",
   "update": "Өзгерту",
-  "confirm_password": "Құпиясөзді растау",
+  "confirm_password": "Құпия сөзді растау",
   "show_more": "Көбірек көрсету",
   "close": "Жабу",
+  "submit": "Жіберу",
+	"change": "Өзгерту",
+	"code": "Код",
   "Successes": {
     "updated": "Деректер жаңартылды!"
   },
   "Errors": {
-    "wrong_password": "Құпиясөз дұрыс емес",
-    "passwords_do_not_match": "Құпиясөздер сәйкес келмейді",
-    "wrong_password_format": "Құпиясөз кем дегенде 6 таңбадан тұруы керек",
+    "wrong_password": "Құпия сөз дұрыс емес",
+    "passwords_do_not_match": "Құпия сөздер сәйкес келмейді",
+    "wrong_password_format": "Құпия сөз кем дегенде 6 таңбадан тұруы керек",
     "required": "Міндетті жол",
     "email_wrong_format": "Қате e-mail форматы"
   }

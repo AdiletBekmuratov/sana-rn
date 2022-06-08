@@ -3,8 +3,10 @@ import React, { useEffect, useState } from "react";
 import { View, Linking } from "react-native";
 import {
   Button,
+  Dialog,
   Headline,
   HelperText,
+  Portal,
   Snackbar,
   Text,
   TextInput,
@@ -16,6 +18,7 @@ import Spinner from "../components/Spinner";
 import { login } from "../redux/slices/auth.js";
 import i18n from "../i18n";
 import { SafeAreaView } from "react-native-safe-area-context";
+import PasswordReset from "../components/PasswordReset";
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string()
@@ -27,6 +30,7 @@ const LoginSchema = Yup.object().shape({
 const Login = ({ navigation }) => {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
+  const [visibleDialog, setVisibleDialog] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(true);
 
   const { user, isLoading, isError, isSuccess, message } = useSelector(
@@ -50,12 +54,24 @@ const Login = ({ navigation }) => {
     resetForm();
   };
 
+  const handleOpenDialog = () => {
+    setVisibleDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setVisibleDialog(false);
+  };
+
   if (isLoading) {
     return <Spinner />;
   }
 
   return (
     <SafeAreaView style={tw`h-full flex-1 p-5 justify-end bg-gray-100`}>
+      <PasswordReset
+        visibleDialog={visibleDialog}
+        handleCloseDialog={handleCloseDialog}
+      />
       <View style={tw`flex-1 justify-center`}>
         <Headline style={tw`font-bold mb-4 text-center uppercase`}>
           {i18n.t("LoginScreen.login")}
@@ -127,6 +143,9 @@ const Login = ({ navigation }) => {
             </View>
           )}
         </Formik>
+        <Text style={tw`mt-2 text-right`} onPress={() => handleOpenDialog()}>
+          {i18n.t("LoginScreen.forgotPassword")}
+        </Text>
         <Text
           style={tw`mt-6 text-center`}
           onPress={() => navigation.replace("Register")}
