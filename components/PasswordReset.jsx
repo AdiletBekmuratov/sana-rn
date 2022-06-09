@@ -74,7 +74,7 @@ export default function PasswordReset({ visibleDialog, handleCloseDialog }) {
   };
 
   const handleGeneratePassword = async () => {
-    await generateOTP({ email })
+    await generateOTP({ email: email.trim().toLowerCase() })
       .unwrap()
       .then((res) => {
         console.log({ res });
@@ -89,7 +89,7 @@ export default function PasswordReset({ visibleDialog, handleCloseDialog }) {
   };
 
   const handleCheckOTP = async () => {
-    await checkOTP({ email, otp })
+    await checkOTP({ email: email.trim().toLowerCase(), otp: otp.trim() })
       .unwrap()
       .then((res) => {
         console.log({ res });
@@ -106,7 +106,10 @@ export default function PasswordReset({ visibleDialog, handleCloseDialog }) {
   };
 
   const handleChangePasswordOTP = async () => {
-    await changeOTP({ email, password: newPass })
+    await changeOTP({
+      email: email.trim().toLowerCase(),
+      password: newPass.trim(),
+    })
       .unwrap()
       .then((res) => {
         console.log({ res });
@@ -140,7 +143,6 @@ export default function PasswordReset({ visibleDialog, handleCloseDialog }) {
               label="Email"
               mode="outlined"
               dense={true}
-              keyboardType="email-address"
               value={email}
               onChangeText={handleEmailChange}
             />

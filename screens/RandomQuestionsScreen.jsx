@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, TouchableOpacity, View } from "react-native";
+import { FlatList, TouchableOpacity, View, Vibration } from "react-native";
 import { Button, Headline, Subheading, Text } from "react-native-paper";
 import tw from "twrnc";
 import Spinner from "../components/Spinner";
@@ -46,6 +46,9 @@ const RandomQuestionsScreen = ({ route, navigation }) => {
 
       setDisabled(true);
       setCorrect(res?.data?.correct);
+			if (!res?.data?.correct) {
+        Vibration.vibrate();
+      }
     } catch (error) {
       console.log("PASS_ANSWER error", error);
     }
