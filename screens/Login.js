@@ -95,7 +95,6 @@ const Login = ({ navigation }) => {
                 mode="outlined"
                 dense={true}
                 onBlur={handleBlur("username")}
-                keyboardType="email-address"
                 onChangeText={handleChange("username")}
                 value={values.username}
                 left={<TextInput.Icon name={"email"} />}

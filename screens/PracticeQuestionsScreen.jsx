@@ -34,10 +34,10 @@ const PracticeQuestionsScreen = ({ route, navigation }) => {
     }
   }, [topicId]);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (pressedSingle) => {
     try {
       const body = {
-        answers: pressedBtns,
+        answers: pressedSingle ?? pressedBtns,
         question: questions[currentQ].id,
         test: testId,
         question_type: "practice",
@@ -50,6 +50,10 @@ const PracticeQuestionsScreen = ({ route, navigation }) => {
     } catch (error) {
       console.log("PASS_ANSWER error", error);
     }
+  };
+
+  const handleFinish = () => {
+    navigation.replace("EndScreen", { testId, size: currentQ + 1 });
   };
 
   const handleNext = () => {
@@ -71,6 +75,7 @@ const PracticeQuestionsScreen = ({ route, navigation }) => {
         setPressedBtns([...pressedBtns, id]);
       } else {
         setPressedBtns([id]);
+        handleSubmit([id]);
       }
     }
   };
@@ -105,12 +110,12 @@ const PracticeQuestionsScreen = ({ route, navigation }) => {
                 "justify-center",
                 "items-center",
                 "m-2",
-                pressedBtns.includes(item.id)
-                  ? disabled
-                    ? correct
-                      ? "bg-green-400"
-                      : "bg-red-400"
-                    : "bg-[#002C67]"
+                disabled
+                  ? item.correct
+                    ? "bg-green-400"
+                    : "bg-red-400"
+                  : pressedBtns.includes(item.id)
+                  ? "bg-[#002C67]"
                   : "bg-[#9ab4d4]",
                 {
                   minHeight: 150,
@@ -128,25 +133,39 @@ const PracticeQuestionsScreen = ({ route, navigation }) => {
         )}
       />
       {!disabled ? (
-        <Button
-          style={tw`mt-4`}
-          mode="contained"
-          onPress={() => handleSubmit()}
-          disabled={pressedBtns.length <= 0 || disabled}
-        >
-          {i18n.t("QuestionsScreen.submit")}
-        </Button>
+        questions[currentQ]?.multichoice && (
+          <Button
+            style={tw`mt-4`}
+            mode="contained"
+            onPress={() => handleSubmit()}
+            disabled={pressedBtns.length <= 0 || disabled}
+          >
+            {i18n.t("QuestionsScreen.submit")}
+          </Button>
+        )
       ) : (
-        <Button
-          style={tw`mt-4`}
-          mode="contained"
-          onPress={() => handleNext()}
-          disabled={pressedBtns.length <= 0}
-        >
-          {questions.length - 1 > currentQ
-            ? i18n.t("QuestionsScreen.next")
-            : i18n.t("QuestionsScreen.finish")}
-        </Button>
+        <>
+          {questions.length - 1 > currentQ && (
+            <Button
+              style={tw`mt-4`}
+              mode="contained"
+              onPress={() => handleFinish()}
+              disabled={pressedBtns.length <= 0}
+            >
+              {i18n.t("QuestionsScreen.finish")}
+            </Button>
+          )}
+          <Button
+            style={tw`mt-4`}
+            mode="contained"
+            onPress={() => handleNext()}
+            disabled={pressedBtns.length <= 0}
+          >
+            {questions.length - 1 > currentQ
+              ? i18n.t("QuestionsScreen.next")
+              : i18n.t("QuestionsScreen.finish")}
+          </Button>
+        </>
       )}
     </View>
   );

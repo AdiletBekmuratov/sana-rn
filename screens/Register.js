@@ -99,7 +99,6 @@ const Register = ({ navigation }) => {
               <TextInput
                 label="Email"
                 mode="outlined"
-                keyboardType="email-address"
                 dense={true}
                 onBlur={handleBlur("email")}
                 onChangeText={handleChange("email")}
