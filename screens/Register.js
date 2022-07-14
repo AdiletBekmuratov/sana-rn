@@ -101,7 +101,7 @@ const Register = ({ navigation }) => {
                 mode="outlined"
                 dense={true}
                 onBlur={handleBlur("email")}
-                onChangeText={handleChange("email")}
+                onChangeText={(val) => setFieldValue("email", val.trim())}
                 value={values.email}
                 left={<TextInput.Icon name={"email"} />}
                 error={!!errors.email && !!touched.email}

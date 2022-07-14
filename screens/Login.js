@@ -1,24 +1,20 @@
 import { Formik } from "formik";
-import React, { useEffect, useState } from "react";
-import { View, Linking } from "react-native";
+import { useEffect, useState } from "react";
+import { Linking, View } from "react-native";
 import {
-  Button,
-  Dialog,
-  Headline,
-  HelperText,
-  Portal,
-  Snackbar,
-  Text,
-  TextInput,
+	Button, Headline,
+	HelperText, Snackbar,
+	Text,
+	TextInput
 } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import tw from "twrnc";
 import * as Yup from "yup";
-import Spinner from "../components/Spinner";
-import { login } from "../redux/slices/auth.js";
-import i18n from "../i18n";
-import { SafeAreaView } from "react-native-safe-area-context";
 import PasswordReset from "../components/PasswordReset";
+import Spinner from "../components/Spinner";
+import i18n from "../i18n";
+import { login } from "../redux/slices/auth.js";
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string()
@@ -88,6 +84,7 @@ const Login = ({ navigation }) => {
             values,
             errors,
             touched,
+            setFieldValue,
           }) => (
             <View>
               <TextInput
@@ -95,7 +92,7 @@ const Login = ({ navigation }) => {
                 mode="outlined"
                 dense={true}
                 onBlur={handleBlur("username")}
-                onChangeText={handleChange("username")}
+                onChangeText={(val) => setFieldValue("username", val.trim())}
                 value={values.username}
                 left={<TextInput.Icon name={"email"} />}
                 error={!!errors.username && !!touched.username}
@@ -142,7 +139,7 @@ const Login = ({ navigation }) => {
             </View>
           )}
         </Formik>
-        <Text style={tw`mt-2 text-right`} onPress={() => handleOpenDialog()}>
+        <Text style={tw`mt-2 text-center`} onPress={() => handleOpenDialog()}>
           {i18n.t("LoginScreen.forgotPassword")}
         </Text>
         <Text

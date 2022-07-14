@@ -2,7 +2,7 @@
   "expo": {
     "name": "Sana",
     "slug": "sana",
-    "version": "4.0.0",
+    "version": "4.1.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -17,10 +17,10 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "app.kz.qsana",
-			"buildNumber": "3"
+			"buildNumber": "5"
     },
     "android": {
-      "versionCode": 82,
+      "versionCode": 84,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
