@@ -63,7 +63,6 @@ export const addUser = createAsyncThunk("auth/addUser", async () => {
   const user = jsonValue != null ? JSON.parse(jsonValue) : null;
   if (user) {
     const decodedJwt = jwt_decode(user.refresh);
-    console.log(decodedJwt.exp * 1000 < Date.now());
     if (decodedJwt.exp * 1000 < Date.now()) {
       await AsyncStorage.removeItem("user");
       return null;
@@ -71,6 +70,13 @@ export const addUser = createAsyncThunk("auth/addUser", async () => {
   }
   return user;
 });
+
+export const addMessage = createAsyncThunk(
+  "auth/addMessage",
+  (data, thunkApi) => {
+    return data;
+  }
+);
 
 export const authSlice = createSlice({
   name: "auth",
@@ -82,9 +88,15 @@ export const authSlice = createSlice({
       state.isError = false;
       state.message = "";
     },
+    clearMessage: (state) => {
+      state.message = "";
+    },
   },
   extraReducers: (builder) => {
     builder
+      .addCase(addMessage.fulfilled, (state, action) => {
+        state.message = action.payload;
+      })
       .addCase(addUser.fulfilled, (state, action) => {
         state.user = action.payload;
         state.isLoading = false;
@@ -133,5 +145,5 @@ export const authSlice = createSlice({
   },
 });
 
-export const { reset } = authSlice.actions;
+export const { reset, clearMessage } = authSlice.actions;
 export default authSlice.reducer;

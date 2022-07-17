@@ -63,8 +63,11 @@ const TheoryQuestionsScreen = ({ route, navigation }) => {
     setShowEye(newArrShowEye);
   };
 
-  useEffect(async () => {
-    await getData();
+  useEffect(() => {
+    const getInitialData = async () => {
+      await getData();
+    };
+		getInitialData()
   }, []);
 
   if (isLoading) {

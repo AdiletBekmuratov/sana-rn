@@ -1,69 +1,95 @@
+import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
-import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
+import {
+  Dimensions,
+  FlatList,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import tw from "twrnc";
 import i18n from "../i18n";
+import grads from "../utils/grads";
+
+const windowWidth = Dimensions.get("window").width;
 
 const buttons = [
   {
     id: "1",
     title: i18n.t("MainStack.theory"),
-    image: require("../assets/Theory.png"),
+    image: require("../assets/main-page-icons/theory.png"),
     screen: "TheoryScreen",
+    grad: grads["blue"],
     disabled: false,
   },
   {
     id: "2",
     title: i18n.t("MainStack.practice"),
-    image: require("../assets/Practice.png"),
+    image: require("../assets/main-page-icons/practice.png"),
     screen: "PracticeScreen",
+    grad: grads["orange"],
     disabled: false,
   },
   {
     id: "3",
     title: i18n.t("MainStack.random"),
-    image: require("../assets/Random.png"),
+    image: require("../assets/main-page-icons/random.png"),
     screen: "RandomScreen",
+    grad: grads["green"],
     disabled: false,
   },
   {
     id: "4",
     title: i18n.t("MainStack.challenge"),
-    image: require("../assets/Challenge.png"),
+    image: require("../assets/main-page-icons/challenge.png"),
     screen: "СhallengeScreen",
+    grad: grads["red"],
     disabled: true,
   },
 ];
 
 export default function Home({ navigation }) {
   return (
-    <View style={tw`h-full flex-1 px-5 justify-center bg-gray-100`}>
+    <View style={tw`flex-1 bg-gray-100 px-5 pb-5`}>
+      <Image
+        style={{
+          width: windowWidth - 40,
+          height: 150,
+          resizeMode: "contain",
+        }}
+        source={require("../assets/main-page-icons/girl.png")}
+      />
+
       <FlatList
         style={tw`w-full`}
         data={buttons}
         keyExtractor={(item) => item.id}
         numColumns={2}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <TouchableOpacity
             onPress={() => navigation.navigate(item.screen)}
             style={tw.style(
-              "p-4",
-              "bg-[#002C67] m-2",
-              "rounded",
+              `m-2 bg-white rounded-lg shadow-md ${index <= 1 ? "mt-0" : ""} `,
               `${item.disabled ? "opacity-50" : ""}`,
               {
                 flex: 0.5,
-                height: 260,
               }
             )}
             disabled={item.disabled}
           >
-            <View>
-              <Text style={tw`text-lg font-bold text-white`}>{item.title}</Text>
+            <LinearGradient
+              style={tw`py-4 px-4 rounded-lg`}
+              colors={item.grad}
+              start={{ x: 0.0, y: 0.0 }}
+              end={{ x: 0.0, y: 1.0 }}
+            >
               <Image
-                style={{ resizeMode: "cover", width: 140, height: 200 }}
+                style={{ resizeMode: "contain", width: 48, height: 48 }}
                 source={item.image}
               />
-            </View>
+              <Text style={tw`text-white text-lg mt-6`}>{item.title}</Text>
+            </LinearGradient>
           </TouchableOpacity>
         )}
       />

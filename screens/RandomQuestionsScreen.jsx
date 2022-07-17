@@ -22,22 +22,25 @@ const RandomQuestionsScreen = ({ route, navigation }) => {
   const [correct, setCorrect] = useState();
   const [disabled, setDisabled] = useState(false);
 
-  useEffect(async () => {
-    if (lessonId) {
-      try {
-        const response = await getQuestions(lessonId).unwrap();
-        setTestId(response.test);
-        setQuestions(response.questions);
-      } catch (error) {
-        console.log("ERR RAND QUESTIONS", error);
+  useEffect(() => {
+    const getAllQuestions = async () => {
+      if (lessonId) {
+        try {
+          const response = await getQuestions(lessonId).unwrap();
+          setTestId(response.test);
+          setQuestions(response.questions);
+        } catch (error) {
+          console.log("ERR RAND QUESTIONS", error);
+        }
       }
-    }
+    };
+    getAllQuestions();
   }, [lessonId]);
 
   const handleSubmit = async (pressedSingle) => {
     try {
       const body = {
-        answers:  pressedSingle ?? pressedBtns,
+        answers: pressedSingle ?? pressedBtns,
         question: questions[currentQ].id,
         test: testId,
         question_type: "random",
@@ -46,7 +49,7 @@ const RandomQuestionsScreen = ({ route, navigation }) => {
 
       setDisabled(true);
       setCorrect(res?.data?.correct);
-			if (!res?.data?.correct) {
+      if (!res?.data?.correct) {
         Vibration.vibrate();
       }
     } catch (error) {
@@ -54,7 +57,7 @@ const RandomQuestionsScreen = ({ route, navigation }) => {
     }
   };
 
-	const handleFinish = () => {
+  const handleFinish = () => {
     navigation.replace("EndScreen", { testId, size: currentQ + 1 });
   };
 

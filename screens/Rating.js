@@ -77,8 +77,11 @@ export default function Rating() {
     getData(1);
   }, [lesson]);
 
-  useEffect(async () => {
-    await getData(1);
+  useEffect(() => {
+    const getInitialData = async () => {
+      await getData(1);
+    };
+    getInitialData();
   }, []);
 
   const addFriendHandler = async (id) => {

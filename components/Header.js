@@ -13,18 +13,21 @@ const Header = ({ title, rightButton, navigation, routeName }) => {
   };
 
   return (
-    <SafeAreaView style={tw`bg-gray-100`}>
+    <SafeAreaView style={tw`bg-white dark:bg-black`}>
       <View
-        style={tw`flex-row justify-between items-center h-[80px] p-6 bg-gray-100`}
+        style={tw`flex-row ${
+          rightButton ? "justify-center" : "justify-start"
+        } items-center h-[80px] p-5 bg-gray-100 relative`}
       >
-        <Headline style={tw`text-xl font-bold`}>{title}</Headline>
         {rightButton && (
           <IconButton
             icon="chevron-left"
-            style={tw`bg-white`}
+            style={tw`absolute left-5`}
             onPress={navigation.goBack}
           />
         )}
+        <Headline style={tw`text-xl`}>{title}</Headline>
+        <View></View>
         {routeName === "Profile" && (
           <IconButton icon="logout" style={tw`bg-white`} onPress={logOut} />
         )}

@@ -17,12 +17,12 @@
     "enter": "Бастау"
   },
   "BottomBar": {
-    "main_page": "Басты бет",
+    "main_page": "Оқу",
     "rating": "Рейтинг",
     "profile": "Профиль"
   },
   "MainStack": {
-    "main_page": "Басты бет",
+    "main_page": "Оқу",
     "theory": "Теория",
     "grade": "Сынып",
     "questions": "Сұрақтар",

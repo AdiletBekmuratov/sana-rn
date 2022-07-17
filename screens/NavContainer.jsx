@@ -1,14 +1,19 @@
 import { NavigationContainer } from "@react-navigation/native";
 import AuthVerify from "../components/AuthVerify";
 import React, { useEffect } from "react";
-import { KeyboardAvoidingView, Platform } from "react-native";
-import { Provider as PaperProvider, DefaultTheme } from "react-native-paper";
+import { KeyboardAvoidingView, Platform, View } from "react-native";
+import {
+  Provider as PaperProvider,
+  DefaultTheme,
+  Snackbar,
+} from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import Spinner from "../components/Spinner";
-import { addUser } from "../redux/slices/auth";
+import { addUser, clearMessage } from "../redux/slices/auth";
 import AuthStack from "../stacks/AuthStack";
 import BottomBar from "../stacks/BottomBar";
+import tw from "twrnc";
 
 const theme = {
   ...DefaultTheme,
@@ -25,6 +30,7 @@ export default function NavContainer() {
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
+  const onDismissSnackBar = () => dispatch(clearMessage());
 
   useEffect(() => {
     dispatch(addUser());
@@ -42,6 +48,19 @@ export default function NavContainer() {
             style={{ flex: 1 }}
           >
             {user === null ? <AuthStack /> : <BottomBar />}
+            <View style={tw`w-full px-5 items-center`}>
+              <Snackbar
+                duration={3000}
+                visible={
+                  message !== null &&
+                  message !== undefined &&
+                  message.length > 0
+                }
+                onDismiss={onDismissSnackBar}
+              >
+                {message}
+              </Snackbar>
+            </View>
             <AuthVerify />
           </KeyboardAvoidingView>
         </SafeAreaProvider>

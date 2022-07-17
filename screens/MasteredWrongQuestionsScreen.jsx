@@ -25,19 +25,22 @@ const MasteredWrongQuestionsScreen = ({ route, navigation }) => {
   const [correct, setCorrect] = useState();
   const [disabled, setDisabled] = useState(false);
 
-  useEffect(async () => {
-    if (lessonId) {
-      try {
-        const response = await getQuestions({
-          lesson: lessonId,
-          url: mastered ? "mastered" : "wrong",
-        }).unwrap();
-        setTestId(response.test);
-        setQuestions(response.questions);
-      } catch (error) {
-        console.log("ERR PRAC QUESTIONS", error);
+  useEffect(() => {
+    const getAllQuestions = async () => {
+      if (lessonId) {
+        try {
+          const response = await getQuestions({
+            lesson: lessonId,
+            url: mastered ? "mastered" : "wrong",
+          }).unwrap();
+          setTestId(response.test);
+          setQuestions(response.questions);
+        } catch (error) {
+          console.log("ERR PRAC QUESTIONS", error);
+        }
       }
-    }
+    };
+		getAllQuestions()
   }, [lessonId]);
 
   const handleSubmit = async (pressedSingle) => {
@@ -52,7 +55,7 @@ const MasteredWrongQuestionsScreen = ({ route, navigation }) => {
 
       setDisabled(true);
       setCorrect(res?.data?.correct);
-			if (!res?.data?.correct) {
+      if (!res?.data?.correct) {
         Vibration.vibrate();
       }
     } catch (error) {
@@ -60,7 +63,7 @@ const MasteredWrongQuestionsScreen = ({ route, navigation }) => {
     }
   };
 
-	const handleFinish = () => {
+  const handleFinish = () => {
     navigation.replace("EndScreen", { testId, size: currentQ + 1 });
   };
 

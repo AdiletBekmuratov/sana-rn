@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, TouchableOpacity, View, Vibration } from "react-native";
+import { FlatList, TouchableOpacity, Vibration, View } from "react-native";
+import { MathJaxSvg } from "react-native-mathjax-html-to-svg";
 import { Button, Headline, Subheading, Text } from "react-native-paper";
 import tw from "twrnc";
 import Spinner from "../components/Spinner";
@@ -11,6 +12,7 @@ import {
 
 const PracticeQuestionsScreen = ({ route, navigation }) => {
   const { topicId } = route.params;
+  const [isLatex, setIsLatex] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [testId, setTestId] = useState();
   const [currentQ, setCurrentQ] = useState(0);
@@ -22,16 +24,20 @@ const PracticeQuestionsScreen = ({ route, navigation }) => {
   const [correct, setCorrect] = useState();
   const [disabled, setDisabled] = useState(false);
 
-  useEffect(async () => {
-    if (topicId) {
-      try {
-        const response = await getQuestions(topicId).unwrap();
-        setTestId(response.test);
-        setQuestions(response.questions);
-      } catch (error) {
-        console.log("ERR PRAC QUESTIONS", error);
+  useEffect(() => {
+    const getAllQuestions = async () => {
+      if (topicId) {
+        try {
+          const response = await getQuestions(topicId).unwrap();
+          setIsLatex(response?.math);
+          setTestId(response.test);
+          setQuestions(response.questions);
+        } catch (error) {
+          console.log("ERR PRAC QUESTIONS", error);
+        }
       }
-    }
+    };
+    getAllQuestions();
   }, [topicId]);
 
   const handleSubmit = async (pressedSingle) => {
@@ -127,9 +133,20 @@ const PracticeQuestionsScreen = ({ route, navigation }) => {
               )}
             >
               <View>
-                <Text style={tw`text-lg font-bold text-white`}>
-                  {item.answer}
-                </Text>
+                {isLatex ? (
+                  <MathJaxSvg
+                    fontSize={16}
+                    color="#000000"
+                    fontCache={true}
+                    // style={tw`text-lg font-bold text-white`}
+                  >
+                    {item.answer}
+                  </MathJaxSvg>
+                ) : (
+                  <Text style={tw`text-lg font-bold text-white`}>
+                    {item.answer}
+                  </Text>
+                )}
               </View>
             </TouchableOpacity>
           </View>

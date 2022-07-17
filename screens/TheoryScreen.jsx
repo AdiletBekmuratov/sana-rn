@@ -4,11 +4,10 @@ import { Card, Text } from "react-native-paper";
 import tw from "twrnc";
 import Spinner from "../components/Spinner";
 import { useGetTheoryLessonsQuery } from "../redux/services/authorized.service";
+import CustomButton from "../components/ui/CustomButton";
 
-const TheoryScreen = ({ navigation }) => {
+const TheoryScreen = ({ route, navigation }) => {
   const { data, error, isLoading, isError } = useGetTheoryLessonsQuery();
-
-	console.log(data);
 
   if (isLoading) {
     return <Spinner />;
@@ -19,22 +18,18 @@ const TheoryScreen = ({ navigation }) => {
       <FlatList
         data={data}
         renderItem={({ item, index }) => (
-          <TouchableOpacity
+          <CustomButton
             onPress={() =>
-              navigation.navigate("TheoryGradeScreen", { lessonId: item.id })
+              navigation.navigate("TheoryGradeScreen", {
+                lessonId: item.id,
+              })
             }
             disabled={!item.available}
+            style={`${index !== 0 ? "mt-4" : ""}`}
+            textPosition="items-start"
           >
-            <Card
-              style={tw`${index !== 0 ? "mt-4" : ""} ${
-                !item.available ? "opacity-50" : ""
-              }`}
-            >
-              <Card.Content>
-                <Text style={tw`text-lg font-bold`}>{item.name}</Text>
-              </Card.Content>
-            </Card>
-          </TouchableOpacity>
+            {item.name}
+          </CustomButton>
         )}
       />
     </View>
