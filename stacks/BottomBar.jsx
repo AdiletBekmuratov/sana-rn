@@ -14,6 +14,7 @@ export default function BottomBar() {
   return (
     <Tab.Navigator
       screenOptions={{
+				tabBarHideOnKeyboard: true,
         header: ({ navigation, route, options, back }) => {
           const title = getHeaderTitle(options, route.name);
 

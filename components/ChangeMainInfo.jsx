@@ -3,12 +3,23 @@ import { Formik } from "formik";
 import React, { useState } from "react";
 import { View } from "react-native";
 import MaskInput from "react-native-mask-input";
-import { Button, Card, HelperText, TextInput, Title } from "react-native-paper";
+import {
+  Button,
+  Card,
+  HelperText,
+  Text,
+  TextInput,
+  Title,
+} from "react-native-paper";
 import tw from "twrnc";
 import * as Yup from "yup";
 import { API_URL } from "../redux/http";
 import { useUpdateMeMutation } from "../redux/services/authorized.service";
 import i18n from "../i18n";
+import { useDispatch } from "react-redux";
+import { addMessage } from "../redux/slices/auth";
+import { CustomButton, CustomTextInput } from "./ui";
+import { phoneMask } from "../utils/masks";
 
 const ProfileUpdateSchema = Yup.object().shape({
   first_name: Yup.string().required(i18n.t("Errors.required")),
@@ -17,7 +28,8 @@ const ProfileUpdateSchema = Yup.object().shape({
   password: Yup.string().required(i18n.t("Errors.required")),
 });
 
-const ChangeMainInfo = ({ userData, setVisible, setMessage }) => {
+const ChangeMainInfo = ({ userData }) => {
+  const dispatch = useDispatch();
   const [updateMe, { isLoading, isSuccess, isError, error }] =
     useUpdateMeMutation();
 
@@ -43,182 +55,113 @@ const ChangeMainInfo = ({ userData, setVisible, setMessage }) => {
         try {
           const response2 = await updateMe(updateData);
           if (response2?.data) {
-            setMessage(i18n.t("Successes.updated"));
-            setVisible(true);
+            await dispatch(addMessage(i18n.t("Successes.updated")));
           }
         } catch (error) {
           console.log("Update", { error });
-          setMessage(error);
-          setVisible(true);
+          await dispatch(addMessage(error));
         }
       }
     } catch (error) {
       console.log("ReLogin", { error });
-      setMessage(
-        error.response.status === 401
-          ? i18n.t("Errors.wrong_password")
-          : error.message
+      await dispatch(
+        addMessage(
+          error.response.status === 401
+            ? i18n.t("Errors.wrong_password")
+            : error.message
+        )
       );
-      setVisible(true);
     }
   };
 
   return (
-    <>
-      <Card>
-        <Card.Content>
-          <Formik
-            validationSchema={ProfileUpdateSchema}
-            initialValues={{
-              first_name: userData.first_name,
-              last_name: userData.last_name,
-              phone: "7" + userData.phone,
-              email: userData.email,
-              password: "",
-            }}
-            onSubmit={onSubmitUpdate}
-          >
-            {({
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              values,
-              errors,
-              touched,
-              setFieldValue,
-            }) => (
-              <View>
-                <Title style={tw`mb-4`}>{i18n.t("ChangeMainInfo.title")}</Title>
-                <TextInput
-                  label={i18n.t("first_name")}
-                  mode="outlined"
-                  dense={true}
-                  onBlur={handleBlur("first_name")}
-                  onChangeText={handleChange("first_name")}
-                  value={values.first_name}
-                  left={<TextInput.Icon name={"account"} />}
-                  error={!!errors.first_name && !!touched.first_name}
-                />
-                {!!errors.first_name && !!touched.first_name && (
-                  <HelperText
-                    type="error"
-                    visible={!!errors.first_name && !!touched.first_name}
-                  >
-                    {errors.first_name}
-                  </HelperText>
-                )}
+    <Formik
+      validationSchema={ProfileUpdateSchema}
+      initialValues={{
+        first_name: userData.first_name,
+        last_name: userData.last_name,
+        phone: "7" + userData.phone,
+        email: userData.email,
+        password: "",
+      }}
+      onSubmit={onSubmitUpdate}
+    >
+      {({
+        handleChange,
+        handleBlur,
+        handleSubmit,
+        values,
+        errors,
+        touched,
+        setFieldValue,
+      }) => (
+        <View>
+          <View style={tw`px-5`}>
+            <Text style={tw`text-gray-400`}>
+              {i18n.t("ChangeMainInfo.title")}
+            </Text>
+          </View>
+          <View style={tw`mt-2 p-5 bg-white`}>
+            <CustomTextInput
+              label={i18n.t("first_name")}
+              onBlur={handleBlur("first_name")}
+              onChangeText={handleChange("first_name")}
+              value={values.first_name}
+              isError={!!errors.first_name && !!touched.first_name}
+              errorText={errors?.first_name}
+              placeholder={i18n.t("first_name")}
+            />
 
-                <TextInput
-                  style={tw`mt-2`}
-                  label={i18n.t("last_name")}
-                  mode="outlined"
-                  dense={true}
-                  onBlur={handleBlur("last_name")}
-                  onChangeText={handleChange("last_name")}
-                  value={values.last_name}
-                  left={<TextInput.Icon name={"account"} />}
-                  error={!!errors.last_name && !!touched.last_name}
-                />
-                {!!errors.last_name && !!touched.last_name && (
-                  <HelperText
-                    type="error"
-                    visible={!!errors.last_name && !!touched.last_name}
-                  >
-                    {errors.last_name}
-                  </HelperText>
-                )}
+            <CustomTextInput
+              style="mt-4"
+              label={i18n.t("last_name")}
+              onBlur={handleBlur("last_name")}
+              onChangeText={handleChange("last_name")}
+              value={values.last_name}
+              isError={!!errors.last_name && !!touched.last_name}
+              errorText={errors?.last_name}
+              placeholder={i18n.t("last_name")}
+            />
 
-                <TextInput
-                  style={tw`mt-2`}
-                  label={i18n.t("phone")}
-                  mode="outlined"
-                  dense={true}
-                  value={values.phone}
-                  left={<TextInput.Icon name={"phone"} />}
-                  error={!!errors.phone && !!touched.phone}
-                  render={(props) => (
-                    <MaskInput
-                      {...props}
-                      value={values.phone}
-                      onBlur={handleBlur("phone")}
-                      onChangeText={(val, unmasked) => {
-                        setFieldValue("phone", val);
-                        setUnmaskedPhone(unmasked);
-                      }}
-                      mask={[
-                        "+",
-                        "7",
-                        " ",
-                        "(",
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                        ")",
-                        " ",
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                        "-",
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                        /\d/,
-                      ]}
-                      prefix="+7 "
-                    />
-                  )}
-                />
-                {!!errors.phone && !!touched.phone && (
-                  <HelperText
-                    type="error"
-                    visible={!!errors.phone && !!touched.phone}
-                  >
-                    {errors.phone}
-                  </HelperText>
-                )}
+            <CustomTextInput
+              style={`mt-4`}
+              label={i18n.t("phone")}
+              value={values.phone}
+              onBlur={handleBlur("phone")}
+              onChangeText={(val, unmasked) => {
+                setFieldValue("phone", val);
+                setUnmaskedPhone(unmasked);
+              }}
+              mask={phoneMask}
+              keyboardType="phone-pad"
+              isError={!!errors.phone && !!touched.phone}
+              errorText={errors?.phone}
+              placeholder={i18n.t("phone")}
+            />
 
-                <TextInput
-                  style={tw`mt-2`}
-                  label={i18n.t("confirm_password")}
-                  mode="outlined"
-                  dense={true}
-                  onBlur={handleBlur("password")}
-                  secureTextEntry={passwordVisible}
-                  onChangeText={handleChange("password")}
-                  value={values.password}
-                  left={<TextInput.Icon name={"asterisk"} />}
-                  right={
-                    <TextInput.Icon
-                      name={passwordVisible ? "eye" : "eye-off"}
-                      onPress={() => setPasswordVisible(!passwordVisible)}
-                    />
-                  }
-                  error={!!errors.password && !!touched.password}
-                />
-                {!!errors.password && !!touched.password && (
-                  <HelperText
-                    type="error"
-                    visible={!!errors.password && !!touched.password}
-                  >
-                    {errors.password}
-                  </HelperText>
-                )}
-
-                <Button
-                  style={tw`mt-4`}
-                  loading={isLoading}
-                  disabled={isLoading}
-                  mode="contained"
-                  onPress={handleSubmit}
-                >
-                  {i18n.t("update")}
-                </Button>
-              </View>
-            )}
-          </Formik>
-        </Card.Content>
-      </Card>
-    </>
+            <CustomTextInput
+              style={"mt-4"}
+              label={i18n.t("confirm_password")}
+              onBlur={handleBlur("password")}
+              onChangeText={handleChange("password")}
+              value={values.password}
+              isError={!!errors.password && !!touched.password}
+              errorText={errors?.password}
+              placeholder={i18n.t("confirm_password")}
+              secureTextEntry
+            />
+						
+            <CustomButton
+              style="mt-4"
+              onPress={handleSubmit}
+              disabled={isLoading}
+            >
+              {i18n.t("update")}
+            </CustomButton>
+          </View>
+        </View>
+      )}
+    </Formik>
   );
 };
 

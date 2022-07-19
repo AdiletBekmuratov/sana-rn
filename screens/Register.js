@@ -9,6 +9,7 @@ import * as Yup from "yup";
 import { CustomButton, CustomTextInput } from "../components/ui";
 import i18n from "../i18n";
 import { register } from "../redux/slices/auth";
+import { phoneMask } from "../utils/masks";
 
 const RegisterSchema = Yup.object().shape({
   email: Yup.string()
@@ -24,26 +25,6 @@ const RegisterSchema = Yup.object().shape({
     .oneOf([Yup.ref("password"), null], i18n.t("Errors.passwords_do_not_match"))
     .required(i18n.t("Errors.required")),
 });
-
-const phoneMask = [
-  "+",
-  "7",
-  " ",
-  "(",
-  /\d/,
-  /\d/,
-  /\d/,
-  ")",
-  " ",
-  /\d/,
-  /\d/,
-  /\d/,
-  "-",
-  /\d/,
-  /\d/,
-  /\d/,
-  /\d/,
-];
 
 const Register = ({ navigation }) => {
   const dispatch = useDispatch();

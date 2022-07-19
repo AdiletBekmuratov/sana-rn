@@ -6,6 +6,7 @@ import {
   Card,
   HelperText,
   Snackbar,
+  Text,
   TextInput,
   Title,
 } from "react-native-paper";
@@ -13,6 +14,7 @@ import tw from "twrnc";
 import * as Yup from "yup";
 import i18n from "../i18n";
 import { useUpdateMyPasswordMutation } from "../redux/services/authorized.service";
+import { CustomButton, CustomTextInput } from "./ui";
 
 const ChangePassSchema = Yup.object().shape({
   old_password: Yup.string().required(i18n.t("Errors.required")),
@@ -53,131 +55,76 @@ const ChangePassword = ({ userData, setVisible, setMessage }) => {
   };
 
   return (
-    <>
-      <Card>
-        <Card.Content>
-          <Formik
-            validationSchema={ChangePassSchema}
-            initialValues={{
-              old_password: "",
-              password: "",
-              confirmPassword: "",
-            }}
-            onSubmit={handleSubmitUpdate}
-          >
-            {({
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              values,
-              errors,
-              touched,
-            }) => (
-              <View>
-                <Title style={tw`mb-4`}>
-                  {i18n.t("ChangePassword.change_password")}
-                </Title>
+    <Formik
+      validationSchema={ChangePassSchema}
+      initialValues={{
+        old_password: "",
+        password: "",
+        confirmPassword: "",
+      }}
+      onSubmit={handleSubmitUpdate}
+    >
+      {({
+        handleChange,
+        handleBlur,
+        handleSubmit,
+        values,
+        errors,
+        touched,
+      }) => (
+        <View>
+          <View style={tw`px-5`}>
+            <Text style={tw`text-gray-400`}>
+              {i18n.t("ChangePassword.change_password")}
+            </Text>
+          </View>
+          <View style={tw`mt-2 p-5 bg-white`}>
+            <CustomTextInput
+              label={i18n.t("ChangePassword.old_password")}
+              onBlur={handleBlur("old_password")}
+              onChangeText={handleChange("old_password")}
+              value={values.old_password}
+              isError={!!errors.old_password && !!touched.old_password}
+              errorText={errors?.old_password}
+              placeholder={i18n.t("ChangePassword.old_password")}
+              secureTextEntry
+            />
 
-                <TextInput
-                  label={i18n.t("ChangePassword.old_password")}
-                  mode="outlined"
-                  dense={true}
-                  onBlur={handleBlur("old_password")}
-                  secureTextEntry={passwordOldVisible}
-                  onChangeText={handleChange("old_password")}
-                  value={values.old_password}
-                  right={
-                    <TextInput.Icon
-                      name={passwordOldVisible ? "eye" : "eye-off"}
-                      onPress={() => setPasswordOldVisible(!passwordOldVisible)}
-                    />
-                  }
-                  left={<TextInput.Icon name={"asterisk"} />}
-                  error={!!errors.old_password && !!touched.old_password}
-                />
-                {!!errors.old_password && !!touched.old_password && (
-                  <HelperText
-                    type="error"
-                    visible={!!errors.old_password && !!touched.old_password}
-                  >
-                    {errors.old_password}
-                  </HelperText>
-                )}
+            <CustomTextInput
+              style="mt-4"
+              label={i18n.t("ChangePassword.new_password")}
+              onBlur={handleBlur("password")}
+              onChangeText={handleChange("password")}
+              value={values.password}
+              isError={!!errors.password && !!touched.password}
+              errorText={errors?.password}
+              placeholder={i18n.t("ChangePassword.new_password")}
+              secureTextEntry
+            />
 
-                <TextInput
-                  style={tw`mt-2`}
-                  label={i18n.t("ChangePassword.new_password")}
-                  mode="outlined"
-                  dense={true}
-                  secureTextEntry={passwordVisible}
-                  onBlur={handleBlur("password")}
-                  onChangeText={handleChange("password")}
-                  value={values.password}
-                  left={<TextInput.Icon name={"lock"} />}
-                  right={
-                    <TextInput.Icon
-                      name={passwordVisible ? "eye" : "eye-off"}
-                      onPress={() => setPasswordVisible(!passwordVisible)}
-                    />
-                  }
-                  error={!!errors.password && !!touched.password}
-                />
-                {!!errors.password && !!touched.password && (
-                  <HelperText
-                    type="error"
-                    visible={!!errors.password && !!touched.password}
-                  >
-                    {errors.password}
-                  </HelperText>
-                )}
+            <CustomTextInput
+              style="mt-4"
+              label={i18n.t("confirm_password")}
+              onBlur={handleBlur("confirmPassword")}
+              onChangeText={handleChange("confirmPassword")}
+              value={values.confirmPassword}
+              isError={!!errors.confirmPassword && !!touched.confirmPassword}
+              errorText={errors?.confirmPassword}
+              placeholder={i18n.t("confirm_password")}
+              secureTextEntry
+            />
 
-                <TextInput
-                  style={tw`mt-2`}
-                  label={i18n.t("confirm_password")}
-                  mode="outlined"
-                  dense={true}
-                  secureTextEntry={passwordConfirmVisible}
-                  onBlur={handleBlur("confirmPassword")}
-                  onChangeText={handleChange("confirmPassword")}
-                  value={values.confirmPassword}
-                  left={<TextInput.Icon name={"lock"} />}
-                  right={
-                    <TextInput.Icon
-                      name={passwordConfirmVisible ? "eye" : "eye-off"}
-                      onPress={() =>
-                        setPasswordConfirmVisible(!passwordConfirmVisible)
-                      }
-                    />
-                  }
-                  error={!!errors.confirmPassword && !!touched.confirmPassword}
-                />
-                {!!errors.confirmPassword && !!touched.confirmPassword && (
-                  <HelperText
-                    type="error"
-                    visible={
-                      !!errors.confirmPassword && !!touched.confirmPassword
-                    }
-                  >
-                    {errors.confirmPassword}
-                  </HelperText>
-                )}
-
-                <Button
-                  style={tw`mt-4`}
-                  loading={isLoading}
-                  disabled={isLoading}
-                  mode="contained"
-                  onPress={handleSubmit}
-                  color="#002C67"
-                >
-                  Өзгерту
-                </Button>
-              </View>
-            )}
-          </Formik>
-        </Card.Content>
-      </Card>
-    </>
+            <CustomButton
+              style="mt-4"
+              onPress={handleSubmit}
+              disabled={isLoading}
+            >
+              {i18n.t("update")}
+            </CustomButton>
+          </View>
+        </View>
+      )}
+    </Formik>
   );
 };
 

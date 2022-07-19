@@ -1,15 +1,7 @@
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import React, { useEffect, useState } from "react";
 import { Linking, ScrollView, TouchableOpacity, View } from "react-native";
-import {
-  Button,
-  Card,
-  Headline,
-  IconButton,
-  Switch,
-  Text,
-} from "react-native-paper";
+import { Headline, IconButton, Switch, Text } from "react-native-paper";
 import tw from "twrnc";
 import Spinner from "../components/Spinner";
 import i18n from "../i18n";
@@ -93,101 +85,111 @@ export default function Profile({ navigation }) {
           </Text>
         </View>
       </LinearGradient>
-      <View style={tw`p-5 flex-1`}>
+      <View style={tw`flex-1`}>
         <ScrollView contentContainerStyle={tw`pb-5`}>
-          <ButtonGroup
-            buttons={[
-              {
-                children: <Text>Жеке мәліметті өзгерту</Text>,
-                onPress: () =>
-                  navigation.navigate("ChangeProfile", { userData: data }),
-              },
-              {
-                children: <Text>Күніне меңгеру минимумы</Text>,
-                onPress: () => console.log("Hello2"),
-              },
-            ]}
-          />
+          <View style={tw`p-5`}>
+            <ButtonGroup
+              buttons={[
+                {
+                  children: <Text>Жеке мәліметті өзгерту</Text>,
+                  onPress: () =>
+                    navigation.navigate("ChangeProfile", { userData: data }),
+                },
+                {
+                  children: <Text>Күніне меңгеру минимумы</Text>,
+                  onPress: () => console.log("Hello2"),
+                },
+              ]}
+            />
 
-          <Text style={tw`mt-6 text-gray-400`}>Дыбыстар мен діріл</Text>
-          <ButtonGroup
-            containerStyle="mt-2"
-            buttons={[
-              {
-                children: (
-                  <View style={tw`flex flex-row items-center justify-between`}>
-                    <Text>Музыка</Text>
-                    <Switch value={true} style={tw`-my-2`} />
-                  </View>
-                ),
-              },
-              {
-                children: (
-                  <View style={tw`flex flex-row items-center justify-between`}>
-                    <Text>Діріл</Text>
-                    <Switch value={true} style={tw`-my-2`} />
-                  </View>
-                ),
-              },
-              {
-                children: (
-                  <View style={tw`flex flex-row items-center justify-between`}>
-                    <Text>Дыбыс</Text>
-                    <Switch value={true} style={tw`-my-2`} />
-                  </View>
-                ),
-              },
-            ]}
-          />
-
-          <Text style={tw`mt-6 text-gray-400`}>Кері байланыс</Text>
-          <ButtonGroup
-            containerStyle="mt-2"
-            buttons={[
-              {
-                children: (
-                  <View style={tw`flex flex-row items-center justify-between`}>
-                    <Text>Sana бағасы</Text>
-                    <View style={tw`flex flex-row justify-end flex-1`}>
-                      <IconButton
-                        icon={"star"}
-                        color="#d8d8d8"
-                        style={tw`-mx-1 -my-2`}
-                      />
-                      <IconButton
-                        icon={"star"}
-                        color="#d8d8d8"
-                        style={tw`-mx-1 -my-2`}
-                      />
-                      <IconButton
-                        icon={"star"}
-                        color="#d8d8d8"
-                        style={tw`-mx-1 -my-2`}
-                      />
-                      <IconButton
-                        icon={"star"}
-                        color="#d8d8d8"
-                        style={tw`-mx-1 -my-2`}
-                      />
-                      <IconButton
-                        icon={"star"}
-                        color="#d8d8d8"
-                        style={tw`-mx-1 -my-2`}
-                      />
+            <Text style={tw`mt-6 text-gray-400`}>Дыбыстар мен діріл</Text>
+            <ButtonGroup
+              containerStyle="mt-2"
+              buttons={[
+                {
+                  children: (
+                    <View
+                      style={tw`flex flex-row items-center justify-between`}
+                    >
+                      <Text>Музыка</Text>
+                      <Switch value={true} style={tw`-my-2`} />
                     </View>
-                  </View>
-                ),
-                onPress: () => console.log("Rate"),
-              },
-              {
-                children: <Text>{i18n.t("ProfileScreen.whatsapp")}</Text>,
-                onPress: () =>
-                  Linking.openURL(
-                    "https://api.whatsapp.com/send?phone=77023006177&text=%D0%A1%D3%99%D0%BB%D0%B5%D0%BC%D0%B5%D1%82%D1%81%D1%96%D0%B7%20%D0%B1%D0%B5.%20'Sana'%20%D2%9B%D0%BE%D1%81%D1%8B%D0%BC%D1%88%D0%B0%D1%81%D1%8B%20%D0%B6%D0%B0%D0%B9%D0%BB%D1%8B%20%D1%81%D2%B1%D1%80%D0%B0%D2%93%D1%8B%D0%BC%20%D0%B1%D0%B0%D1%80%20%D0%B5%D0%B4%D1%96."
                   ),
-              },
-            ]}
-          />
+                },
+                {
+                  children: (
+                    <View
+                      style={tw`flex flex-row items-center justify-between`}
+                    >
+                      <Text>Діріл</Text>
+                      <Switch value={true} style={tw`-my-2`} />
+                    </View>
+                  ),
+                },
+                {
+                  children: (
+                    <View
+                      style={tw`flex flex-row items-center justify-between`}
+                    >
+                      <Text>Дыбыс</Text>
+                      <Switch value={true} style={tw`-my-2`} />
+                    </View>
+                  ),
+                },
+              ]}
+            />
+
+            <Text style={tw`mt-6 text-gray-400`}>Кері байланыс</Text>
+            <ButtonGroup
+              containerStyle="mt-2"
+              buttons={[
+                {
+                  children: (
+                    <View
+                      style={tw`flex flex-row items-center justify-between`}
+                    >
+                      <Text>Sana бағасы</Text>
+                      <View style={tw`flex flex-row justify-end flex-1`}>
+                        <IconButton
+                          icon={"star"}
+                          color="#d8d8d8"
+                          style={tw`-mx-1 -my-2`}
+                        />
+                        <IconButton
+                          icon={"star"}
+                          color="#d8d8d8"
+                          style={tw`-mx-1 -my-2`}
+                        />
+                        <IconButton
+                          icon={"star"}
+                          color="#d8d8d8"
+                          style={tw`-mx-1 -my-2`}
+                        />
+                        <IconButton
+                          icon={"star"}
+                          color="#d8d8d8"
+                          style={tw`-mx-1 -my-2`}
+                        />
+                        <IconButton
+                          icon={"star"}
+                          color="#d8d8d8"
+                          style={tw`-mx-1 -my-2`}
+                        />
+                      </View>
+                    </View>
+                  ),
+                  onPress: () => console.log("Rate"),
+                },
+                {
+                  children: <Text>{i18n.t("ProfileScreen.whatsapp")}</Text>,
+                  onPress: () =>
+                    Linking.openURL(
+                      "https://api.whatsapp.com/send?phone=77023006177&text=%D0%A1%D3%99%D0%BB%D0%B5%D0%BC%D0%B5%D1%82%D1%81%D1%96%D0%B7%20%D0%B1%D0%B5.%20'Sana'%20%D2%9B%D0%BE%D1%81%D1%8B%D0%BC%D1%88%D0%B0%D1%81%D1%8B%20%D0%B6%D0%B0%D0%B9%D0%BB%D1%8B%20%D1%81%D2%B1%D1%80%D0%B0%D2%93%D1%8B%D0%BC%20%D0%B1%D0%B0%D1%80%20%D0%B5%D0%B4%D1%96."
+                    ),
+                },
+              ]}
+            />
+          </View>
         </ScrollView>
       </View>
     </View>
@@ -232,18 +234,6 @@ export default function Profile({ navigation }) {
     //       <Text>100</Text>
     //     </View>
 
-    //     <Button
-    //       style={tw`w-full`}
-    //       mode="contained"
-    //       icon={"whatsapp"}
-    //       onPress={() =>
-    //         Linking.openURL(
-    //           "https://api.whatsapp.com/send?phone=77023006177&text=%D0%A1%D3%99%D0%BB%D0%B5%D0%BC%D0%B5%D1%82%D1%81%D1%96%D0%B7%20%D0%B1%D0%B5.%20'Sana'%20%D2%9B%D0%BE%D1%81%D1%8B%D0%BC%D1%88%D0%B0%D1%81%D1%8B%20%D0%B6%D0%B0%D0%B9%D0%BB%D1%8B%20%D1%81%D2%B1%D1%80%D0%B0%D2%93%D1%8B%D0%BC%20%D0%B1%D0%B0%D1%80%20%D0%B5%D0%B4%D1%96."
-    //         )
-    //       }
-    //     >
-    //       {i18n.t("ProfileScreen.whatsapp")}
-    //     </Button>
     //   </View>
     // </View>
   );
