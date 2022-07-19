@@ -28,6 +28,7 @@ const ProfileStack = () => {
     >
       <Stack.Screen
         options={{
+					headerShown: false,
           title: i18n.t("ProfileStack.profile"),
         }}
         name="Profile"

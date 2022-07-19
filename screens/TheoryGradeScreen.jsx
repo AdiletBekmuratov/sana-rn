@@ -1,9 +1,8 @@
 import React from "react";
-import { FlatList, TouchableOpacity, View } from "react-native";
-import { Card, Text } from "react-native-paper";
+import { FlatList, View } from "react-native";
 import tw from "twrnc";
 import Spinner from "../components/Spinner";
-import CustomButton from "../components/ui/CustomButton";
+import { CustomButton } from "../components/ui";
 import { useGetTopicsByLessonIdQuery } from "../redux/services/authorized.service";
 
 const TheoryGradeScreen = ({ route, navigation }) => {

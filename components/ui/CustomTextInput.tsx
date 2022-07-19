@@ -1,10 +1,32 @@
-import React, { useState } from "react";
-import { TextInput, View } from "react-native";
+import React, { FC, useState } from "react";
+import {
+  KeyboardTypeOptions,
+  NativeSyntheticEvent,
+  TextInput,
+  TextInputFocusEventData,
+  View,
+} from "react-native";
 import { HelperText, IconButton, Text } from "react-native-paper";
-import MaskInput from "react-native-mask-input";
+import MaskInput, { Mask } from "react-native-mask-input";
 import tw from "twrnc";
 
-const CustomTextInput = ({
+interface ICustomTextInput {
+  label: string;
+  placeholder: string;
+  onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
+  onChangeText?: (
+    text: string
+  ) => void | ((masked: string, unmasked: string, obfuscated: string) => void);
+  value?: string;
+  isError?: boolean;
+  errorText?: string;
+  style?: string;
+  secureTextEntry?: boolean;
+  keyboardType: KeyboardTypeOptions;
+  mask: Mask;
+}
+
+export const CustomTextInput: FC<ICustomTextInput> = ({
   label,
   placeholder,
   onBlur,
@@ -56,7 +78,6 @@ const CustomTextInput = ({
 
         {secureTextEntry && (
           <IconButton
-            s
             icon={passwordVisible ? "eye" : "eye-off"}
             style={tw`absolute right-0`}
             onPress={handleTogglePassVisibility}
@@ -72,5 +93,3 @@ const CustomTextInput = ({
     </View>
   );
 };
-
-export default CustomTextInput;

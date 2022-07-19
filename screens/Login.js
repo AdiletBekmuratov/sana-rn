@@ -1,16 +1,13 @@
 import { Formik } from "formik";
 import { useState } from "react";
 import { View } from "react-native";
-import {
-	Headline, Text
-} from "react-native-paper";
+import { Headline, Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import tw from "twrnc";
 import * as Yup from "yup";
 import PasswordReset from "../components/PasswordReset";
-import CustomButton from "../components/ui/CustomButton";
-import CustomTextInput from "../components/ui/CustomTextInput";
+import { CustomButton, CustomTextInput } from "../components/ui";
 import i18n from "../i18n";
 import { login } from "../redux/slices/auth.js";
 

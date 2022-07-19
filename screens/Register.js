@@ -6,8 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import tw from "twrnc";
 import * as Yup from "yup";
-import CustomButton from "../components/ui/CustomButton";
-import CustomTextInput from "../components/ui/CustomTextInput";
+import { CustomButton, CustomTextInput } from "../components/ui";
 import i18n from "../i18n";
 import { register } from "../redux/slices/auth";
 
@@ -62,7 +61,9 @@ const Register = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={tw`flex-1 p-5 justify-start bg-white dark:bg-black pt-[80px]`}>
+    <SafeAreaView
+      style={tw`flex-1 p-5 justify-start bg-white dark:bg-black pt-[80px]`}
+    >
       <Formik
         validationSchema={RegisterSchema}
         initialValues={{

@@ -1,11 +1,22 @@
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
-import { TouchableOpacity, View } from "react-native";
+import React, { ReactNode } from "react";
+import { GestureResponderEvent, TouchableOpacity, View } from "react-native";
 import { Text } from "react-native-paper";
 import tw from "twrnc";
-import grads from "../../utils/grads";
+import grads, { Grads } from "../../utils/grads";
+import { FC } from "react";
 
-const CustomButton = ({
+interface ICustomButton {
+  variant?: Grads;
+  children?: ReactNode;
+  onPress?: (event: GestureResponderEvent) => void;
+  style?: string;
+  disabled?: boolean;
+  grad?: string[];
+  textPosition?: "items-center" | "items-start" | "items-end";
+}
+
+export const CustomButton: FC<ICustomButton> = ({
   variant = "blue",
   children,
   onPress,
@@ -17,7 +28,9 @@ const CustomButton = ({
   return (
     <>
       {disabled ? (
-        <View style={tw`py-4 px-4 bg-gray-200 rounded-lg ${textPosition} ${style}`}>
+        <View
+          style={tw`py-4 px-4 bg-gray-200 rounded-lg ${textPosition} ${style}`}
+        >
           <Text style={tw`text-gray-400`}>{children}</Text>
         </View>
       ) : (
@@ -40,5 +53,3 @@ const CustomButton = ({
     </>
   );
 };
-
-export default CustomButton;
