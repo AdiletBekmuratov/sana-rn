@@ -2,12 +2,12 @@ import React from "react";
 import { FlatList, TouchableOpacity, View } from "react-native";
 import { Card, Text } from "react-native-paper";
 import tw from "twrnc";
-import Spinner from "../components/Spinner";
-import i18n from "../i18n";
+import Spinner from "@/components/Spinner";
+import i18n from "@/utils/i18n";
 import {
   useGetPracticeTopicsByLessonIdQuery,
   useGetQuantityMasteredQuery,
-} from "../redux/services/authorized.service";
+} from "@/redux/services/authorized.service";
 
 const PracticeGradeScreen = ({ route, navigation }) => {
   const { lessonId } = route.params;

@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { FlatList, View } from "react-native";
 import tw from "twrnc";
-import Spinner from "../components/Spinner";
-import { CustomButton } from "../components/ui";
-import { useGetTopicsByLessonIdQuery } from "../redux/services/authorized.service";
+import Spinner from "@/components/Spinner";
+import { CustomButton } from "@/components/ui";
+import { useGetTopicsByLessonIdQuery } from "@/redux/services/authorized.service";
 
 const TheoryGradeScreen = ({ route, navigation }) => {
   const { lessonId, title } = route.params;

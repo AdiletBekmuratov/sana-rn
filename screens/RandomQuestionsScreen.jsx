@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { FlatList, TouchableOpacity, View, Vibration } from "react-native";
 import { Button, Headline, Subheading, Text } from "react-native-paper";
 import tw from "twrnc";
-import Spinner from "../components/Spinner";
-import i18n from "../i18n";
+import Spinner from "@/components/Spinner";
+import i18n from "@/utils/i18n";
 import {
   useLazyGetRandomQuestionsByLessonIdQuery,
   useSendAnswerMutation,
-} from "../redux/services/authorized.service";
+} from "@/redux/services/authorized.service";
 
 const RandomQuestionsScreen = ({ route, navigation }) => {
   const { lessonId } = route.params;

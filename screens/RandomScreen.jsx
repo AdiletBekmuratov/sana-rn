@@ -2,8 +2,8 @@ import React from "react";
 import { FlatList, TouchableOpacity, View } from "react-native";
 import { Card, Text } from "react-native-paper";
 import tw from "twrnc";
-import Spinner from "../components/Spinner";
-import { useGetRandomLessonsQuery } from "../redux/services/authorized.service";
+import Spinner from "@/components/Spinner";
+import { useGetRandomLessonsQuery } from "@/redux/services/authorized.service";
 
 const RandomScreen = ({ navigation }) => {
   const { data, error, isLoading, isError } = useGetRandomLessonsQuery();

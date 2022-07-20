@@ -3,14 +3,14 @@ import { FlatList, TouchableOpacity, View } from "react-native";
 import { Button, IconButton, Text } from "react-native-paper";
 import { useDispatch } from "react-redux";
 import tw from "twrnc";
-import Spinner from "../components/Spinner";
-import { CustomIconButton } from "../components/ui";
-import i18n from "../i18n";
+import Spinner from "@/components/Spinner";
+import { CustomIconButton } from "@/components/ui";
+import i18n from "@/utils/i18n";
 import {
   useLazyGetTheoryAnswerByQuestionIdQuery,
   useLazyGetTheoryQuestionsByTopicIdQuery,
-} from "../redux/services/authorized.service";
-import { addMessage } from "../redux/slices/auth";
+} from "@/redux/services/authorized.service";
+import { addMessage } from "@/redux/slices/auth";
 
 const TheoryQuestionsScreen = ({ route, navigation }) => {
   const { topicId, title } = route.params;

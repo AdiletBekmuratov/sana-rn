@@ -3,18 +3,18 @@ import React, { useEffect, useState } from "react";
 import { Linking, ScrollView, View } from "react-native";
 import { Headline, IconButton, Switch, Text } from "react-native-paper";
 import tw from "twrnc";
-import Spinner from "../components/Spinner";
-import i18n from "../i18n";
+import Spinner from "@/components/Spinner";
+import i18n from "@/utils/i18n";
 import {
   useGetMeQuery,
   useGetQuestionQuantityQuery,
   useUpdateQuestionQuantityMutation,
-} from "../redux/services/authorized.service";
+} from "@/redux/services/authorized.service";
 import { LinearGradient } from "expo-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { ButtonGroup } from "../components/ui";
+import { ButtonGroup } from "@/components/ui";
 import { useDispatch } from "react-redux";
-import { logout } from "../redux/slices/auth";
+import { logout } from "@/redux/slices/auth";
 
 export default function Profile({ navigation }) {
   const dispatch = useDispatch();

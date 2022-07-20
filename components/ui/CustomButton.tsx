@@ -1,16 +1,12 @@
+import grads, { Grads } from "@/utils/grads";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { ReactNode } from "react";
+import React, { FC, ReactNode } from "react";
 import {
-  GestureResponderEvent,
-  OpaqueColorValue,
-  TouchableOpacity,
-  View,
+	GestureResponderEvent, TouchableOpacity,
+	View
 } from "react-native";
 import { ActivityIndicator, Text } from "react-native-paper";
 import tw from "twrnc";
-import grads, { Grads } from "../../utils/grads";
-import { FC } from "react";
-import Icons from "@expo/vector-icons/MaterialCommunityIcons";
 
 interface ICustomButton {
   variant?: Grads;

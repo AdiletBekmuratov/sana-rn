@@ -3,7 +3,7 @@ import React from "react";
 import { ProgressBar, Text } from "react-native-paper";
 import tw from "twrnc";
 
-const ProgressCard = ({
+export const ProgressCard = ({
   style = "",
   subject = "",
   currentScore = 0,
@@ -31,11 +31,11 @@ const ProgressCard = ({
               color="#2CB139"
             />
           </View>
-          <Text style={tw`ml-4`}>{currentScore} / {maxScore}</Text>
+          <Text style={tw`ml-4`}>
+            {currentScore} / {maxScore}
+          </Text>
         </View>
       </View>
     </View>
   );
 };
-
-export default ProgressCard;

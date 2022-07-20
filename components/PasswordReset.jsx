@@ -4,9 +4,9 @@ import {
   useChangePasswordOTPMutation,
   useCheckOTPMutation,
   useGenerateOTPMutation,
-} from "../redux/services/unauthorized.service";
+} from "@/redux/services/unauthorized.service";
 import tw from "twrnc";
-import i18n from "../i18n";
+import i18n from "@/utils/i18n";
 
 export default function PasswordReset({ visibleDialog, handleCloseDialog }) {
   const [message, setMessage] = useState(null);

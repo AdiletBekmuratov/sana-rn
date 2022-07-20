@@ -10,15 +10,15 @@ import {
   Text,
 } from "react-native-paper";
 import tw from "twrnc";
-import Spinner from "../components/Spinner";
-import i18n from "../i18n";
+import Spinner from "@/components/Spinner";
+import i18n from "@/utils/i18n";
 import {
   useAddFriendToRatingMutation,
   useGetAllLessonsQuery,
   useGetMyRatingQuery,
   useLazyGetAllRatingQuery,
   useRemoveFriendFromRatingMutation,
-} from "../redux/services/authorized.service";
+} from "@/redux/services/authorized.service";
 
 export default function Rating() {
   const [page, setPage] = useState(1);

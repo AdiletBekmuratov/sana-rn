@@ -1,17 +1,10 @@
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import { ActivityIndicator, View } from "react-native";
+import tw from "twrnc";
 
 const Spinner = () => (
-  <View style={styles.container}>
+  <View style={tw`flex-1 justify-center items-center`}>
     <ActivityIndicator size="large" color="#002C67" />
   </View>
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 
 export default Spinner;

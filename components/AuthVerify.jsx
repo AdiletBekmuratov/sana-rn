@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { logout } from "../redux/slices/auth";
+import { logout } from "@/redux/slices/auth";
 import jwt_decode from "jwt-decode";
 
 let interval

@@ -1,9 +1,9 @@
 import React from "react";
 import { FlatList, View } from "react-native";
 import tw from "twrnc";
-import Spinner from "../components/Spinner";
-import { CustomButton } from "../components/ui";
-import { useGetTheoryLessonsQuery } from "../redux/services/authorized.service";
+import Spinner from "@/components/Spinner";
+import { CustomButton } from "@/components/ui";
+import { useGetTheoryLessonsQuery } from "@/redux/services/authorized.service";
 
 const TheoryScreen = ({ route, navigation }) => {
   const { data, error, isLoading, isError } = useGetTheoryLessonsQuery();

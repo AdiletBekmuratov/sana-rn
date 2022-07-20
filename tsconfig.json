@@ -11,7 +11,37 @@
 		"noEmit": true,
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
-		"target": "ESNext"
+		"target": "ESNext",
+		"baseUrl": ".",
+		"paths": {
+			"@/assets/*": [
+				"./assets/*"
+			],
+			"@/components/*": [
+				"./components/*"
+			],
+			"@/redux/*": [
+				"./redux/*"
+			],
+			"@/screens/*": [
+				"./screens/*"
+			],
+			"@/stacks/*": [
+				"./stacks/*"
+			],
+			"@/translations/*": [
+				"./translations/*"
+			],
+			"@/types/*": [
+				"./types/*"
+			],
+			"@/utils/*": [
+				"./utils/*"
+			],
+		}
 	},
-	"extends": "expo/tsconfig.base"
+	"extends": "expo/tsconfig.base",
+	"exclude": [
+		"node_modules"
+	]
 }

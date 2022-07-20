@@ -1,7 +1,7 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import i18n from "../i18n";
-import FriendsRating from "../screens/FriendsRating";
-import Rating from "../screens/Rating";
+import i18n from "@/utils/i18n";
+import FriendsRating from "@/screens/FriendsRating";
+import Rating from "@/screens/Rating";
 import tw from "twrnc";
 
 const Tab = createMaterialTopTabNavigator();

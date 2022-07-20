@@ -1,10 +1,10 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-import Header from "../components/Header";
-import ChangeProfile from "../screens/ChangeProfile";
-import Profile from "../screens/Profile";
+import Header from "@/components/Header";
+import ChangeProfile from "@/screens/ChangeProfile";
+import Profile from "@/screens/Profile";
 import { getHeaderTitle } from "@react-navigation/elements";
-import i18n from "../i18n";
+import i18n from "@/utils/i18n";
 
 const Stack = createNativeStackNavigator();
 

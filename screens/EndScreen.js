@@ -3,10 +3,10 @@ import React from "react";
 import { Image, View } from "react-native";
 import { Button, Headline } from "react-native-paper";
 import tw from "twrnc";
-import Spinner from "../components/Spinner";
-import i18n from "../i18n";
-import { useFinishTestQuery } from "../redux/services/authorized.service";
-const trophy = require("../assets/trophy.png");
+import Spinner from "@/components/Spinner";
+import i18n from "@/utils/i18n";
+import { useFinishTestQuery } from "@/redux/services/authorized.service";
+const trophy = require("@/assets/trophy.png");
 
 export default function EndScreen({ route, navigation }) {
   const { testId, size } = route.params;

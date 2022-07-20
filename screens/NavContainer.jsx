@@ -1,5 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
-import AuthVerify from "../components/AuthVerify";
+import AuthVerify from "@/components/AuthVerify";
 import React, { useEffect } from "react";
 import { KeyboardAvoidingView, Platform, View } from "react-native";
 import {
@@ -9,10 +9,10 @@ import {
 } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
-import Spinner from "../components/Spinner";
-import { addUser, clearMessage } from "../redux/slices/auth";
-import AuthStack from "../stacks/AuthStack";
-import BottomBar from "../stacks/BottomBar";
+import Spinner from "@/components/Spinner";
+import { addUser, clearMessage } from "@/redux/slices/auth";
+import AuthStack from "@/stacks/AuthStack";
+import BottomBar from "@/stacks/BottomBar";
 import tw from "twrnc";
 
 const theme = {

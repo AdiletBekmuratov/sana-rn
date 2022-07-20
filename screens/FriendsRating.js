@@ -2,13 +2,13 @@ import React from "react";
 import { FlatList, View } from "react-native";
 import { Card, IconButton, Text } from "react-native-paper";
 import tw from "twrnc";
-import Spinner from "../components/Spinner";
-import i18n from "../i18n";
+import Spinner from "@/components/Spinner";
+import i18n from "@/utils/i18n";
 import {
   useGetFriendsRatingQuery,
   useGetMyRatingQuery,
   useRemoveFriendFromRatingMutation,
-} from "../redux/services/authorized.service";
+} from "@/redux/services/authorized.service";
 
 export default function FriendsRating() {
   const { data = [], isLoading } = useGetFriendsRatingQuery();

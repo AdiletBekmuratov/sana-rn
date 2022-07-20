@@ -1,18 +1,18 @@
+import { ProgressCard } from "@/components/MainPage";
+import grads from "@/utils/grads";
+import i18n from "@/utils/i18n";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import {
-  Dimensions,
-  FlatList,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  View,
+	Dimensions,
+	FlatList,
+	Image,
+	ScrollView,
+	TouchableOpacity,
+	View
 } from "react-native";
 import { Text } from "react-native-paper";
 import tw from "twrnc";
-import ProgressCard from "../components/MainPage/ProgressCard";
-import i18n from "../i18n";
-import grads from "../utils/grads";
 
 const windowWidth = Dimensions.get("window").width;
 

@@ -2,24 +2,16 @@ import axios from "axios";
 import { Formik } from "formik";
 import React, { useState } from "react";
 import { View } from "react-native";
-import MaskInput from "react-native-mask-input";
-import {
-  Button,
-  Card,
-  HelperText,
-  Text,
-  TextInput,
-  Title,
-} from "react-native-paper";
+import { Text } from "react-native-paper";
+import { useDispatch } from "react-redux";
 import tw from "twrnc";
 import * as Yup from "yup";
-import { API_URL } from "../redux/http";
-import { useUpdateMeMutation } from "../redux/services/authorized.service";
-import i18n from "../i18n";
-import { useDispatch } from "react-redux";
-import { addMessage } from "../redux/slices/auth";
-import { CustomButton, CustomTextInput } from "./ui";
-import { phoneMask } from "../utils/masks";
+import i18n from "@/utils/i18n";
+import { API_URL } from "@/redux/http";
+import { useUpdateMeMutation } from "@/redux/services/authorized.service";
+import { addMessage } from "@/redux/slices/auth";
+import { phoneMask } from "@/utils/masks";
+import { CustomButton, CustomTextInput } from "../ui";
 
 const ProfileUpdateSchema = Yup.object().shape({
   first_name: Yup.string().required(i18n.t("Errors.required")),
@@ -28,13 +20,12 @@ const ProfileUpdateSchema = Yup.object().shape({
   password: Yup.string().required(i18n.t("Errors.required")),
 });
 
-const ChangeMainInfo = ({ userData }) => {
+export const ChangeMainInfo = ({ userData }) => {
   const dispatch = useDispatch();
   const [updateMe, { isLoading, isSuccess, isError, error }] =
     useUpdateMeMutation();
 
   const [unmaskedPhone, setUnmaskedPhone] = useState(userData.phone);
-  const [passwordVisible, setPasswordVisible] = useState(true);
 
   const onSubmitUpdate = async (values, { resetForm }) => {
     const loginData = {
@@ -165,5 +156,3 @@ const ChangeMainInfo = ({ userData }) => {
     </Formik>
   );
 };
-
-export default ChangeMainInfo;

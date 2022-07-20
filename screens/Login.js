@@ -6,10 +6,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import tw from "twrnc";
 import * as Yup from "yup";
-import PasswordReset from "../components/PasswordReset";
-import { CustomButton, CustomTextInput } from "../components/ui";
-import i18n from "../i18n";
-import { login } from "../redux/slices/auth.js";
+import PasswordReset from "@/components/PasswordReset";
+import { CustomButton, CustomTextInput } from "@/components/ui";
+import i18n from "@/utils/i18n";
+import { login } from "@/redux/slices/auth.js";
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string()

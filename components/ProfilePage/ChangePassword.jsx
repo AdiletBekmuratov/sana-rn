@@ -1,16 +1,14 @@
 import { Formik } from "formik";
 import React from "react";
 import { View } from "react-native";
-import {
-	Text
-} from "react-native-paper";
+import { Text } from "react-native-paper";
 import { useDispatch } from "react-redux";
 import tw from "twrnc";
 import * as Yup from "yup";
-import i18n from "../i18n";
-import { useUpdateMyPasswordMutation } from "../redux/services/authorized.service";
-import { addMessage } from "../redux/slices/auth";
-import { CustomButton, CustomTextInput } from "./ui";
+import i18n from "@/utils/i18n";
+import { useUpdateMyPasswordMutation } from "@/redux/services/authorized.service";
+import { addMessage } from "@/redux/slices/auth";
+import { CustomButton, CustomTextInput } from "../ui";
 
 const ChangePassSchema = Yup.object().shape({
   old_password: Yup.string().required(i18n.t("Errors.required")),
@@ -22,7 +20,7 @@ const ChangePassSchema = Yup.object().shape({
     .required(i18n.t("Errors.required")),
 });
 
-const ChangePassword = () => {
+export const ChangePassword = () => {
   const dispatch = useDispatch();
   const [updatePassword, { isLoading, isSuccess, isError, error }] =
     useUpdateMyPasswordMutation();
@@ -37,7 +35,7 @@ const ChangePassword = () => {
       const response = await updatePassword(payload);
       if (response?.data) {
         dispatch(addMessage(i18n.t("Successes.updated")));
-				resetForm()
+        resetForm();
       }
     } catch (error) {
       console.log("Update", { error });
@@ -119,5 +117,3 @@ const ChangePassword = () => {
     </Formik>
   );
 };
-
-export default ChangePassword;
