@@ -21,6 +21,7 @@ const TheoryScreen = ({ route, navigation }) => {
             onPress={() =>
               navigation.navigate("TheoryGradeScreen", {
                 lessonId: item.id,
+								title: item.name
               })
             }
             disabled={!item.available}

@@ -1,19 +1,15 @@
 import { Formik } from "formik";
-import React, { useState } from "react";
+import React from "react";
 import { View } from "react-native";
 import {
-  Button,
-  Card,
-  HelperText,
-  Snackbar,
-  Text,
-  TextInput,
-  Title,
+	Text
 } from "react-native-paper";
+import { useDispatch } from "react-redux";
 import tw from "twrnc";
 import * as Yup from "yup";
 import i18n from "../i18n";
 import { useUpdateMyPasswordMutation } from "../redux/services/authorized.service";
+import { addMessage } from "../redux/slices/auth";
 import { CustomButton, CustomTextInput } from "./ui";
 
 const ChangePassSchema = Yup.object().shape({
@@ -26,11 +22,8 @@ const ChangePassSchema = Yup.object().shape({
     .required(i18n.t("Errors.required")),
 });
 
-const ChangePassword = ({ userData, setVisible, setMessage }) => {
-  const [passwordOldVisible, setPasswordOldVisible] = useState(true);
-  const [passwordVisible, setPasswordVisible] = useState(true);
-  const [passwordConfirmVisible, setPasswordConfirmVisible] = useState(true);
-
+const ChangePassword = () => {
+  const dispatch = useDispatch();
   const [updatePassword, { isLoading, isSuccess, isError, error }] =
     useUpdateMyPasswordMutation();
 
@@ -42,15 +35,13 @@ const ChangePassword = ({ userData, setVisible, setMessage }) => {
 
     try {
       const response = await updatePassword(payload);
-      console.log({ response });
       if (response?.data) {
-        setMessage(i18n.t("Successes.updated"));
-        setVisible(true);
+        dispatch(addMessage(i18n.t("Successes.updated")));
+				resetForm()
       }
     } catch (error) {
       console.log("Update", { error });
-      setMessage(error);
-      setVisible(true);
+      dispatch(addMessage(error.respose.error.data.message));
     }
   };
 
@@ -118,6 +109,7 @@ const ChangePassword = ({ userData, setVisible, setMessage }) => {
               style="mt-4"
               onPress={handleSubmit}
               disabled={isLoading}
+              loading={isLoading}
             >
               {i18n.t("update")}
             </CustomButton>

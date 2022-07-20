@@ -1,26 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, View } from "react-native";
-import { Button, Card, IconButton, Snackbar, Text } from "react-native-paper";
+import { FlatList, TouchableOpacity, View } from "react-native";
+import { Button, IconButton, Text } from "react-native-paper";
+import { useDispatch } from "react-redux";
 import tw from "twrnc";
 import Spinner from "../components/Spinner";
+import { CustomIconButton } from "../components/ui";
 import i18n from "../i18n";
 import {
   useLazyGetTheoryAnswerByQuestionIdQuery,
   useLazyGetTheoryQuestionsByTopicIdQuery,
 } from "../redux/services/authorized.service";
+import { addMessage } from "../redux/slices/auth";
 
 const TheoryQuestionsScreen = ({ route, navigation }) => {
-  const { topicId } = route.params;
+  const { topicId, title } = route.params;
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: title,
+    });
+  }, [title, navigation]);
+
+  const dispatch = useDispatch();
+
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [totalPage, setTotalPage] = useState(0);
   const [dataSource, setDataSource] = useState([]);
   const [showEye, setShowEye] = useState([]);
   const [answers, setAnwers] = useState([]);
-
-  const [visible, setVisible] = useState(false);
-  const [message, setMessage] = useState("");
-  const onDismissSnackBar = () => setVisible(false);
 
   const [getQuestions, { data, error, isLoading, isError }] =
     useLazyGetTheoryQuestionsByTopicIdQuery({ topicId, page });
@@ -49,10 +57,12 @@ const TheoryQuestionsScreen = ({ route, navigation }) => {
       setShowEye([...showEye, index]);
     } catch (error) {
       console.log("ERROR", { error });
-      setMessage(
-        error.data.message.charAt(0).toUpperCase() + error.data.message.slice(1)
+      dispatch(
+        addMessage(
+          error.data.message.charAt(0).toUpperCase() +
+            error.data.message.slice(1)
+        )
       );
-      setVisible(true);
     }
   };
 
@@ -67,7 +77,7 @@ const TheoryQuestionsScreen = ({ route, navigation }) => {
     const getInitialData = async () => {
       await getData();
     };
-		getInitialData()
+    getInitialData();
   }, []);
 
   if (isLoading) {
@@ -89,54 +99,43 @@ const TheoryQuestionsScreen = ({ route, navigation }) => {
   };
 
   return (
-    <View style={tw`h-full flex-1 px-5 pb-5 justify-center bg-gray-100`}>
+    <View style={tw`flex-1 justify-start bg-gray-100`}>
       <FlatList
+        contentContainerStyle={tw`px-5 pb-5`}
         data={dataSource}
         keyExtractor={(item, index) => item.id + index.toString()}
         ListFooterComponent={renderFooter}
         renderItem={({ item, index }) => (
           <View
-            style={tw`flex-row justify-between items-center ${
+            style={tw`justify-start bg-white p-4 rounded-xl ${
               index !== 0 ? "mt-4" : ""
             }`}
           >
-            <Card style={tw`${"w-[88%]"}`}>
-              <Card.Content>
-                <Text style={tw`text-lg font-semibold`}>
-                  {index + 1}) {item.question}
+            <Text style={tw`text-left w-full font-bold`}>№ {index + 1}</Text>
+            <Text style={tw`text-lg font-semibold mt-2`}>{item.question}</Text>
+            {answers.find((x) => x?.id === item.id) && (
+              <Text style={tw`mt-2`}>
+                Жауабы:{" "}
+                <Text style={tw`text-[#52AEF3]`}>
+                  {answers.find((x) => x?.id === item.id).answer}
                 </Text>
-                {answers.find((x) => x?.id === item.id) && (
-                  <Text>
-                    Ответ: {answers.find((x) => x?.id === item.id).answer}
-                  </Text>
-                )}
-              </Card.Content>
-            </Card>
-            {!showEye.includes(index) ? (
-              <IconButton
-                onPress={() => showAnswer(item.id, index)}
-                icon="eye"
-                style={tw`w-12 h-12 rounded-full bg-white`}
-              />
-            ) : (
-              <IconButton
-                onPress={() => hideAnswer(item.id, index)}
-                icon="eye-off"
-                style={tw`w-12 h-12 rounded-full bg-white`}
-              />
+              </Text>
             )}
+            <View style={tw`flex flex-row justify-end w-full`}>
+              <CustomIconButton
+                style="bg-[#52AEF3] mt-6"
+                color={"white"}
+                name={!showEye.includes(index) ? "eye" : "eye-off"}
+                onPress={
+                  !showEye.includes(index)
+                    ? () => showAnswer(item.id, index)
+                    : () => hideAnswer(item.id, index)
+                }
+              />
+            </View>
           </View>
         )}
       />
-      <View style={tw`w-full`}>
-        <Snackbar
-          duration={3000}
-          visible={visible}
-          onDismiss={onDismissSnackBar}
-        >
-          {message}
-        </Snackbar>
-      </View>
     </View>
   );
 };

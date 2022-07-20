@@ -150,11 +150,12 @@ const ChangeMainInfo = ({ userData }) => {
               placeholder={i18n.t("confirm_password")}
               secureTextEntry
             />
-						
+
             <CustomButton
               style="mt-4"
               onPress={handleSubmit}
               disabled={isLoading}
+              loading={isLoading}
             >
               {i18n.t("update")}
             </CustomButton>

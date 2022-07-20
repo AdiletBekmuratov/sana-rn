@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FlatList, View } from "react-native";
 import tw from "twrnc";
 import Spinner from "../components/Spinner";
@@ -6,7 +6,13 @@ import { CustomButton } from "../components/ui";
 import { useGetTopicsByLessonIdQuery } from "../redux/services/authorized.service";
 
 const TheoryGradeScreen = ({ route, navigation }) => {
-  const { lessonId } = route.params;
+  const { lessonId, title } = route.params;
+  useEffect(() => {
+    navigation.setOptions({
+      title: title,
+    });
+  }, [title, navigation]);
+
   const { data, error, isLoading, isError } =
     useGetTopicsByLessonIdQuery(lessonId);
 
@@ -22,7 +28,10 @@ const TheoryGradeScreen = ({ route, navigation }) => {
         renderItem={({ item, index }) => (
           <CustomButton
             onPress={() =>
-              navigation.navigate("TheoryQuestionsScreen", { topicId: item.id })
+              navigation.navigate("TheoryQuestionsScreen", {
+                topicId: item.id,
+                title: item.name,
+              })
             }
             disabled={!item.is_active}
             style={`${index !== 0 ? "mt-4" : ""}`}

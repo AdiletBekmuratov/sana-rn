@@ -1,10 +1,16 @@
 import { LinearGradient } from "expo-linear-gradient";
 import React, { ReactNode } from "react";
-import { GestureResponderEvent, TouchableOpacity, View } from "react-native";
-import { Text } from "react-native-paper";
+import {
+  GestureResponderEvent,
+  OpaqueColorValue,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { ActivityIndicator, Text } from "react-native-paper";
 import tw from "twrnc";
 import grads, { Grads } from "../../utils/grads";
 import { FC } from "react";
+import Icons from "@expo/vector-icons/MaterialCommunityIcons";
 
 interface ICustomButton {
   variant?: Grads;
@@ -14,6 +20,7 @@ interface ICustomButton {
   disabled?: boolean;
   grad?: string[];
   textPosition?: "items-center" | "items-start" | "items-end";
+  loading?: boolean;
 }
 
 export const CustomButton: FC<ICustomButton> = ({
@@ -24,14 +31,18 @@ export const CustomButton: FC<ICustomButton> = ({
   disabled,
   grad,
   textPosition = "items-center",
+  loading,
 }) => {
   return (
     <>
       {disabled ? (
         <View
-          style={tw`py-4 px-4 bg-gray-200 rounded-lg ${textPosition} ${style}`}
+          style={tw`flex flex-row p-4 bg-gray-200 rounded-lg items-center ${
+            "justify" + textPosition.substring(textPosition.indexOf("-"))
+          }  ${style}`}
         >
-          <Text style={tw`text-gray-400`}>{children}</Text>
+          {loading && <ActivityIndicator color="gray" size={16} />}
+          <Text style={tw`text-gray-400 ml-2`}>{children}</Text>
         </View>
       ) : (
         <TouchableOpacity
@@ -41,7 +52,7 @@ export const CustomButton: FC<ICustomButton> = ({
           disabled={disabled}
         >
           <LinearGradient
-            style={tw`py-4 px-4 rounded-lg ${textPosition}`}
+            style={tw`p-4 rounded-lg ${textPosition}`}
             colors={grad ?? grads[variant]}
             start={{ x: 0.0, y: 0.0 }}
             end={{ x: 0.0, y: 1.0 }}

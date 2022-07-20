@@ -1,6 +1,6 @@
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import React, { useEffect, useState } from "react";
-import { Linking, ScrollView, TouchableOpacity, View } from "react-native";
+import { Linking, ScrollView, View } from "react-native";
 import { Headline, IconButton, Switch, Text } from "react-native-paper";
 import tw from "twrnc";
 import Spinner from "../components/Spinner";
@@ -13,19 +13,18 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ButtonGroup } from "../components/ui";
-
-var data: any = {
-  phone: "7753214191",
-};
-var questionQuantityData: any = {};
+import { useDispatch } from "react-redux";
+import { logout } from "../redux/slices/auth";
 
 export default function Profile({ navigation }) {
-  // const { data, error, isLoading, isError } = useGetMeQuery();
-  // const {
-  //   data: questionQuantityData,
-  //   error: questionQuantityErr,
-  //   isLoading: questionQuantityIsLoading,
-  // } = useGetQuestionQuantityQuery();
+  const dispatch = useDispatch();
+
+  const { data, error, isLoading, isError } = useGetMeQuery();
+  const {
+    data: questionQuantityData,
+    error: questionQuantityErr,
+    isLoading: questionQuantityIsLoading,
+  } = useGetQuestionQuantityQuery();
   const [updateQQ] = useUpdateQuestionQuantityMutation();
   const [sliderOneValue, setSliderOneValue] = useState([10]);
 
@@ -47,9 +46,13 @@ export default function Profile({ navigation }) {
     }
   };
 
-  // if (isLoading) {
-  //   return <Spinner />;
-  // }
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <View style={tw`flex-1`}>
@@ -69,16 +72,14 @@ export default function Profile({ navigation }) {
             icon={"logout"}
             style={tw`absolute right-0`}
             color="#fff"
-            onPress={() =>
-              navigation.navigate("ChangeProfile", { userData: data })
-            }
+            onPress={() => handleLogout()}
           />
         </View>
         <View style={tw`justify-center items-center p-5 pt-0`}>
           <Text style={tw`text-white text-2xl font-bold`}>
-            Adilet Bekmuratov
+            {data?.first_name} {data?.last_name}
           </Text>
-          <Text style={tw`text-white text-lg mt-2`}>dd01x3@gmail.com</Text>
+          <Text style={tw`text-white text-lg mt-2`}>{data?.email}</Text>
           <Text style={tw`text-white text-lg mt-2`}>
             +7 ({data?.phone?.slice(0, 3)}) {data?.phone?.slice(3, 6)}-
             {data?.phone?.slice(6)}
