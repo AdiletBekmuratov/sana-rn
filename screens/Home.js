@@ -1,15 +1,19 @@
 import { ProgressCard } from "@/components/MainPage";
+import {
+  useGetEntryDaysQuery,
+  useGetProgressQuery,
+} from "@/redux/services/authorized.service";
 import grads from "@/utils/grads";
 import i18n from "@/utils/i18n";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import {
-	Dimensions,
-	FlatList,
-	Image,
-	ScrollView,
-	TouchableOpacity,
-	View
+  Dimensions,
+  FlatList,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { Text } from "react-native-paper";
 import tw from "twrnc";
@@ -52,10 +56,13 @@ const buttons = [
 ];
 
 export default function Home({ navigation }) {
+  const { data, isLoading } = useGetProgressQuery();
+  const { data: entryDays } = useGetEntryDaysQuery();
+
   return (
     <View style={tw`flex-1 justify-start bg-gray-100`}>
       <ScrollView>
-        <View style={tw`px-5`}>
+        <View style={tw`px-5 pb-5`}>
           <Image
             style={{
               width: windowWidth - 40,
@@ -67,7 +74,6 @@ export default function Home({ navigation }) {
           <ScrollView contentContainerStyle={tw`flex-grow`} horizontal={true}>
             <View style={tw`flex-1`}>
               <FlatList
-                nestedScrollEnabled
                 data={buttons}
                 keyExtractor={(item) => item.id}
                 numColumns={2}
@@ -107,34 +113,24 @@ export default function Home({ navigation }) {
 
           <View style={tw`mt-6`}>
             <Text style={tw`text-lg`}>Прогресс</Text>
-            <ProgressCard
-              style="mt-2"
-              subject="Math"
-              currentScore={5}
-              maxScore={10}
-              progress={0.5}
-            />
-            <ProgressCard
-              style="mt-2"
-              subject="Math"
-              currentScore={100}
-              maxScore={100}
-              progress={1.0}
-            />
-            <ProgressCard
-              style="mt-2"
-              subject="Math"
-              currentScore={5}
-              maxScore={10}
-              progress={0.5}
-            />
-            <ProgressCard
-              style="mt-2"
-              subject="Math"
-              currentScore={100}
-              maxScore={100}
-              progress={1.0}
-            />
+            <ScrollView contentContainerStyle={tw`flex-grow`} horizontal={true}>
+              <View style={tw`flex-1`}>
+                <FlatList
+                  data={data}
+                  renderItem={({ item, index }) => (
+                    <ProgressCard
+                      key={item.id + "-progress-card"}
+                      style="mt-2"
+                      subject={item.name}
+                      image={item.image}
+                      currentScore={item.my_answer_question}
+                      maxScore={item.sum_of_question}
+                      progress={item.my_answer_question / item.sum_of_question}
+                    />
+                  )}
+                />
+              </View>
+            </ScrollView>
           </View>
         </View>
       </ScrollView>

@@ -13,7 +13,7 @@ export default function AuthVerify() {
       interval = setInterval(async () => {
         const jsonValue = await AsyncStorage.getItem("user");
         const user = jsonValue != null ? JSON.parse(jsonValue) : null;
-
+			
         if (user) {
           const decodedJwt = jwt_decode(user.refresh);
           if (decodedJwt.exp * 1000 < Date.now()) {

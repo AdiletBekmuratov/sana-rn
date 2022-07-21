@@ -15,6 +15,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ButtonGroup } from "@/components/ui";
 import { useDispatch } from "react-redux";
 import { logout } from "@/redux/slices/auth";
+import { EntryDays, MyProgressCard } from "@/components/ProfilePage";
 
 export default function Profile({ navigation }) {
   const dispatch = useDispatch();
@@ -87,9 +88,12 @@ export default function Profile({ navigation }) {
         </View>
       </LinearGradient>
       <View style={tw`flex-1`}>
-        <ScrollView contentContainerStyle={tw`pb-5`}>
+        <ScrollView>
           <View style={tw`p-5`}>
+            <EntryDays />
+
             <ButtonGroup
+              containerStyle="mt-6"
               buttons={[
                 {
                   children: <Text>Жеке мәліметті өзгерту</Text>,

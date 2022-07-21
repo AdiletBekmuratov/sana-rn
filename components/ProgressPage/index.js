@@ -1,1 +1,1 @@
-export * from "./EntryDays";
+export * from "./MyProgressCard";

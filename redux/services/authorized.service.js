@@ -147,6 +147,18 @@ export const authorizedApi = baseApi.injectEndpoints({
         url: `/question/${url}/?lesson=${lesson}`,
       }),
     }),
+
+    getEntryDays: builder.query({
+      query: () => ({
+        url: `/user/day-of-entry/`,
+      }),
+    }),
+
+    getProgress: builder.query({
+      query: () => ({
+        url: `/lessons/progress/?test_type=1`,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -187,4 +199,7 @@ export const {
 
   useGetQuantityMasteredQuery,
   useLazyGetMasteredOrWrongQuestionsQuery,
+
+  useGetEntryDaysQuery,
+  useGetProgressQuery,
 } = authorizedApi;

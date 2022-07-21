@@ -17,8 +17,12 @@ export const ProgressCard = ({
         style={tw`aspect-square w-20 bg-gray-200 rounded-2xl justify-center items-center`}
       >
         <Image
-          style={{ resizeMode: "contain", width: 48, height: 48 }}
-          source={require("../../assets/main-page-icons/theory.png")}
+          style={{ resizeMode: "contain", width: 36, height: 36 }}
+          source={
+            image
+              ? { uri: image }
+              : require("@/assets/main-page-icons/book-placeholder.png")
+          }
         />
       </View>
       <View style={tw`justify-center ml-4 flex-1`}>
