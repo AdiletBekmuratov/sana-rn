@@ -20,7 +20,7 @@ import {
   useRemoveFriendFromRatingMutation,
 } from "@/redux/services/authorized.service";
 
-export default function Rating() {
+export const RatingScreen = () => {
   const [page, setPage] = useState(1);
   const [nextPage, setNextPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -216,4 +216,4 @@ export default function Rating() {
       </Card>
     </View>
   );
-}
+};

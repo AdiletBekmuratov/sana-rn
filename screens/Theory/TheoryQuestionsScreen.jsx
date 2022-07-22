@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { FlatList, TouchableOpacity, View } from "react-native";
-import { Button, IconButton, Text } from "react-native-paper";
-import { useDispatch } from "react-redux";
-import tw from "twrnc";
 import Spinner from "@/components/Spinner";
 import { CustomIconButton } from "@/components/ui";
-import i18n from "@/utils/i18n";
+import { useAppDispatch } from "@/redux/hooks";
 import {
-  useLazyGetTheoryAnswerByQuestionIdQuery,
-  useLazyGetTheoryQuestionsByTopicIdQuery,
+	useLazyGetTheoryAnswerByQuestionIdQuery,
+	useLazyGetTheoryQuestionsByTopicIdQuery
 } from "@/redux/services/authorized.service";
 import { addMessage } from "@/redux/slices/auth";
+import i18n from "@/utils/i18n";
+import React, { useEffect, useState } from "react";
+import { FlatList, View } from "react-native";
+import { Button, Text } from "react-native-paper";
+import tw from "twrnc";
 
-const TheoryQuestionsScreen = ({ route, navigation }) => {
+export const TheoryQuestionsScreen = ({ route, navigation }) => {
   const { topicId, title } = route.params;
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const TheoryQuestionsScreen = ({ route, navigation }) => {
     });
   }, [title, navigation]);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -139,5 +139,3 @@ const TheoryQuestionsScreen = ({ route, navigation }) => {
     </View>
   );
 };
-
-export default TheoryQuestionsScreen;

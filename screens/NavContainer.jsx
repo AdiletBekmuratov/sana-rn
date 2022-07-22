@@ -1,18 +1,18 @@
-import { NavigationContainer } from "@react-navigation/native";
 import AuthVerify from "@/components/AuthVerify";
-import React, { useEffect } from "react";
-import { KeyboardAvoidingView, Platform, View } from "react-native";
-import {
-  Provider as PaperProvider,
-  DefaultTheme,
-  Snackbar,
-} from "react-native-paper";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import { useDispatch, useSelector } from "react-redux";
 import Spinner from "@/components/Spinner";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { addUser, clearMessage } from "@/redux/slices/auth";
 import AuthStack from "@/stacks/AuthStack";
 import BottomBar from "@/stacks/BottomBar";
+import { NavigationContainer } from "@react-navigation/native";
+import React, { useEffect } from "react";
+import { KeyboardAvoidingView, Platform, View } from "react-native";
+import {
+  DefaultTheme,
+  Provider as PaperProvider,
+  Snackbar,
+} from "react-native-paper";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import tw from "twrnc";
 
 const theme = {
@@ -25,9 +25,9 @@ const theme = {
 };
 
 export default function NavContainer() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
+  const { user, isLoading, isError, isSuccess, message } = useAppSelector(
     (state) => state.auth
   );
   const onDismissSnackBar = () => dispatch(clearMessage());

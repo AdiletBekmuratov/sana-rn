@@ -2,10 +2,10 @@ import React from "react";
 import { FlatList, View } from "react-native";
 import tw from "twrnc";
 import Spinner from "@/components/Spinner";
-import { CustomButton } from "@/components/ui";
+import { CustomGradientButton } from "@/components/ui";
 import { useGetTheoryLessonsQuery } from "@/redux/services/authorized.service";
 
-const TheoryScreen = ({ route, navigation }) => {
+export const TheoryScreen = ({ route, navigation }) => {
   const { data, error, isLoading, isError } = useGetTheoryLessonsQuery();
 
   if (isLoading) {
@@ -17,11 +17,11 @@ const TheoryScreen = ({ route, navigation }) => {
       <FlatList
         data={data}
         renderItem={({ item, index }) => (
-          <CustomButton
+          <CustomGradientButton
             onPress={() =>
               navigation.navigate("TheoryGradeScreen", {
                 lessonId: item.id,
-								title: item.name
+                title: item.name,
               })
             }
             disabled={!item.available}
@@ -29,11 +29,9 @@ const TheoryScreen = ({ route, navigation }) => {
             textPosition="items-start"
           >
             {item.name}
-          </CustomButton>
+          </CustomGradientButton>
         )}
       />
     </View>
   );
 };
-
-export default TheoryScreen;

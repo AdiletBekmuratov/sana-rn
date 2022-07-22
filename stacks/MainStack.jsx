@@ -5,15 +5,21 @@ import Header from "@/components/Header";
 import i18n from "@/utils/i18n";
 import EndScreen from "@/screens/EndScreen";
 import Home from "@/screens/Home";
-import MasteredWrongQuestionsScreen from "@/screens/MasteredWrongQuestionsScreen";
-import PracticeGradeScreen from "@/screens/PracticeGradeScreen";
-import PracticeQuestionsScreen from "@/screens/PracticeQuestionsScreen";
-import PracticeScreen from "@/screens/PracticeScreen";
-import RandomQuestionsScreen from "@/screens/RandomQuestionsScreen";
-import RandomScreen from "@/screens/RandomScreen";
-import TheoryGradeScreen from "@/screens/TheoryGradeScreen";
-import TheoryQuestionsScreen from "@/screens/TheoryQuestionsScreen";
-import TheoryScreen from "@/screens/TheoryScreen";
+
+import {
+  TheoryGradeScreen,
+  TheoryQuestionsScreen,
+  TheoryScreen,
+} from "@/screens/Theory";
+
+import {
+  PracticeScreen,
+  MasteredWrongQuestionsScreen,
+  PracticeGradeScreen,
+  PracticeQuestionsScreen,
+} from "@/screens/Practice";
+
+import { RandomScreen, RandomQuestionsScreen } from "@/screens/Random";
 
 const Stack = createNativeStackNavigator();
 

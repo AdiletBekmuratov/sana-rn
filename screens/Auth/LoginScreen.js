@@ -1,15 +1,15 @@
+import PasswordReset from "@/components/PasswordReset";
+import { CustomGradientButton, CustomTextInput } from "@/components/ui";
+import { useAppDispatch } from "@/redux/hooks";
+import { login } from "@/redux/slices/auth";
+import i18n from "@/utils/i18n";
 import { Formik } from "formik";
-import { useState } from "react";
+import { useCallback, useRef } from "react";
 import { View } from "react-native";
 import { Headline, Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useDispatch } from "react-redux";
 import tw from "twrnc";
 import * as Yup from "yup";
-import PasswordReset from "@/components/PasswordReset";
-import { CustomButton, CustomTextInput } from "@/components/ui";
-import i18n from "@/utils/i18n";
-import { login } from "@/redux/slices/auth.js";
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string()
@@ -18,9 +18,9 @@ const LoginSchema = Yup.object().shape({
   password: Yup.string().required(i18n.t("Errors.required")),
 });
 
-const Login = ({ navigation }) => {
-  const dispatch = useDispatch();
-  const [visibleDialog, setVisibleDialog] = useState(false);
+export const LoginScreen = ({ navigation }) => {
+  const dispatch = useAppDispatch();
+  const sheetRef = useRef(null);
 
   const handleSubmit = (formValues, { resetForm }) => {
     const data = {
@@ -31,23 +31,17 @@ const Login = ({ navigation }) => {
     resetForm();
   };
 
-  const handleOpenDialog = () => {
-    setVisibleDialog(true);
-  };
-
-  const handleCloseDialog = () => {
-    setVisibleDialog(false);
-  };
+  const handleSnapPress = useCallback((index) => {
+    sheetRef.current?.snapToIndex(index);
+  }, []);
+  const handleClosePress = useCallback(() => {
+    sheetRef.current?.close();
+  }, []);
 
   return (
     <SafeAreaView
       style={tw`flex-1 p-5 justify-start w-full bg-white dark:bg-black pt-[80px]`}
     >
-      <PasswordReset
-        visibleDialog={visibleDialog}
-        handleCloseDialog={handleCloseDialog}
-      />
-
       <Formik
         validationSchema={LoginSchema}
         initialValues={{ username: "", password: "" }}
@@ -90,16 +84,16 @@ const Login = ({ navigation }) => {
               />
               <Text
                 style={tw`mt-4 text-[#52AEF3]`}
-                onPress={() => handleOpenDialog()}
+                onPress={() => handleSnapPress(0)}
               >
                 {i18n.t("LoginScreen.forgotPassword")}
               </Text>
             </View>
 
             <View>
-              <CustomButton onPress={handleSubmit}>
+              <CustomGradientButton onPress={handleSubmit}>
                 {i18n.t("LoginScreen.enter")}
-              </CustomButton>
+              </CustomGradientButton>
               <Text
                 style={tw`mt-4 text-center`}
                 onPress={() => navigation.replace("Register")}
@@ -110,8 +104,8 @@ const Login = ({ navigation }) => {
           </View>
         )}
       </Formik>
+
+      <PasswordReset sheetRef={sheetRef} handleClosePress={handleClosePress} />
     </SafeAreaView>
   );
 };
-
-export default Login;

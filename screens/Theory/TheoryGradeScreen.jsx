@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import { FlatList, View } from "react-native";
 import tw from "twrnc";
 import Spinner from "@/components/Spinner";
-import { CustomButton } from "@/components/ui";
+import { CustomGradientButton } from "@/components/ui";
 import { useGetTopicsByLessonIdQuery } from "@/redux/services/authorized.service";
 
-const TheoryGradeScreen = ({ route, navigation }) => {
+export const TheoryGradeScreen = ({ route, navigation }) => {
   const { lessonId, title } = route.params;
   useEffect(() => {
     navigation.setOptions({
@@ -26,7 +26,7 @@ const TheoryGradeScreen = ({ route, navigation }) => {
         data={data}
         keyExtractor={(item, index) => item.id + index.toString()}
         renderItem={({ item, index }) => (
-          <CustomButton
+          <CustomGradientButton
             onPress={() =>
               navigation.navigate("TheoryQuestionsScreen", {
                 topicId: item.id,
@@ -38,11 +38,9 @@ const TheoryGradeScreen = ({ route, navigation }) => {
             textPosition="items-start"
           >
             {item.name}
-          </CustomButton>
+          </CustomGradientButton>
         )}
       />
     </View>
   );
 };
-
-export default TheoryGradeScreen;

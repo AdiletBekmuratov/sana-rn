@@ -1,25 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { FlatList, TouchableOpacity, View, Vibration } from "react-native";
-import { Button, Headline, Subheading, Text } from "react-native-paper";
-import tw from "twrnc";
+import { OptionButton } from "@/components/Questions/OptionButton";
 import Spinner from "@/components/Spinner";
-import i18n from "@/utils/i18n";
 import {
-  useLazyGetMasteredOrWrongQuestionsQuery,
+  useLazyGetPracticeQuestionsByTopicIdQuery,
   useSendAnswerMutation,
 } from "@/redux/services/authorized.service";
+import i18n from "@/utils/i18n";
+import React, { useEffect, useState } from "react";
+import { FlatList, TouchableOpacity, Vibration, View } from "react-native";
+import { Text } from "react-native-paper";
+import tw from "twrnc";
 
-const MasteredWrongQuestionsScreen = ({ route, navigation }) => {
-  const { lessonId, mastered } = route.params;
+export const PracticeQuestionsScreen = ({ route, navigation }) => {
+  const { topicId, title } = route.params;
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: title,
+    });
+  }, [title, navigation]);
+
+  const [isLatex, setIsLatex] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [testId, setTestId] = useState();
   const [currentQ, setCurrentQ] = useState(0);
   const [pressedBtns, setPressedBtns] = useState([]);
   const [getQuestions, { data, error, isLoading, isError }] =
-    useLazyGetMasteredOrWrongQuestionsQuery({
-      lesson: lessonId,
-      url: mastered ? "mastered" : "wrong",
-    });
+    useLazyGetPracticeQuestionsByTopicIdQuery(topicId);
   const [sendAnswer] = useSendAnswerMutation();
 
   const [correct, setCorrect] = useState();
@@ -27,12 +33,10 @@ const MasteredWrongQuestionsScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     const getAllQuestions = async () => {
-      if (lessonId) {
+      if (topicId) {
         try {
-          const response = await getQuestions({
-            lesson: lessonId,
-            url: mastered ? "mastered" : "wrong",
-          }).unwrap();
+          const response = await getQuestions(topicId).unwrap();
+          setIsLatex(response?.math);
           setTestId(response.test);
           setQuestions(response.questions);
         } catch (error) {
@@ -40,8 +44,8 @@ const MasteredWrongQuestionsScreen = ({ route, navigation }) => {
         }
       }
     };
-		getAllQuestions()
-  }, [lessonId]);
+    getAllQuestions();
+  }, [topicId]);
 
   const handleSubmit = async (pressedSingle) => {
     try {
@@ -49,8 +53,9 @@ const MasteredWrongQuestionsScreen = ({ route, navigation }) => {
         answers: pressedSingle ?? pressedBtns,
         question: questions[currentQ].id,
         test: testId,
-        question_type: mastered ? "mastered" : "wrong",
+        question_type: "practice",
       };
+
       const res = await sendAnswer(body);
 
       setDisabled(true);
@@ -97,89 +102,68 @@ const MasteredWrongQuestionsScreen = ({ route, navigation }) => {
 
   return (
     <View style={tw`h-full flex-1 px-5 pb-5 justify-center bg-gray-100`}>
-      <Headline style={tw`font-bold`}>
-        {i18n.t("QuestionsScreen.title")}
-        {currentQ + 1}
-      </Headline>
-      <Subheading>{questions[currentQ]?.question}</Subheading>
+      <View style={tw`rounded-xl bg-white p-4 items-center`}>
+        <Text style={tw`font-bold text-lg mb-2`}>
+          {i18n.t("QuestionsScreen.title")}
+          {currentQ + 1}
+        </Text>
+        <Text style={tw`text-center`}>{questions[currentQ]?.question}</Text>
+      </View>
       <FlatList
         style={tw`mt-2`}
         data={questions[currentQ]?.answers_list}
         numColumns={2}
         renderItem={({ item, index }) => (
-          <View
-            style={{
-              flex: 0.5,
-            }}
-          >
-            <TouchableOpacity
-              disabled={disabled}
-              onPress={() => handleOptionClick(item.id)}
-              style={tw.style(
-                "p-4",
-                "rounded",
-                "justify-center",
-                "items-center",
-                "m-2",
-                disabled
-                  ? item.correct
-                    ? "bg-green-400"
-                    : "bg-red-400"
-                  : pressedBtns.includes(item.id)
-                  ? "bg-[#002C67]"
-                  : "bg-[#9ab4d4]",
-                {
-                  minHeight: 150,
-                  flex: 1,
-                }
-              )}
-            >
-              <View>
-                <Text style={tw`text-lg font-bold text-white`}>
-                  {item.answer}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
+          <OptionButton
+            disabled={disabled}
+            onPress={() => handleOptionClick(item.id)}
+            index={index}
+            isLatex={isLatex}
+            item={item}
+          />
         )}
       />
       {!disabled ? (
         questions[currentQ]?.multichoice && (
-          <Button
-            style={tw`mt-4`}
-            mode="contained"
+          <TouchableOpacity
+            activeOpacity={0.5}
             onPress={() => handleSubmit()}
             disabled={pressedBtns.length <= 0 || disabled}
+            style={tw`bg-blue-300 rounded-xl p-4 items-center`}
           >
-            {i18n.t("QuestionsScreen.submit")}
-          </Button>
+            <Text style={tw`text-white font-bold`}>
+              {i18n.t("QuestionsScreen.submit")}
+            </Text>
+          </TouchableOpacity>
         )
       ) : (
-        <>
+        <View style={tw`flex flex-row justify-between items-center w-full`}>
           {questions.length - 1 > currentQ && (
-            <Button
-              style={tw`mt-4`}
-              mode="contained"
+            <TouchableOpacity
+              activeOpacity={0.5}
               onPress={() => handleFinish()}
               disabled={pressedBtns.length <= 0}
+              style={tw`bg-white rounded-xl p-4 items-center flex-1 border-2 border-blue-300 mr-2`}
             >
-              {i18n.t("QuestionsScreen.finish")}
-            </Button>
+              <Text style={tw`text-blue-300 font-bold`}>
+                {i18n.t("QuestionsScreen.finish")}
+              </Text>
+            </TouchableOpacity>
           )}
-          <Button
-            style={tw`mt-4`}
-            mode="contained"
+          <TouchableOpacity
+            activeOpacity={0.5}
             onPress={() => handleNext()}
             disabled={pressedBtns.length <= 0}
+            style={tw`bg-blue-300 rounded-xl p-4 items-center flex-1 ml-2`}
           >
-            {questions.length - 1 > currentQ
-              ? i18n.t("QuestionsScreen.next")
-              : i18n.t("QuestionsScreen.finish")}
-          </Button>
-        </>
+            <Text style={tw`text-white font-bold`}>
+              {questions.length - 1 > currentQ
+                ? i18n.t("QuestionsScreen.next")
+                : i18n.t("QuestionsScreen.finish")}
+            </Text>
+          </TouchableOpacity>
+        </View>
       )}
     </View>
   );
 };
-
-export default MasteredWrongQuestionsScreen;

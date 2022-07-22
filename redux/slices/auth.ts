@@ -1,9 +1,10 @@
+import { IAuth } from "@/types/index";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import jwt_decode from "jwt-decode";
+import jwt_decode, { JwtPayload } from "jwt-decode";
 import authService from "../services/auth.service";
 
-const initialState = {
+const initialState: IAuth = {
   user: null,
   isError: false,
   isSuccess: false,
@@ -12,32 +13,39 @@ const initialState = {
 };
 
 // Register user
-export const register = createAsyncThunk(
-  "auth/register",
-  async (user, thunkAPI) => {
-    try {
-      const result = await authService.register(user);
-
-      return "Пользователь успешно зарегистрирован";
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        (error.response && error.response.data && error.response.data.detail) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
+export const register = createAsyncThunk<
+  any,
+  void,
+  {
+    rejectValue: string;
   }
-);
+>("auth/register", async (user, thunkAPI) => {
+  try {
+    const result = await authService.register(user);
+
+    return "Пользователь успешно зарегистрирован";
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      (error.response && error.response.data && error.response.data.detail) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+});
 
 // Login user
-export const login = createAsyncThunk("auth/login", async (user, thunkAPI) => {
+export const login = createAsyncThunk<
+  any,
+  void,
+  {
+    rejectValue: string;
+  }
+>("auth/login", async (user, thunkAPI) => {
   try {
     return await authService.login(user);
   } catch (error) {
-    const message =
+    const message: string =
       (error.response && error.response.data && error.response.data.message) ||
       (error.response && error.response.data && error.response.data.detail) ||
       error.message ||
@@ -62,7 +70,7 @@ export const addUser = createAsyncThunk("auth/addUser", async () => {
   const jsonValue = await AsyncStorage.getItem("user");
   const user = jsonValue != null ? JSON.parse(jsonValue) : null;
   if (user) {
-    const decodedJwt = jwt_decode(user.refresh);
+    const decodedJwt = jwt_decode(user.refresh) as JwtPayload;
     if (decodedJwt.exp * 1000 < Date.now()) {
       await AsyncStorage.removeItem("user");
       return null;
@@ -73,7 +81,7 @@ export const addUser = createAsyncThunk("auth/addUser", async () => {
 
 export const addMessage = createAsyncThunk(
   "auth/addMessage",
-  (data, thunkApi) => {
+  (data: string, thunkApi) => {
     return data;
   }
 );

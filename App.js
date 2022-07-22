@@ -4,6 +4,7 @@ import NavContainer from "@/screens/NavContainer";
 import store from "@/redux/store";
 import i18n from "@/utils/i18n";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function App() {
   useEffect(() => {
@@ -14,8 +15,10 @@ export default function App() {
   }, []);
 
   return (
-    <Provider store={store}>
-      <NavContainer />
-    </Provider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Provider store={store}>
+        <NavContainer />
+      </Provider>
+    </GestureHandlerRootView>
   );
 }

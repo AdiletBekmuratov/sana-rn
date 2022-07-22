@@ -5,18 +5,21 @@ import tw from "twrnc";
 import Spinner from "@/components/Spinner";
 import i18n from "@/utils/i18n";
 import {
-  useLazyGetRandomQuestionsByLessonIdQuery,
+  useLazyGetMasteredOrWrongQuestionsQuery,
   useSendAnswerMutation,
 } from "@/redux/services/authorized.service";
 
-const RandomQuestionsScreen = ({ route, navigation }) => {
-  const { lessonId } = route.params;
+export const MasteredWrongQuestionsScreen = ({ route, navigation }) => {
+  const { lessonId, mastered } = route.params;
   const [questions, setQuestions] = useState([]);
   const [testId, setTestId] = useState();
   const [currentQ, setCurrentQ] = useState(0);
   const [pressedBtns, setPressedBtns] = useState([]);
   const [getQuestions, { data, error, isLoading, isError }] =
-    useLazyGetRandomQuestionsByLessonIdQuery(lessonId);
+    useLazyGetMasteredOrWrongQuestionsQuery({
+      lesson: lessonId,
+      url: mastered ? "mastered" : "wrong",
+    });
   const [sendAnswer] = useSendAnswerMutation();
 
   const [correct, setCorrect] = useState();
@@ -26,15 +29,18 @@ const RandomQuestionsScreen = ({ route, navigation }) => {
     const getAllQuestions = async () => {
       if (lessonId) {
         try {
-          const response = await getQuestions(lessonId).unwrap();
+          const response = await getQuestions({
+            lesson: lessonId,
+            url: mastered ? "mastered" : "wrong",
+          }).unwrap();
           setTestId(response.test);
           setQuestions(response.questions);
         } catch (error) {
-          console.log("ERR RAND QUESTIONS", error);
+          console.log("ERR PRAC QUESTIONS", error);
         }
       }
     };
-    getAllQuestions();
+		getAllQuestions()
   }, [lessonId]);
 
   const handleSubmit = async (pressedSingle) => {
@@ -43,7 +49,7 @@ const RandomQuestionsScreen = ({ route, navigation }) => {
         answers: pressedSingle ?? pressedBtns,
         question: questions[currentQ].id,
         test: testId,
-        question_type: "random",
+        question_type: mastered ? "mastered" : "wrong",
       };
       const res = await sendAnswer(body);
 
@@ -176,4 +182,3 @@ const RandomQuestionsScreen = ({ route, navigation }) => {
   );
 };
 
-export default RandomQuestionsScreen;

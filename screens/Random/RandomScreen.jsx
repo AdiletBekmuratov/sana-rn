@@ -3,10 +3,10 @@ import { FlatList, TouchableOpacity, View } from "react-native";
 import { Card, Text } from "react-native-paper";
 import tw from "twrnc";
 import Spinner from "@/components/Spinner";
-import { useGetPracticeLessonsQuery } from "@/redux/services/authorized.service";
+import { useGetRandomLessonsQuery } from "@/redux/services/authorized.service";
 
-const PracticeScreen = ({ navigation }) => {
-  const { data, error, isLoading, isError } = useGetPracticeLessonsQuery();
+export const RandomScreen = ({ navigation }) => {
+  const { data, error, isLoading, isError } = useGetRandomLessonsQuery();
 
   if (isLoading) {
     return <Spinner />;
@@ -20,7 +20,9 @@ const PracticeScreen = ({ navigation }) => {
           <TouchableOpacity
             style={tw`${index !== 0 ? "mt-4" : ""}`}
             onPress={() =>
-              navigation.navigate("PracticeGradeScreen", { lessonId: item.id })
+              navigation.navigate("RandomQuestionsScreen", {
+                lessonId: item.id,
+              })
             }
           >
             <Card>
@@ -39,5 +41,3 @@ const PracticeScreen = ({ navigation }) => {
     </View>
   );
 };
-
-export default PracticeScreen;

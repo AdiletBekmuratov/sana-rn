@@ -3,7 +3,7 @@ import { ScrollView, View } from "react-native";
 import tw from "twrnc";
 import { ChangeMainInfo, ChangePassword } from "@/components/ProfilePage";
 
-const ChangeProfile = ({ route, navigation }) => {
+export const ChangeProfile = ({ route, navigation }) => {
   const { userData } = route.params;
 
   return (
@@ -16,5 +16,3 @@ const ChangeProfile = ({ route, navigation }) => {
     </View>
   );
 };
-
-export default ChangeProfile;

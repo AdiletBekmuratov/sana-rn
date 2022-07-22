@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FlatList, TouchableOpacity, View } from "react-native";
 import { Card, Text } from "react-native-paper";
 import tw from "twrnc";
@@ -8,9 +8,17 @@ import {
   useGetPracticeTopicsByLessonIdQuery,
   useGetQuantityMasteredQuery,
 } from "@/redux/services/authorized.service";
+import { CustomGradientButton } from "@/components/ui";
 
-const PracticeGradeScreen = ({ route, navigation }) => {
-  const { lessonId } = route.params;
+export const PracticeGradeScreen = ({ route, navigation }) => {
+  const { lessonId, title } = route.params;
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: title,
+    });
+  }, [title, navigation]);
+
   const { data, error, isLoading, isError } =
     useGetPracticeTopicsByLessonIdQuery(lessonId);
 
@@ -30,23 +38,20 @@ const PracticeGradeScreen = ({ route, navigation }) => {
         data={data}
         keyExtractor={(item, index) => item.id + index.toString()}
         renderItem={({ item, index }) => (
-          <TouchableOpacity
-            style={tw`${index !== 0 ? "mt-4" : ""}`}
+          <CustomGradientButton
             onPress={() =>
               navigation.navigate("PracticeQuestionsScreen", {
                 topicId: item.id,
+                title: item.name,
               })
             }
             disabled={!item.is_active}
+            style={`${index !== 0 ? "mt-4" : ""}`}
+            textPosition="items-start"
+            variant="orange"
           >
-            <Card style={tw`${!item.is_active ? "opacity-50" : ""}`}>
-              <Card.Content
-                style={tw`flex flex-row justify-between items-center`}
-              >
-                <Text style={tw`text-lg font-bold`}>{item.name}</Text>
-              </Card.Content>
-            </Card>
-          </TouchableOpacity>
+            {item.name}
+          </CustomGradientButton>
         )}
       />
       <TouchableOpacity
@@ -100,5 +105,3 @@ const PracticeGradeScreen = ({ route, navigation }) => {
     </View>
   );
 };
-
-export default PracticeGradeScreen;

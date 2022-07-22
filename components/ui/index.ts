@@ -1,4 +1,4 @@
 export * from './ButtonGroup'
-export * from './CustomButton'
+export * from './CustomGradientButton'
 export * from './CustomTextInput'
 export * from './CustomIconButton'

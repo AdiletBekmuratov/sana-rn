@@ -10,7 +10,7 @@ import {
   useRemoveFriendFromRatingMutation,
 } from "@/redux/services/authorized.service";
 
-export default function FriendsRating() {
+export const FriendsRatingScreen = () => {
   const { data = [], isLoading } = useGetFriendsRatingQuery();
 
   const { data: myRating, isLoading: myRateLoading } = useGetMyRatingQuery();
@@ -73,4 +73,4 @@ export default function FriendsRating() {
       </Card>
     </View>
   );
-}
+};

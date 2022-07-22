@@ -1,24 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, TouchableOpacity, Vibration, View } from "react-native";
-import { MathJaxSvg } from "react-native-mathjax-html-to-svg";
+import { FlatList, TouchableOpacity, View, Vibration } from "react-native";
 import { Button, Headline, Subheading, Text } from "react-native-paper";
 import tw from "twrnc";
 import Spinner from "@/components/Spinner";
 import i18n from "@/utils/i18n";
 import {
-  useLazyGetPracticeQuestionsByTopicIdQuery,
+  useLazyGetRandomQuestionsByLessonIdQuery,
   useSendAnswerMutation,
 } from "@/redux/services/authorized.service";
 
-const PracticeQuestionsScreen = ({ route, navigation }) => {
-  const { topicId } = route.params;
-  const [isLatex, setIsLatex] = useState(false);
+export const RandomQuestionsScreen = ({ route, navigation }) => {
+  const { lessonId } = route.params;
   const [questions, setQuestions] = useState([]);
   const [testId, setTestId] = useState();
   const [currentQ, setCurrentQ] = useState(0);
   const [pressedBtns, setPressedBtns] = useState([]);
   const [getQuestions, { data, error, isLoading, isError }] =
-    useLazyGetPracticeQuestionsByTopicIdQuery(topicId);
+    useLazyGetRandomQuestionsByLessonIdQuery(lessonId);
   const [sendAnswer] = useSendAnswerMutation();
 
   const [correct, setCorrect] = useState();
@@ -26,19 +24,18 @@ const PracticeQuestionsScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     const getAllQuestions = async () => {
-      if (topicId) {
+      if (lessonId) {
         try {
-          const response = await getQuestions(topicId).unwrap();
-          setIsLatex(response?.math);
+          const response = await getQuestions(lessonId).unwrap();
           setTestId(response.test);
           setQuestions(response.questions);
         } catch (error) {
-          console.log("ERR PRAC QUESTIONS", error);
+          console.log("ERR RAND QUESTIONS", error);
         }
       }
     };
     getAllQuestions();
-  }, [topicId]);
+  }, [lessonId]);
 
   const handleSubmit = async (pressedSingle) => {
     try {
@@ -46,9 +43,8 @@ const PracticeQuestionsScreen = ({ route, navigation }) => {
         answers: pressedSingle ?? pressedBtns,
         question: questions[currentQ].id,
         test: testId,
-        question_type: "practice",
+        question_type: "random",
       };
-
       const res = await sendAnswer(body);
 
       setDisabled(true);
@@ -133,20 +129,9 @@ const PracticeQuestionsScreen = ({ route, navigation }) => {
               )}
             >
               <View>
-                {isLatex ? (
-                  <MathJaxSvg
-                    fontSize={16}
-                    color="#000000"
-                    fontCache={true}
-                    // style={tw`text-lg font-bold text-white`}
-                  >
-                    {item.answer}
-                  </MathJaxSvg>
-                ) : (
-                  <Text style={tw`text-lg font-bold text-white`}>
-                    {item.answer}
-                  </Text>
-                )}
+                <Text style={tw`text-lg font-bold text-white`}>
+                  {item.answer}
+                </Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -190,5 +175,3 @@ const PracticeQuestionsScreen = ({ route, navigation }) => {
     </View>
   );
 };
-
-export default PracticeQuestionsScreen;

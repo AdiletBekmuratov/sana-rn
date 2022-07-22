@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import { ScrollView, View } from "react-native";
 import { Headline, Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@/redux/hooks";
 import tw from "twrnc";
 import * as Yup from "yup";
-import { CustomButton, CustomTextInput } from "@/components/ui";
+import { CustomGradientButton, CustomTextInput } from "@/components/ui";
 import i18n from "@/utils/i18n";
 import { register } from "@/redux/slices/auth";
 import { phoneMask } from "@/utils/masks";
@@ -26,8 +26,8 @@ const RegisterSchema = Yup.object().shape({
     .required(i18n.t("Errors.required")),
 });
 
-const Register = ({ navigation }) => {
-  const dispatch = useDispatch();
+export const RegisterScreen = ({ navigation }) => {
+  const dispatch = useAppDispatch();
   const [unmaskedPhone, setUnmaskedPhone] = useState("");
 
   const handleRegister = (formValues, { resetForm }) => {
@@ -145,9 +145,9 @@ const Register = ({ navigation }) => {
               />
             </ScrollView>
             <View style={tw`mt-4`}>
-              <CustomButton onPress={handleSubmit}>
+              <CustomGradientButton onPress={handleSubmit}>
                 {i18n.t("RegisterScreen.enter")}
-              </CustomButton>
+              </CustomGradientButton>
               <Text
                 style={tw`mt-6 text-center`}
                 onPress={() => navigation.replace("Login")}
@@ -161,5 +161,3 @@ const Register = ({ navigation }) => {
     </SafeAreaView>
   );
 };
-
-export default Register;

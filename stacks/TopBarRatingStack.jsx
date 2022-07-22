@@ -1,7 +1,6 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import i18n from "@/utils/i18n";
-import FriendsRating from "@/screens/FriendsRating";
-import Rating from "@/screens/Rating";
+import { FriendsRatingScreen, RatingScreen } from "@/screens/Rating";
 import tw from "twrnc";
 
 const Tab = createMaterialTopTabNavigator();
@@ -21,14 +20,14 @@ export default function TopBarRatingStack() {
           tabBarLabel: i18n.t("Rating.globalRating"),
         }}
         name="GlobalRating"
-        component={Rating}
+        component={RatingScreen}
       />
       <Tab.Screen
         options={{
           tabBarLabel: i18n.t("Rating.friendsRating"),
         }}
         name="FriendsRating"
-        component={FriendsRating}
+        component={FriendsRatingScreen}
       />
     </Tab.Navigator>
   );

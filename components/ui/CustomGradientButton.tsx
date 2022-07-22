@@ -1,14 +1,11 @@
 import grads, { Grads } from "@/utils/grads";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { FC, ReactNode } from "react";
-import {
-	GestureResponderEvent, TouchableOpacity,
-	View
-} from "react-native";
+import { GestureResponderEvent, TouchableOpacity, View } from "react-native";
 import { ActivityIndicator, Text } from "react-native-paper";
 import tw from "twrnc";
 
-interface ICustomButton {
+interface ICustomGradientButton {
   variant?: Grads;
   children?: ReactNode;
   onPress?: (event: GestureResponderEvent) => void;
@@ -17,9 +14,10 @@ interface ICustomButton {
   grad?: string[];
   textPosition?: "items-center" | "items-start" | "items-end";
   loading?: boolean;
+  customChildren?: boolean;
 }
 
-export const CustomButton: FC<ICustomButton> = ({
+export const CustomGradientButton: FC<ICustomGradientButton> = ({
   variant = "blue",
   children,
   onPress,
@@ -28,6 +26,7 @@ export const CustomButton: FC<ICustomButton> = ({
   grad,
   textPosition = "items-center",
   loading,
+  customChildren,
 }) => {
   return (
     <>
@@ -53,7 +52,11 @@ export const CustomButton: FC<ICustomButton> = ({
             start={{ x: 0.0, y: 0.0 }}
             end={{ x: 0.0, y: 1.0 }}
           >
-            <Text style={tw`text-white`}>{children}</Text>
+            {customChildren ? (
+              children
+            ) : (
+              <Text style={tw`text-white`}>{children}</Text>
+            )}
           </LinearGradient>
         </TouchableOpacity>
       )}

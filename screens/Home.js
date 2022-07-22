@@ -87,7 +87,8 @@ export default function Home({ navigation }) {
                       `${item.disabled ? "opacity-50" : ""}`,
                       {
                         flex: 0.5,
-                      }
+                      },
+											index % 2 === 0 ? "ml-0" : "mr-0"
                     )}
                     disabled={item.disabled}
                   >

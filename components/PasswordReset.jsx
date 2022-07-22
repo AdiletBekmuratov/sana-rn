@@ -1,14 +1,24 @@
-import React, { useState } from "react";
-import { Button, Dialog, Portal, Text, TextInput } from "react-native-paper";
 import {
   useChangePasswordOTPMutation,
   useCheckOTPMutation,
   useGenerateOTPMutation,
 } from "@/redux/services/unauthorized.service";
-import tw from "twrnc";
 import i18n from "@/utils/i18n";
+import React, { useMemo, useState, useCallback } from "react";
+import { Button, Text, TextInput } from "react-native-paper";
+import tw from "twrnc";
 
-export default function PasswordReset({ visibleDialog, handleCloseDialog }) {
+import BottomSheet, {
+  BottomSheetView,
+  BottomSheetBackdrop,
+} from "@gorhom/bottom-sheet";
+import { View } from "react-native";
+import { CustomGradientButton, CustomTextInput } from "./ui";
+import { useAppDispatch } from "@/redux/hooks";
+import { addMessage } from "@/redux/slices/auth";
+
+export default function PasswordReset({ handleClosePress, sheetRef }) {
+  const dispatch = useAppDispatch();
   const [message, setMessage] = useState(null);
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
@@ -18,7 +28,7 @@ export default function PasswordReset({ visibleDialog, handleCloseDialog }) {
   const [hideSecondBtn, setHideSecondBtn] = useState(true);
   const [hideThirdBtn, setHideThirdBtn] = useState(true);
 
-  const [passwordVisible, setPasswordVisible] = useState(true);
+  const snapPoints = useMemo(() => ["40%"], []);
 
   const [
     generateOTP,
@@ -66,11 +76,11 @@ export default function PasswordReset({ visibleDialog, handleCloseDialog }) {
     setEmail("");
     setOtp("");
     setNewPass("");
-    handleCloseDialog();
     setHideFirstBtn(false);
     setHideSecondBtn(true);
     setHideThirdBtn(true);
     setMessage(null);
+    handleClosePress();
   };
 
   const handleGeneratePassword = async () => {
@@ -114,9 +124,10 @@ export default function PasswordReset({ visibleDialog, handleCloseDialog }) {
       .then((res) => {
         console.log({ res });
         setHideThirdBtn(true);
-        setMessage({
-          text: i18n.t("ForgotPasswordDialog.passwordChangeSuccess"),
-        });
+        dispatch(
+          addMessage(i18n.t("ForgotPasswordDialog.passwordChangeSuccess"))
+        );
+				handleClose()
       })
       .catch((err) => {
         console.log(err);
@@ -124,88 +135,104 @@ export default function PasswordReset({ visibleDialog, handleCloseDialog }) {
       });
   };
 
+  const renderBackdrop = useCallback(
+    (props) => (
+      <BottomSheetBackdrop
+        {...props}
+        appearsOnIndex={0}
+        disappearsOnIndex={-1}
+      />
+    ),
+    []
+  );
+
   return (
-    <Portal>
-      <Dialog visible={visibleDialog} onDismiss={handleCloseDialog}>
-        <Dialog.Title>
-          {i18n.t("ForgotPasswordDialog.resetPasswordTitle")}
-        </Dialog.Title>
-        <Dialog.Content>
+    <BottomSheet
+      index={-1}
+      ref={sheetRef}
+      snapPoints={snapPoints}
+      enablePanDownToClose={true}
+      onClose={handleClose}
+      backdropComponent={renderBackdrop}
+    >
+      <BottomSheetView style={tw`p-4 flex-1 justify-between`}>
+        <View>
+          <Text style={tw`text-lg text-center`}>
+            {i18n.t("ForgotPasswordDialog.resetPasswordTitle")}
+          </Text>
           {message && (
             <Text
-              style={tw`${message?.type === "error" ? "text-red-500" : ""}`}
+              style={tw`${
+                message?.type === "error" ? "text-red-500" : "text-gray-400"
+              } mt-2`}
             >
               {message?.text}
             </Text>
           )}
           {!hideFirstBtn && (
-            <TextInput
+            <CustomTextInput
+              style="mt-2"
               label="Email"
-              mode="outlined"
-              dense={true}
+              placeholder="Email"
               value={email}
               onChangeText={handleEmailChange}
             />
           )}
           {!hideSecondBtn && (
-            <TextInput
+            <CustomTextInput
+              style="mt-2"
               label={i18n.t("code")}
-              mode="outlined"
-              dense={true}
-              keyboardType="decimal-pad"
+              placeholder={i18n.t("code")}
               value={otp}
+              keyboardType="decimal-pad"
               onChangeText={handleOTPChange}
             />
           )}
 
           {!hideThirdBtn && (
-            <TextInput
+            <CustomTextInput
+              style="mt-2"
               label={i18n.t("password")}
-              mode="outlined"
-              dense={true}
-              secureTextEntry={passwordVisible}
+              placeholder={i18n.t("password")}
+              secureTextEntry
               onChangeText={handlePasswordChange}
               value={newPass}
-              right={
-                <TextInput.Icon
-                  name={passwordVisible ? "eye" : "eye-off"}
-                  onPress={() => setPasswordVisible(!passwordVisible)}
-                />
-              }
             />
           )}
-        </Dialog.Content>
-        <Dialog.Actions>
-          <Button onPress={handleClose}>{i18n.t("close")}</Button>
+        </View>
+        <View>
           {!hideFirstBtn && (
-            <Button
+            <CustomGradientButton
+              style="mt-6"
               onPress={handleGeneratePassword}
               disabled={email.length <= 0 || isLoadingGenerate}
               loading={isLoadingGenerate}
             >
               {i18n.t("submit")}
-            </Button>
+            </CustomGradientButton>
           )}
           {!hideSecondBtn && (
-            <Button
+            <CustomGradientButton
+              style="mt-6"
               onPress={handleCheckOTP}
               disabled={otp.length <= 0 || isLoadingCheckOTP}
               loading={isLoadingCheckOTP}
             >
               {i18n.t("submit")}
-            </Button>
+            </CustomGradientButton>
           )}
           {!hideThirdBtn && (
-            <Button
+            <CustomGradientButton
+              style="mt-6"
               onPress={handleChangePasswordOTP}
               disabled={newPass.length < 6 || isLoadingChangeOTP}
               loading={isLoadingChangeOTP}
             >
               {i18n.t("change")}
-            </Button>
+            </CustomGradientButton>
           )}
-        </Dialog.Actions>
-      </Dialog>
-    </Portal>
+        </View>
+      </BottomSheetView>
+    </BottomSheet>
   );
 }

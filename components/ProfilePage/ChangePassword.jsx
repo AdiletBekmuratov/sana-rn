@@ -2,13 +2,13 @@ import { Formik } from "formik";
 import React from "react";
 import { View } from "react-native";
 import { Text } from "react-native-paper";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@/redux/hooks";
 import tw from "twrnc";
 import * as Yup from "yup";
 import i18n from "@/utils/i18n";
 import { useUpdateMyPasswordMutation } from "@/redux/services/authorized.service";
 import { addMessage } from "@/redux/slices/auth";
-import { CustomButton, CustomTextInput } from "../ui";
+import { CustomGradientButton, CustomTextInput } from "../ui";
 
 const ChangePassSchema = Yup.object().shape({
   old_password: Yup.string().required(i18n.t("Errors.required")),
@@ -21,7 +21,7 @@ const ChangePassSchema = Yup.object().shape({
 });
 
 export const ChangePassword = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [updatePassword, { isLoading, isSuccess, isError, error }] =
     useUpdateMyPasswordMutation();
 
@@ -103,14 +103,14 @@ export const ChangePassword = () => {
               secureTextEntry
             />
 
-            <CustomButton
+            <CustomGradientButton
               style="mt-4"
               onPress={handleSubmit}
               disabled={isLoading}
               loading={isLoading}
             >
               {i18n.t("update")}
-            </CustomButton>
+            </CustomGradientButton>
           </View>
         </View>
       )}

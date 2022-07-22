@@ -1,4 +1,4 @@
-import authReducer from "./slices/auth.js";
+import authReducer from "./slices/auth";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { baseApi } from "./services/baseApi";
 import { unauthApi } from "./services/unauthorized.service";
@@ -16,4 +16,6 @@ const store = configureStore({
   devTools: true,
 });
 
+export type RootState = ReturnType<typeof rootReducer>;
+export type AppDispatch = typeof store.dispatch;
 export default store;
