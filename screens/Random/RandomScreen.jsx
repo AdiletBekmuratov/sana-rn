@@ -1,9 +1,10 @@
-import React from "react";
-import { FlatList, TouchableOpacity, View } from "react-native";
-import { Card, Text } from "react-native-paper";
-import tw from "twrnc";
 import Spinner from "@/components/Spinner";
+import { CustomGradientButton } from "@/components/ui";
 import { useGetRandomLessonsQuery } from "@/redux/services/authorized.service";
+import React from "react";
+import { FlatList, View } from "react-native";
+import { Text } from "react-native-paper";
+import tw from "twrnc";
 
 export const RandomScreen = ({ navigation }) => {
   const { data, error, isLoading, isError } = useGetRandomLessonsQuery();
@@ -17,25 +18,25 @@ export const RandomScreen = ({ navigation }) => {
       <FlatList
         data={data}
         renderItem={({ item, index }) => (
-          <TouchableOpacity
-            style={tw`${index !== 0 ? "mt-4" : ""}`}
+          <CustomGradientButton
             onPress={() =>
               navigation.navigate("RandomQuestionsScreen", {
                 lessonId: item.id,
+                title: item.name,
               })
             }
+            style={`${index !== 0 ? "mt-4" : ""}`}
+            textPosition="items-start"
+            customChildren={true}
+            variant="green"
           >
-            <Card>
-              <Card.Content
-                style={tw`flex flex-row justify-between items-center`}
-              >
-                <Text style={tw`text-lg font-bold`}>{item.name}</Text>
-                <Text style={tw`text-lg font-bold ml-2`}>
-                  {item.my_answer_question}/{item.sum_of_question}
-                </Text>
-              </Card.Content>
-            </Card>
-          </TouchableOpacity>
+            <View style={tw`flex flex-row justify-between items-center w-full`}>
+              <Text style={tw`text-white`}>{item.name}</Text>
+              <Text style={tw`text-white`}>
+                {item.my_answer_question} / {item.sum_of_question}
+              </Text>
+            </View>
+          </CustomGradientButton>
         )}
       />
     </View>

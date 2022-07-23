@@ -12,4 +12,4 @@ const colors: {
 
 export default colors;
 
-export type Colors = Grads;
+export type Colors = Exclude<Grads, "gold" | "silver" | "bronze">;

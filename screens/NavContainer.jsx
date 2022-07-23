@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { addUser, clearMessage } from "@/redux/slices/auth";
 import AuthStack from "@/stacks/AuthStack";
 import BottomBar from "@/stacks/BottomBar";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { NavigationContainer } from "@react-navigation/native";
 import React, { useEffect } from "react";
 import { KeyboardAvoidingView, Platform, View } from "react-native";
@@ -40,31 +41,33 @@ export default function NavContainer() {
     return <Spinner />;
   }
   return (
-    <PaperProvider theme={theme}>
-      <NavigationContainer>
-        <SafeAreaProvider>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={{ flex: 1 }}
-          >
-            {user === null ? <AuthStack /> : <BottomBar />}
-            <View style={tw`w-full px-5 items-center`}>
-              <Snackbar
-                duration={3000}
-                visible={
-                  message !== null &&
-                  message !== undefined &&
-                  message.length > 0
-                }
-                onDismiss={onDismissSnackBar}
-              >
-                {message}
-              </Snackbar>
-            </View>
-            <AuthVerify />
-          </KeyboardAvoidingView>
-        </SafeAreaProvider>
-      </NavigationContainer>
-    </PaperProvider>
+    <BottomSheetModalProvider>
+      <PaperProvider theme={theme}>
+        <NavigationContainer>
+          <SafeAreaProvider>
+            <KeyboardAvoidingView
+              behavior={Platform.OS === "ios" ? "padding" : "height"}
+              style={{ flex: 1 }}
+            >
+              {user === null ? <AuthStack /> : <BottomBar />}
+              <View style={tw`w-full px-5 items-center`}>
+                <Snackbar
+                  duration={3000}
+                  visible={
+                    message !== null &&
+                    message !== undefined &&
+                    message.length > 0
+                  }
+                  onDismiss={onDismissSnackBar}
+                >
+                  {message}
+                </Snackbar>
+              </View>
+              <AuthVerify />
+            </KeyboardAvoidingView>
+          </SafeAreaProvider>
+        </NavigationContainer>
+      </PaperProvider>
+    </BottomSheetModalProvider>
   );
 }

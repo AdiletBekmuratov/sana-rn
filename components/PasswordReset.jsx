@@ -1,21 +1,20 @@
 import {
-  useChangePasswordOTPMutation,
-  useCheckOTPMutation,
-  useGenerateOTPMutation,
+	useChangePasswordOTPMutation,
+	useCheckOTPMutation,
+	useGenerateOTPMutation
 } from "@/redux/services/unauthorized.service";
 import i18n from "@/utils/i18n";
-import React, { useMemo, useState, useCallback } from "react";
-import { Button, Text, TextInput } from "react-native-paper";
+import React, { useCallback, useMemo, useState } from "react";
+import { Text } from "react-native-paper";
 import tw from "twrnc";
 
+import { useAppDispatch } from "@/redux/hooks";
+import { addMessage } from "@/redux/slices/auth";
 import BottomSheet, {
-  BottomSheetView,
-  BottomSheetBackdrop,
+	BottomSheetBackdrop, BottomSheetView
 } from "@gorhom/bottom-sheet";
 import { View } from "react-native";
 import { CustomGradientButton, CustomTextInput } from "./ui";
-import { useAppDispatch } from "@/redux/hooks";
-import { addMessage } from "@/redux/slices/auth";
 
 export default function PasswordReset({ handleClosePress, sheetRef }) {
   const dispatch = useAppDispatch();

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FlatList, View } from "react-native";
 import {
   Button,
@@ -19,8 +19,11 @@ import {
   useLazyGetAllRatingQuery,
   useRemoveFriendFromRatingMutation,
 } from "@/redux/services/authorized.service";
+import { FilterModal } from "@/components/RatingPage";
 
 export const RatingScreen = () => {
+  const sheetRef = useRef(null);
+
   const [page, setPage] = useState(1);
   const [nextPage, setNextPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -59,17 +62,17 @@ export const RatingScreen = () => {
       console.log("rerender");
       setTotalPage(globalRating?.total_pages);
       setDataSource(globalRating?.data);
-      // if (globalRating?.current_page == 1) {
-      //   setDataSource(globalRating?.data);
-      // } else if (globalRating?.current_page == page) {
-      //   const newData = dataSource.slice(0, (page - 1) * 2);
-      //   setDataSource([...newData, ...globalRating?.data]);
-      // } else {
-      //   setDataSource([...dataSource, ...globalRating?.data]);
-      // }
+      if (globalRating?.current_page == 1) {
+        setDataSource(globalRating?.data);
+      } else if (globalRating?.current_page == page) {
+        const newData = dataSource.slice(0, (page - 1) * 2);
+        setDataSource([...newData, ...globalRating?.data]);
+      } else {
+        setDataSource([...dataSource, ...globalRating?.data]);
+      }
 
-      // setNextPage(globalRating?.current_page + 1);
-      // setPage(globalRating?.current_page);
+      setNextPage(globalRating?.current_page + 1);
+      setPage(globalRating?.current_page);
     }
   }, [globalRating]);
 
@@ -112,54 +115,29 @@ export const RatingScreen = () => {
     );
   };
 
+  const handlePresentModalPress = useCallback(() => {
+    sheetRef.current?.present();
+  }, []);
+
   if (isLoading || myRateLoading || lessonsLoading) {
     return <Spinner />;
   }
 
   return (
-    <View style={tw`h-full flex-1 px-5 pb-5 pt-2 justify-between bg-gray-100`}>
+    <View style={tw`flex-1 px-5 pb-5 pt-2 justify-between bg-gray-100`}>
       <View style={tw`flex flex-row justify-end items-center`}>
-        <IconButton icon="filter" style={tw`bg-white`} onPress={showDialog} />
+        <IconButton
+          icon="filter"
+          style={tw`bg-white`}
+          onPress={() => handlePresentModalPress()}
+        />
       </View>
-      <Portal>
-        <Dialog visible={visible} onDismiss={hideDialog}>
-          <Dialog.Title>{i18n.t("Rating.chooseLesson")}</Dialog.Title>
-          <Dialog.Content>
-            <RadioButton.Group
-              onValueChange={(val) => {
-                setDataSource([]);
-                setLesson(val);
-              }}
-              value={lesson}
-            >
-              <RadioButton.Item
-                label={i18n.t("Rating.allLessons")}
-                position="leading"
-                value=""
-              />
-              <FlatList
-                style={tw`h-92`}
-                data={allLessons}
-                renderItem={({ item }) => (
-                  <RadioButton.Item
-                    label={item.name}
-                    position="leading"
-                    value={item.id}
-                  />
-                )}
-              />
-            </RadioButton.Group>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={hideDialog}>{i18n.t("close")}</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+
       <FlatList
         style={tw`w-full`}
         data={dataSource}
         keyExtractor={(item, index) => item.id}
-        // ListFooterComponent={renderFooter}
+        ListFooterComponent={renderFooter}
         renderItem={({ item, index }) => (
           <Card style={tw`mt-2`}>
             <Card.Content>
@@ -214,6 +192,16 @@ export const RatingScreen = () => {
           </View>
         </Card.Content>
       </Card>
+
+      <FilterModal
+        sheetRef={sheetRef}
+        allLessons={allLessons}
+        lesson={lesson}
+        onValueChange={(val) => {
+          setDataSource([]);
+          setLesson(val);
+        }}
+      />
     </View>
   );
 };

@@ -1,13 +1,15 @@
-import { OptionButton } from "@/components/Questions/OptionButton";
+import {
+	ActionButtons,
+	OptionButton,
+	QuestionCard
+} from "@/components/Questions";
 import Spinner from "@/components/Spinner";
 import {
-  useLazyGetPracticeQuestionsByTopicIdQuery,
-  useSendAnswerMutation,
+	useLazyGetPracticeQuestionsByTopicIdQuery,
+	useSendAnswerMutation
 } from "@/redux/services/authorized.service";
-import i18n from "@/utils/i18n";
 import React, { useEffect, useState } from "react";
-import { FlatList, TouchableOpacity, Vibration, View } from "react-native";
-import { Text } from "react-native-paper";
+import { FlatList, Vibration, View } from "react-native";
 import tw from "twrnc";
 
 export const PracticeQuestionsScreen = ({ route, navigation }) => {
@@ -101,14 +103,11 @@ export const PracticeQuestionsScreen = ({ route, navigation }) => {
   }
 
   return (
-    <View style={tw`h-full flex-1 px-5 pb-5 justify-center bg-gray-100`}>
-      <View style={tw`rounded-xl bg-white p-4 items-center`}>
-        <Text style={tw`font-bold text-lg mb-2`}>
-          {i18n.t("QuestionsScreen.title")}
-          {currentQ + 1}
-        </Text>
-        <Text style={tw`text-center`}>{questions[currentQ]?.question}</Text>
-      </View>
+    <View style={tw`flex-1 px-5 pb-5 justify-center bg-gray-100`}>
+      <QuestionCard
+        questionText={questions[currentQ]?.question}
+        questionNumber={currentQ + 1}
+      />
       <FlatList
         style={tw`mt-2`}
         data={questions[currentQ]?.answers_list}
@@ -123,47 +122,15 @@ export const PracticeQuestionsScreen = ({ route, navigation }) => {
           />
         )}
       />
-      {!disabled ? (
-        questions[currentQ]?.multichoice && (
-          <TouchableOpacity
-            activeOpacity={0.5}
-            onPress={() => handleSubmit()}
-            disabled={pressedBtns.length <= 0 || disabled}
-            style={tw`bg-blue-300 rounded-xl p-4 items-center`}
-          >
-            <Text style={tw`text-white font-bold`}>
-              {i18n.t("QuestionsScreen.submit")}
-            </Text>
-          </TouchableOpacity>
-        )
-      ) : (
-        <View style={tw`flex flex-row justify-between items-center w-full`}>
-          {questions.length - 1 > currentQ && (
-            <TouchableOpacity
-              activeOpacity={0.5}
-              onPress={() => handleFinish()}
-              disabled={pressedBtns.length <= 0}
-              style={tw`bg-white rounded-xl p-4 items-center flex-1 border-2 border-blue-300 mr-2`}
-            >
-              <Text style={tw`text-blue-300 font-bold`}>
-                {i18n.t("QuestionsScreen.finish")}
-              </Text>
-            </TouchableOpacity>
-          )}
-          <TouchableOpacity
-            activeOpacity={0.5}
-            onPress={() => handleNext()}
-            disabled={pressedBtns.length <= 0}
-            style={tw`bg-blue-300 rounded-xl p-4 items-center flex-1 ml-2`}
-          >
-            <Text style={tw`text-white font-bold`}>
-              {questions.length - 1 > currentQ
-                ? i18n.t("QuestionsScreen.next")
-                : i18n.t("QuestionsScreen.finish")}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      )}
+      <ActionButtons
+        currentQ={currentQ}
+        disabled={disabled}
+        handleFinish={() => handleFinish()}
+        handleNext={() => handleNext()}
+        handleSubmit={() => handleSubmit()}
+        pressedBtns={pressedBtns}
+        questions={questions}
+      />
     </View>
   );
 };
