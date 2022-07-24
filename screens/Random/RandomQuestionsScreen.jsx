@@ -104,6 +104,7 @@ export const RandomQuestionsScreen = ({ route, navigation }) => {
   return (
     <View style={tw`flex-1 px-5 pb-5 justify-center bg-gray-100`}>
       <QuestionCard
+        isLatex={isLatex}
         questionText={questions[currentQ]?.question}
         questionNumber={currentQ + 1}
       />

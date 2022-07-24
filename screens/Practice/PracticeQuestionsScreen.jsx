@@ -1,12 +1,12 @@
 import {
-	ActionButtons,
-	OptionButton,
-	QuestionCard
+  ActionButtons,
+  OptionButton,
+  QuestionCard,
 } from "@/components/Questions";
 import Spinner from "@/components/Spinner";
 import {
-	useLazyGetPracticeQuestionsByTopicIdQuery,
-	useSendAnswerMutation
+  useLazyGetPracticeQuestionsByTopicIdQuery,
+  useSendAnswerMutation,
 } from "@/redux/services/authorized.service";
 import React, { useEffect, useState } from "react";
 import { FlatList, Vibration, View } from "react-native";
@@ -105,6 +105,7 @@ export const PracticeQuestionsScreen = ({ route, navigation }) => {
   return (
     <View style={tw`flex-1 px-5 pb-5 justify-center bg-gray-100`}>
       <QuestionCard
+        isLatex={isLatex}
         questionText={questions[currentQ]?.question}
         questionNumber={currentQ + 1}
       />
