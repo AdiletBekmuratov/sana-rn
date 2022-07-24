@@ -1,15 +1,15 @@
 import Spinner from "@/components/Spinner";
-import { CustomIconButton } from "@/components/ui";
+import { CustomIconButton, FooterButton } from "@/components/ui";
 import { useAppDispatch } from "@/redux/hooks";
 import {
-	useLazyGetTheoryAnswerByQuestionIdQuery,
-	useLazyGetTheoryQuestionsByTopicIdQuery
+  useLazyGetTheoryAnswerByQuestionIdQuery,
+  useLazyGetTheoryQuestionsByTopicIdQuery,
 } from "@/redux/services/authorized.service";
 import { addMessage } from "@/redux/slices/auth";
 import i18n from "@/utils/i18n";
 import React, { useEffect, useState } from "react";
-import { FlatList, View } from "react-native";
-import { Button, Text } from "react-native-paper";
+import { FlatList, TouchableOpacity, View } from "react-native";
+import { Text } from "react-native-paper";
 import tw from "twrnc";
 
 export const TheoryQuestionsScreen = ({ route, navigation }) => {
@@ -88,11 +88,9 @@ export const TheoryQuestionsScreen = ({ route, navigation }) => {
     return (
       <>
         {totalPage >= page && (
-          <View style={tw`w-full justify-center items-center pt-4`}>
-            <Button mode="outlined" loading={loading} onPress={getData}>
-              {i18n.t("show_more")}
-            </Button>
-          </View>
+          <FooterButton onPress={getData} disabled={loading} loading={loading}>
+            {i18n.t("show_more")}
+          </FooterButton>
         )}
       </>
     );

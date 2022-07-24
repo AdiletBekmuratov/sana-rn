@@ -1,12 +1,12 @@
+import Header from "@/components/Header";
+import i18n from "@/utils/i18n";
 import MaterialCommunity from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { getHeaderTitle } from "@react-navigation/elements";
-import Header from "@/components/Header";
-import i18n from "@/utils/i18n";
 import MainStack from "./MainStack";
 import ProfileStack from "./ProfileStack";
-import TopBarRatingStack from "./TopBarRatingStack";
+import RatingStack from "./RatingStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -14,7 +14,7 @@ export default function BottomBar() {
   return (
     <Tab.Navigator
       screenOptions={{
-				tabBarHideOnKeyboard: true,
+        tabBarHideOnKeyboard: true,
         header: ({ navigation, route, options, back }) => {
           const title = getHeaderTitle(options, route.name);
 
@@ -35,13 +35,13 @@ export default function BottomBar() {
           title: i18n.t("BottomBar.main_page"),
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
-            let iconName = focused ? "home" : "home-outline";
+            let iconName = focused ? "book" : "book-outline";
 
             return (
               <MaterialCommunity name={iconName} size={size} color={color} />
             );
           },
-          tabBarActiveTintColor: "#002C67",
+          tabBarActiveTintColor: "#52AEF3",
           tabBarInactiveTintColor: "gray",
         }}
         component={MainStack}
@@ -57,10 +57,10 @@ export default function BottomBar() {
               <MaterialCommunity name={iconName} size={size} color={color} />
             );
           },
-          tabBarActiveTintColor: "#002C67",
+          tabBarActiveTintColor: "#52AEF3",
           tabBarInactiveTintColor: "gray",
         }}
-        component={TopBarRatingStack}
+        component={RatingStack}
       />
       <Tab.Screen
         name="ProfileTab"
@@ -72,7 +72,7 @@ export default function BottomBar() {
 
             return <MaterialIcons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: "#002C67",
+          tabBarActiveTintColor: "#52AEF3",
           tabBarInactiveTintColor: "gray",
         }}
         component={ProfileStack}

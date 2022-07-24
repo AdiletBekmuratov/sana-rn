@@ -1,2 +1,2 @@
 export * from "./FriendsRatingScreen";
-export * from "./RatingScreen";
+export * from "./GlobalRatingScreen";

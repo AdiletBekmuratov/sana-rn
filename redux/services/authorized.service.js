@@ -103,8 +103,8 @@ export const authorizedApi = baseApi.injectEndpoints({
       }),
     }),
     getAllRating: builder.query({
-      query: ({ lessonId, page }) => ({
-        url: `/user/all-rating/?lesson=${lessonId}&page=${page}&page_size=100`,
+      query: ({ lessonId, page, size }) => ({
+        url: `/user/all-rating/?lesson=${lessonId}&page=${page}&page_size=${size}`,
       }),
       providesTags: ["FriendsRating"],
     }),

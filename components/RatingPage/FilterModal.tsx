@@ -24,7 +24,7 @@ export const FilterModal: FC<IFilterModal> = ({
   lesson,
   onValueChange,
 }) => {
-  const snapPoints = useMemo(() => ["80%"], []);
+  const snapPoints = useMemo(() => ["50%", "80%"], []);
 
   const renderBackdrop = useCallback(
     (props) => (
