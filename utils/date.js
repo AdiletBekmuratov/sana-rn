@@ -17,9 +17,6 @@ export const getCurrentWeek = async () => {
   const entryDays = entryDaysString != null ? JSON.parse(entryDaysString) : [];
   let days = [];
 
-  console.log("ED Str >>", entryDaysString);
-  console.log("ED >>", entryDays);
-
   for (let i = 0; i <= 6; i++) {
     let entered = false;
     for (let index = 0; index < entryDays.length; index++) {
@@ -53,9 +50,6 @@ export const setEntered = async () => {
   const entryDaysString = await AsyncStorage.getItem("entryDays");
   const entryDays = entryDaysString != null ? JSON.parse(entryDaysString) : [];
 
-  // console.log("ED Str >>", entryDaysString);
-  // console.log("ED >>", entryDays);
-
   let isAdded = false;
 
   for (let index = 0; index < entryDays.length; index++) {
@@ -70,6 +64,5 @@ export const setEntered = async () => {
   }
 
   entryDays.push(dayjs().format("YYYY-MM-DD"));
-  // console.log("ED after push >>", entryDays);
   await AsyncStorage.setItem("entryDays", JSON.stringify(entryDays));
 };

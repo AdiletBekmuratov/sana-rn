@@ -1,12 +1,12 @@
 import {
-  ActionButtons,
-  OptionButton,
-  QuestionCard,
+	ActionButtons,
+	OptionButton,
+	QuestionCard
 } from "@/components/Questions";
 import Spinner from "@/components/Spinner";
 import {
-  useLazyGetRandomQuestionsByLessonIdQuery,
-  useSendAnswerMutation,
+	useLazyGetRandomQuestionsByLessonIdQuery,
+	useSendAnswerMutation
 } from "@/redux/services/authorized.service";
 import React, { useEffect, useState } from "react";
 import { FlatList, Vibration, View } from "react-native";
@@ -77,7 +77,11 @@ export const RandomQuestionsScreen = ({ route, navigation }) => {
     setDisabled(false);
 
     if (questions.length - 1 === currentQ) {
-      navigation.replace("EndScreen", { testId, size: questions.length });
+      navigation.replace("EndScreen", {
+        testId,
+        size: questions.length,
+        type: "random",
+      });
     } else {
       setCurrentQ((prev) => prev + 1);
       setPressedBtns([]);

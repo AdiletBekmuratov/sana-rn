@@ -31,31 +31,31 @@ export const EntryDays = ({ style = "" }) => {
         <View style={tw`flex flex-row justify-center items-center relative`}>
           <View style={tw`flex-1 items-center justify-center`}>
             <LinearGradient
-              style={tw`justify-center items-center p-4 w-24 aspect-square rounded-full`}
+              style={tw`justify-center items-center p-4 w-18 aspect-square rounded-full`}
               colors={grads["green"]}
               start={{ x: 0.0, y: 0.0 }}
               end={{ x: 0.0, y: 1.0 }}
             >
-              <Text style={tw`text-4xl text-white`}>{entryDays?.all_day}</Text>
+              <Text style={tw`text-2xl text-white`}>{entryDays?.all_day}</Text>
             </LinearGradient>
-            <Text style={tw`text-xl text-center mt-2`}>
-              Барлық {"\n"} кірген күн
+            <Text style={tw`text-lg text-center mt-2 leading-snug`}>
+              Барлық{"\n"}кірген күн
             </Text>
           </View>
           <View style={tw`w-px bg-gray-300 h-4/5 absolute`} />
           <View style={tw`flex-1 items-center justify-center`}>
             <LinearGradient
-              style={tw`justify-center items-center p-4 w-24 aspect-square rounded-2xl`}
+              style={tw`justify-center items-center p-4 w-18 aspect-square rounded-2xl`}
               colors={grads["red_orange"]}
               start={{ x: 0.0, y: 0.0 }}
               end={{ x: 1.0, y: 1.0 }}
             >
-              <Text style={tw`text-4xl text-white`}>
+              <Text style={tw`text-2xl text-white`}>
                 {entryDays?.consecutive_days}
               </Text>
             </LinearGradient>
-            <Text style={tw`text-xl text-center mt-2`}>
-              Қатарынан {"\n"} кірген күн
+            <Text style={tw`text-lg text-center mt-2 leading-snug`}>
+              Қатарынан{"\n"}кірген күн
             </Text>
           </View>
         </View>

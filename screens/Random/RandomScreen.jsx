@@ -1,3 +1,4 @@
+import { ChangeQuestionsNumber } from "@/components/Questions/ChangeQuestionsNumber";
 import Spinner from "@/components/Spinner";
 import { CustomGradientButton } from "@/components/ui";
 import { useGetRandomLessonsQuery } from "@/redux/services/authorized.service";
@@ -14,9 +15,10 @@ export const RandomScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={tw`h-full flex-1 px-5 pb-5 justify-center bg-gray-100`}>
+    <View style={tw`flex-1 pb-5 justify-between bg-gray-100`}>
       <FlatList
         data={data}
+        contentContainerStyle={tw`px-5 pb-5`}
         renderItem={({ item, index }) => (
           <CustomGradientButton
             onPress={() =>
@@ -39,6 +41,9 @@ export const RandomScreen = ({ navigation }) => {
           </CustomGradientButton>
         )}
       />
+      <View style={tw`px-5 mt-4`}>
+        <ChangeQuestionsNumber />
+      </View>
     </View>
   );
 };

@@ -2,7 +2,7 @@ import { baseApi } from "./baseApi";
 
 export const authorizedApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getQuestionQuantity: builder.query({
+    getQuestionQuantity: builder.query<any, void>({
       query: () => ({
         url: "/user/question-quantity/",
       }),

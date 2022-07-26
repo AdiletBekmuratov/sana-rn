@@ -1,16 +1,25 @@
-import { CommonActions } from "@react-navigation/native";
-import React from "react";
-import { Image, View } from "react-native";
-import { Button, Headline } from "react-native-paper";
-import tw from "twrnc";
 import Spinner from "@/components/Spinner";
-import i18n from "@/utils/i18n";
 import { useFinishTestQuery } from "@/redux/services/authorized.service";
-const trophy = require("@/assets/trophy.png");
+import grads from "@/utils/grads";
+import i18n from "@/utils/i18n";
+import { CommonActions } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
+import React from "react";
+import { Dimensions, Image, TouchableOpacity, View } from "react-native";
+import { Headline, Text } from "react-native-paper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import tw from "twrnc";
+const dialogBubble = require("@/assets/end-screen/dialog-bubble.png");
+const randomGirl = require("@/assets/end-screen/random-end.png");
+const practiceGirl = require("@/assets/end-screen/practice-end.png");
+
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 export default function EndScreen({ route, navigation }) {
-  const { testId, size } = route.params;
+  const { testId, size, type } = route.params;
   const { data, error, isLoading, isError } = useFinishTestQuery(testId);
+  const insets = useSafeAreaInsets();
 
   const goHome = () => {
     navigation.dispatch(
@@ -26,19 +35,58 @@ export default function EndScreen({ route, navigation }) {
   }
 
   return (
-    <View style={tw`h-full flex-1 px-5 pb-5 justify-between bg-gray-100`}>
-      <Image
-        style={{ resizeMode: "contain", width: "100%", maxHeight: 300 }}
-        source={trophy}
-      />
-      <Headline style={tw`font-bold w-full text-center mt-2`}>
-        {i18n.t("EndScreen.earned")} {data?.correct_ans}{" "}
-        {i18n.t("EndScreen.from")} {size}
-      </Headline>
+    <View style={tw`flex-1`}>
+      <LinearGradient
+        style={{
+          paddingTop: insets.top,
+          flex: 1,
+        }}
+        colors={type === "practice" ? grads["red_orange"] : grads["green"]}
+        start={{ x: 0.0, y: 0.0 }}
+        end={{ x: 1.0, y: 1.0 }}
+      >
+        <View style={tw`h-[80px] p-5 relative items-center justify-center`}>
+          <Headline style={tw`text-xl text-white`}>
+            {i18n.t("MainStack.results")}
+          </Headline>
+        </View>
+        <View style={tw`px-5 pb-5 justify-between items-center w-full flex-1`}>
+          <View>
+            <Image
+              style={{
+                width: windowWidth - 120,
+                height: 150,
+                resizeMode: "contain",
+              }}
+              source={dialogBubble}
+            />
+            <Image
+              style={{
+                width: windowWidth - 120,
+                height: (windowHeight * 40) / 100,
+                resizeMode: "contain",
+              }}
+              source={type === "practice" ? practiceGirl : randomGirl}
+            />
+          </View>
 
-      <Button style={tw`mt-4`} mode="contained" onPress={() => goHome()}>
-        {i18n.t("EndScreen.goHome")}
-      </Button>
+          <Headline style={tw`font-bold w-full text-center mt-2 text-white`}>
+            {i18n.t("EndScreen.earned")}
+            {"\n"}
+            {data?.correct_ans} {i18n.t("EndScreen.from")} {size}
+          </Headline>
+
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => goHome()}
+            style={tw`bg-white rounded-xl p-4 items-center w-full`}
+          >
+            <Text style={tw`${type === 'practice' ? 'text-red-400' : 'text-green-500'} font-bold`}>
+              {i18n.t("EndScreen.goHome")}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </LinearGradient>
     </View>
   );
 }

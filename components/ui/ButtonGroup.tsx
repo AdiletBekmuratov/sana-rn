@@ -7,6 +7,7 @@ interface IButtonGroup {
   buttons: {
     children: ReactNode;
     onPress?: (event: GestureResponderEvent) => void;
+    disabled?: boolean;
   }[];
 }
 
@@ -18,6 +19,7 @@ export const ButtonGroup: FC<IButtonGroup> = ({ buttons, containerStyle }) => {
           <TouchableOpacity
             key={index + "-button"}
             activeOpacity={0.5}
+            disabled={button?.disabled}
             style={tw`p-4 bg-white shadow ${
               index !== 0 ? "border-t border-gray-100" : ""
             } ${
@@ -26,7 +28,7 @@ export const ButtonGroup: FC<IButtonGroup> = ({ buttons, containerStyle }) => {
                 : index !== 0 && index !== buttons.length - 1
                 ? ""
                 : "rounded-b-lg"
-            }`}
+            } ${button?.disabled ? "bg-gray-200" : ""}`}
             onPress={button.onPress}
           >
             {button.children}

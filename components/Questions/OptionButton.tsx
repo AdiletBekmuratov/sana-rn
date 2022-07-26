@@ -1,8 +1,9 @@
-import { View, TouchableOpacity, GestureResponderEvent } from "react-native";
 import React, { FC } from "react";
+import { GestureResponderEvent, TouchableOpacity, View } from "react-native";
+import { MathJaxSvg } from "react-native-mathjax-html-to-svg";
 import { Text } from "react-native-paper";
 import tw from "twrnc";
-import { MathJaxSvg } from "react-native-mathjax-html-to-svg";
+import MathJax from "react-native-mathjax";
 
 interface IOptionButton {
   disabled: boolean;
@@ -12,6 +13,10 @@ interface IOptionButton {
   isLatex: boolean;
 }
 
+const mmlOptions = {
+  jax: ["input/MathML"],
+};
+
 export const OptionButton: FC<IOptionButton> = ({
   disabled,
   index,
@@ -20,11 +25,7 @@ export const OptionButton: FC<IOptionButton> = ({
   onPress,
 }) => {
   return (
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
+    <View style={tw`flex-1`}>
       <TouchableOpacity
         disabled={disabled}
         onPress={onPress}
@@ -52,7 +53,6 @@ export const OptionButton: FC<IOptionButton> = ({
               fontSize={16}
               color={disabled ? "#fff" : "#000"}
               fontCache={true}
-              style={tw`text-center`}
             >
               {item.answer}
             </MathJaxSvg>

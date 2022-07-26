@@ -106,6 +106,7 @@ const MainStack = () => {
       />
       <Stack.Screen
         options={{
+          headerShown: false,
           title: i18n.t("MainStack.results"),
         }}
         name="EndScreen"

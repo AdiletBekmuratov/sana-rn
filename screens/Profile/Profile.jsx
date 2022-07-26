@@ -3,14 +3,13 @@ import Spinner from "@/components/Spinner";
 import { ButtonGroup } from "@/components/ui";
 import { useAppDispatch } from "@/redux/hooks";
 import {
-  useGetMeQuery,
-  useGetQuestionQuantityQuery,
-  useUpdateQuestionQuantityMutation,
+	useGetMeQuery
 } from "@/redux/services/authorized.service";
 import { logout } from "@/redux/slices/auth";
 import i18n from "@/utils/i18n";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useEffect, useState } from "react";
+import * as StoreReview from "expo-store-review";
+import React from "react";
 import { Linking, ScrollView, View } from "react-native";
 import { Headline, IconButton, Switch, Text } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -20,34 +19,23 @@ export const Profile = ({ navigation }) => {
   const dispatch = useAppDispatch();
 
   const { data, error, isLoading, isError } = useGetMeQuery();
-  const {
-    data: questionQuantityData,
-    error: questionQuantityErr,
-    isLoading: questionQuantityIsLoading,
-  } = useGetQuestionQuantityQuery();
-  const [updateQQ] = useUpdateQuestionQuantityMutation();
-  const [sliderOneValue, setSliderOneValue] = useState([10]);
 
   const insets = useSafeAreaInsets();
 
-  useEffect(() => {
-    setSliderOneValue([questionQuantityData?.quantity_of_questions ?? 10]);
-  }, [questionQuantityData]);
-
-  const sliderOneValuesChange = (values) => setSliderOneValue(values);
-
-  const sliderOneValuesChangeFinish = async (values) => {
-    try {
-      await updateQQ({
-        quantity_of_questions: values[0],
-      });
-    } catch (error) {
-      console.log("QQERR", error);
-    }
-  };
-
   const handleLogout = () => {
     dispatch(logout());
+  };
+
+  const handleReview = async () => {
+    if (StoreReview.isAvailableAsync()) {
+      await StoreReview.requestReview()
+        .then(function (response) {
+          console.log("response is", response);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
   };
 
   if (isLoading) {
@@ -100,8 +88,13 @@ export const Profile = ({ navigation }) => {
                     navigation.navigate("ChangeProfile", { userData: data }),
                 },
                 {
-                  children: <Text>Күніне меңгеру минимумы</Text>,
+                  children: (
+                    <Text style={tw`text-gray-400`}>
+                      Күніне меңгеру минимумы
+                    </Text>
+                  ),
                   onPress: () => console.log("Hello2"),
+                  disabled: true,
                 },
               ]}
             />
@@ -182,7 +175,7 @@ export const Profile = ({ navigation }) => {
                       </View>
                     </View>
                   ),
-                  onPress: () => console.log("Rate"),
+                  onPress: handleReview,
                 },
                 {
                   children: <Text>{i18n.t("ProfileScreen.whatsapp")}</Text>,
@@ -197,48 +190,5 @@ export const Profile = ({ navigation }) => {
         </ScrollView>
       </View>
     </View>
-    // <View style={tw`h-full flex-1 px-5 pb-5 justify-between bg-gray-100`}>
-    //   <Card>
-    //     <Card.Content style={tw`items-center justify-between`}>
-    //       <IconButton
-    //         icon={"pen"}
-    //         style={tw`absolute right-2 top-2`}
-    //         onPress={() =>
-    //           navigation.navigate("ChangeProfile", { userData: data })
-    //         }
-    //       />
-    //       <MaterialIcons name="account-circle" size={100} color="gray" />
-    //       <Text style={tw`text-xl font-bold text-center`}>
-    //         {data?.first_name} {data?.last_name}
-    //       </Text>
-    //       <Text style={tw`text-lg`}>{data?.email}</Text>
-    //       <Text style={tw`text-lg underline`}>
-
-    //       </Text>
-    //     </Card.Content>
-    //   </Card>
-    //   <View style={tw`flex justify-center items-center`}>
-    //     <Text>{i18n.t("ProfileScreen.number_of_questions")} {sliderOneValue}</Text>
-    //     <View style={tw`flex flex-row justify-center items-center`}>
-    //       <Text>10</Text>
-    //       <View style={tw`mx-5`}>
-    //         <MultiSlider
-    //           markerStyle={tw`p-2 bg-blue-600 rounded-full`}
-    //           selectedStyle={tw`bg-blue-600`}
-    //           min={10}
-    //           max={100}
-    //           step={5}
-    //           values={sliderOneValue}
-    //           smoothSnapped={true}
-    //           snapped={true}
-    //           onValuesChange={sliderOneValuesChange}
-    //           onValuesChangeFinish={sliderOneValuesChangeFinish}
-    //         />
-    //       </View>
-    //       <Text>100</Text>
-    //     </View>
-
-    //   </View>
-    // </View>
   );
 };

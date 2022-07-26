@@ -78,7 +78,11 @@ export const PracticeQuestionsScreen = ({ route, navigation }) => {
     setDisabled(false);
 
     if (questions.length - 1 === currentQ) {
-      navigation.replace("EndScreen", { testId, size: questions.length });
+      navigation.replace("EndScreen", {
+        testId,
+        size: questions.length,
+        type: "practice",
+      });
     } else {
       setCurrentQ((prev) => prev + 1);
       setPressedBtns([]);

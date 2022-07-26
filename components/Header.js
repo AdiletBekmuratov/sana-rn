@@ -6,7 +6,7 @@ import tw from "twrnc";
 
 const Header = ({ title, rightButton, navigation, routeName }) => {
   return (
-    <SafeAreaView style={tw`bg-white dark:bg-black`}>
+    <SafeAreaView style={tw`bg-black dark:bg-white`}>
       <View
         style={tw`flex-row ${
           rightButton ? "justify-center" : "justify-start"
